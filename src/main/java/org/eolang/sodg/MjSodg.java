@@ -17,11 +17,13 @@ import com.yegor256.xsline.TrClasspath;
 import com.yegor256.xsline.TrDefault;
 import com.yegor256.xsline.TrFast;
 import com.yegor256.xsline.TrJoined;
+import com.yegor256.xsline.TrLambda;
 import com.yegor256.xsline.TrLogged;
 import com.yegor256.xsline.TrMapped;
 import com.yegor256.xsline.TrWith;
 import com.yegor256.xsline.Train;
 import com.yegor256.xsline.Xsline;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -38,6 +40,9 @@ import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -74,7 +79,75 @@ import org.xembly.Xembler;
     requiresDependencyResolution = ResolutionScope.COMPILE
 )
 @SuppressWarnings("PMD.ImmutableField")
-public final class MjSodg extends MjSafe {
+public final class MjSodg extends AbstractMojo {
+
+    /**
+     * Whether we should skip goal execution.
+     */
+    @Parameter(property = "eo.sodg.skip", defaultValue = "false")
+    @SuppressWarnings("PMD.ImmutableField")
+    private boolean skip;
+
+    /**
+     * The path of the file where XSL measurements (time of execution
+     * in milliseconds) will be stored.
+     * @since 0.41.0
+     * @checkstyle MemberNameCheck (10 lines)
+     * @checkstyle VisibilityModifierCheck (10 lines)
+     */
+    @Parameter(
+        property = "eo.sodg.xslMeasuresFile",
+        required = true,
+        defaultValue = "${project.build.directory}/eo/xsl-measures.json"
+    )
+    protected File xslMeasures;
+
+    /**
+     * Current scope (either "compile" or "test").
+     * @checkstyle VisibilityModifierCheck (5 lines)
+     */
+    @Parameter(property = "eo.sodg.scope")
+    protected String scope = "compile";
+
+    /**
+     * Format of "foreign" file ("json" or "csv").
+     * @checkstyle MemberNameCheck (7 lines)
+     * @checkstyle VisibilityModifierCheck (5 lines)
+     */
+    @Parameter(property = "eo.sodg.foreignFormat", required = true, defaultValue = "csv")
+    protected String foreignFormat = "csv";
+
+    /**
+     * File with foreign "tojos".
+     * @checkstyle VisibilityModifierCheck (10 lines)
+     */
+    @Parameter(
+        property = "eo.foreign",
+        required = true,
+        defaultValue = "${project.build.directory}/eo-foreign.json"
+    )
+    protected File foreign;
+
+    /**
+     * Cached tojos.
+     * @checkstyle VisibilityModifierCheck (5 lines)
+     */
+    private final TjsForeign tojos = new TjsForeign(
+        () -> Catalogs.INSTANCE.make(this.foreign.toPath(), this.foreignFormat),
+        () -> this.scope
+    );
+
+    /**
+     * Target directory.
+     * @checkstyle MemberNameCheck (10 lines)
+     * @checkstyle VisibilityModifierCheck (10 lines)
+     */
+    @Parameter(
+        property = "eo.targetDir",
+        required = true,
+        defaultValue = "${project.build.directory}/eo"
+    )
+    protected File targetDir;
 
     /**
      * The directory where to save SODG to.
@@ -316,6 +389,24 @@ public final class MjSodg extends MjSafe {
     private Set<String> sodgExcludes = new SetOf<>();
 
     @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        if (this.skip) {
+            if (Logger.isInfoEnabled(this)) {
+                Logger.info(
+                    this, "Execution skipped due to eo.skip option"
+                );
+            }
+        } else {
+            try {
+                this.exec();
+            } catch (final IOException exception) {
+                //todo
+                throw new RuntimeException(exception);
+            }
+        }
+    }
+
+
     public void exec() throws IOException {
         if (this.generateGraphFiles && !this.generateXemblyFiles) {
             throw new IllegalStateException(
@@ -539,8 +630,10 @@ public final class MjSodg extends MjSafe {
      * @param root The vertex to start from
      * @param seen List of <code>@id</code> attributes already seen
      */
-    private static void traverse(final XML graph, final String root,
-        final Set<String> seen) {
+    private static void traverse(
+        final XML graph, final String root,
+        final Set<String> seen
+    ) {
         for (final XML edge : graph.nodes(String.format("//v[@id='%s']/e", root))) {
             final String kid = edge.xpath("@to").get(0);
             if (seen.contains(kid)) {
@@ -549,5 +642,49 @@ public final class MjSodg extends MjSafe {
             seen.add(kid);
             MjSodg.traverse(graph, kid, seen);
         }
+    }
+
+    /**
+     * Make a measured train from another train.
+     * @param train The train
+     * @return Measured train
+     */
+    protected final Train<Shift> measured(final Train<Shift> train) {
+        if (this.xslMeasures.getParentFile().mkdirs()) {
+            Logger.debug(this, "Directory created for %[file]s", this.xslMeasures);
+        }
+        if (!this.xslMeasures.getParentFile().exists()) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "For some reason, the directory %s is absent, can't write measures to %s",
+                    this.xslMeasures.getParentFile(),
+                    this.xslMeasures
+                )
+            );
+        }
+        if (this.xslMeasures.isDirectory()) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "This is not a file but a directory, can't write to it: %s",
+                    this.xslMeasures
+                )
+            );
+        }
+        return new TrLambda(
+            train,
+            shift -> new StMeasured(
+                shift,
+                this.xslMeasures.toPath()
+            )
+        );
+    }
+
+    /**
+     * Tojos to use, in my scope only.
+     * @return Tojos to use
+     * @checkstyle AnonInnerLengthCheck (100 lines)
+     */
+    protected final TjsForeign scopedTojos() {
+        return this.tojos;
     }
 }
