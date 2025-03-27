@@ -1,7 +1,4 @@
-package org.eolang.sodg;/*
- * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
- * SPDX-License-Identifier: MIT
- */
+package org.eolang.sodg;
 
 import com.jcabi.log.Logger;
 import com.jcabi.manifests.Manifests;
@@ -40,13 +37,6 @@ import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.cactoos.list.ListOf;
 import org.cactoos.scalar.IoChecked;
 import org.cactoos.scalar.LengthOf;
@@ -56,37 +46,26 @@ import org.xembly.Directive;
 import org.xembly.Directives;
 import org.xembly.Xembler;
 
-/**
- * Convert XMIR to SODG.
- *
- * SODG (Surging Object DiGraph) is our own format of graph representation.
- * It essentially is a text file that consists of instructions for a virtual
- * machine that is capable of parsing them and building a graph. An example
- * of such a machine can be found in
- * <a href="https://github.com/objectionary/sodg">this repository</a>. When the
- * graph is built by the virtual machine, it must be possible to execute
- * a program using graph traversing algorithm. An example of such an executor
- * of a graph can be found in
- * <a href="https://github.com/objectionary/reo">this repository</a>.
- *
- * @since 0.27
- * @checkstyle ClassFanOutComplexityCheck (500 lines)
- */
-@Mojo(
-    name = "sodg",
-    defaultPhase = LifecyclePhase.PROCESS_SOURCES,
-    threadSafe = true,
-    requiresDependencyResolution = ResolutionScope.COMPILE
-)
-@SuppressWarnings("PMD.ImmutableField")
-public final class MjSodg extends AbstractMojo {
+public final class Sodg {
 
     /**
-     * Whether we should skip goal execution.
+     * Shall we generate .graph.xml files with XML graph?
+     * @checkstyle MemberNameCheck (7 lines)
      */
-    @Parameter(property = "eo.sodg.skip", defaultValue = "false")
-    @SuppressWarnings("PMD.ImmutableField")
-    private boolean skip;
+    private final boolean generateGraphFiles = false;
+
+    /**
+     * Shall we generate .xe files with Xembly instructions graph?
+     * @checkstyle MemberNameCheck (7 lines)
+     */
+    private final boolean generateXemblyFiles = false;
+
+    /**
+     * Shall we generate .xml files with SODGs?
+     * @checkstyle MemberNameCheck (7 lines)
+     */
+    @SuppressWarnings("PMD.LongVariable")
+    private final boolean generateSodgXmlFiles = false;
 
     /**
      * The path of the file where XSL measurements (time of execution
@@ -95,64 +74,46 @@ public final class MjSodg extends AbstractMojo {
      * @checkstyle MemberNameCheck (10 lines)
      * @checkstyle VisibilityModifierCheck (10 lines)
      */
-    @Parameter(
-        property = "eo.sodg.xslMeasuresFile",
-        required = true,
-        defaultValue = "${project.build.directory}/eo/xsl-measures.json"
-    )
     protected File xslMeasures;
 
     /**
-     * Current scope (either "compile" or "test").
-     * @checkstyle VisibilityModifierCheck (5 lines)
-     */
-    @Parameter(property = "eo.sodg.scope")
-    protected String scope = "compile";
-
-    /**
-     * Format of "foreign" file ("json" or "csv").
+     * Shall we generate .dot files with DOT language graph commands?
      * @checkstyle MemberNameCheck (7 lines)
-     * @checkstyle VisibilityModifierCheck (5 lines)
      */
-    @Parameter(property = "eo.sodg.foreignFormat", required = true, defaultValue = "csv")
-    protected String foreignFormat = "csv";
-
-    /**
-     * File with foreign "tojos".
-     * @checkstyle VisibilityModifierCheck (10 lines)
-     */
-    @Parameter(
-        property = "eo.foreign",
-        required = true,
-        defaultValue = "${project.build.directory}/eo-foreign.json"
-    )
-    protected File foreign;
-
-    /**
-     * Cached tojos.
-     * @checkstyle VisibilityModifierCheck (5 lines)
-     */
-    private final TjsForeign tojos = new TjsForeign(
-        () -> Catalogs.INSTANCE.make(this.foreign.toPath(), this.foreignFormat),
-        () -> this.scope
-    );
+    @SuppressWarnings("PMD.LongVariable")
+    private final boolean generateDotFiles = false;
 
     /**
      * Target directory.
      * @checkstyle MemberNameCheck (10 lines)
      * @checkstyle VisibilityModifierCheck (10 lines)
      */
-    @Parameter(
-        property = "eo.targetDir",
-        required = true,
-        defaultValue = "${project.build.directory}/eo"
-    )
-    protected File targetDir;
+    private final File targetDir = null;
+
+    /**
+     * List of object names to participate in SODG generation.
+     * @implNote {@code property} attribute is omitted for collection
+     *  properties since there is no way of passing it via command line.
+     * @checkstyle MemberNameCheck (15 lines)
+     */
+    private final Set<String> sodgIncludes = new SetOf<>("**");
+
+
+    /**
+     * List of object names which are excluded from SODG generation.
+     * @implNote {@code property} attribute is omitted for collection
+     *  properties since there is no way of passing it via command line.
+     * @checkstyle MemberNameCheck (15 lines)
+     */
+    private final Set<String> sodgExcludes = new SetOf<>();
 
     /**
      * The directory where to save SODG to.
      */
-    static final String DIR = "sodg";
+    private static final String DIR = "sodg";
+
+    private final TjsForeign tojos = null;
+
 
     /**
      * SODG to plain text.
@@ -162,7 +123,7 @@ public final class MjSodg extends AbstractMojo {
             "/org/eolang/maven/sodg-to/normalize-names.xsl",
             "/org/eolang/maven/sodg-to/to-text.xsl"
         ).back(),
-        MjSodg.class
+        Sodg.class
     );
 
     /**
@@ -175,7 +136,7 @@ public final class MjSodg extends AbstractMojo {
                 "testing no"
             )
         ),
-        MjSodg.class
+        Sodg.class
     );
 
     /**
@@ -187,10 +148,10 @@ public final class MjSodg extends AbstractMojo {
                 "/org/eolang/maven/sodg-to/normalize-attrs.xsl",
                 "/org/eolang/maven/sodg-to/to-dot.xsl"
             ).back(),
-            MjSodg.class
+            Sodg.class
         ),
-        MjSodg.class,
-        MjSodg.loggingLevel()
+        Sodg.class,
+        Sodg.loggingLevel()
     );
 
     /**
@@ -212,13 +173,13 @@ public final class MjSodg extends AbstractMojo {
                         "graph-is-a-tree",
                         input -> {
                             final Set<String> seen = new HashSet<>();
-                            MjSodg.traverse(input, "ν0", seen);
+                            Sodg.traverse(input, "ν0", seen);
                             final List<String> ids = input.xpath("//v/@id");
                             if (ids.size() != seen.size()) {
                                 for (final String vid : ids) {
                                     if (!seen.contains(vid)) {
                                         Logger.error(
-                                            MjSodg.class,
+                                            Sodg.class,
                                             "Vertex is not in the tree: %s", vid
                                         );
                                     }
@@ -235,10 +196,10 @@ public final class MjSodg extends AbstractMojo {
                     )
                 )
             ),
-            MjSodg.class
+            Sodg.class
         ),
-        MjSodg.class,
-        MjSodg.loggingLevel()
+        Sodg.class,
+        Sodg.loggingLevel()
     );
 
     /**
@@ -259,7 +220,7 @@ public final class MjSodg extends AbstractMojo {
                                     final String loc = xml.xpath("@loc").get(0);
                                     return new Directives().attr(
                                         "lambda",
-                                        MjSodg.utfToHex(
+                                        Sodg.utfToHex(
                                             loc.substring(loc.indexOf('.') + 1)
                                         )
                                     );
@@ -296,7 +257,7 @@ public final class MjSodg extends AbstractMojo {
                             "name version",
                             String.format(
                                 "value %s",
-                                MjSodg.utfToHex(
+                                Sodg.utfToHex(
                                     Manifests.read("EO-Version")
                                 )
                             )
@@ -306,7 +267,7 @@ public final class MjSodg extends AbstractMojo {
                             "name time",
                             String.format(
                                 "value %s",
-                                MjSodg.utfToHex(
+                                Sodg.utfToHex(
                                     ZonedDateTime.now(ZoneOffset.UTC).format(
                                         DateTimeFormatter.ISO_INSTANT
                                     )
@@ -318,93 +279,13 @@ public final class MjSodg extends AbstractMojo {
                         "/org/eolang/maven/sodg/focus.xsl"
                     ).back()
                 ),
-                MjSodg.class
+                Sodg.class
             ),
             new StSchema("/org/eolang/maven/sodg/after.xsd")
         ),
-        MjSodg.class,
-        MjSodg.loggingLevel()
+        Sodg.class,
+        Sodg.loggingLevel()
     );
-
-    /**
-     * Shall we generate .xml files with SODGs?
-     * @checkstyle MemberNameCheck (7 lines)
-     */
-    @Parameter(
-        property = "eo.generateSodgXmlFiles",
-        defaultValue = "false"
-    )
-    @SuppressWarnings("PMD.LongVariable")
-    private boolean generateSodgXmlFiles;
-
-    /**
-     * Shall we generate .xe files with Xembly instructions graph?
-     * @checkstyle MemberNameCheck (7 lines)
-     */
-    @Parameter(
-        property = "eo.sodg.generateXemblyFiles",
-        defaultValue = "false"
-    )
-    @SuppressWarnings("PMD.LongVariable")
-    private boolean generateXemblyFiles;
-
-    /**
-     * Shall we generate .graph.xml files with XML graph?
-     * @checkstyle MemberNameCheck (7 lines)
-     */
-    @Parameter(
-        property = "eo.sodg.generateGraphFiles",
-        defaultValue = "false"
-    )
-    @SuppressWarnings("PMD.LongVariable")
-    private boolean generateGraphFiles;
-
-    /**
-     * Shall we generate .dot files with DOT language graph commands?
-     * @checkstyle MemberNameCheck (7 lines)
-     */
-    @Parameter(
-        property = "eo.generateDotFiles",
-        defaultValue = "false"
-    )
-    @SuppressWarnings("PMD.LongVariable")
-    private boolean generateDotFiles;
-
-    /**
-     * List of object names to participate in SODG generation.
-     * @implNote {@code property} attribute is omitted for collection
-     *  properties since there is no way of passing it via command line.
-     * @checkstyle MemberNameCheck (15 lines)
-     */
-    @Parameter
-    private Set<String> sodgIncludes = new SetOf<>("**");
-
-    /**
-     * List of object names which are excluded from SODG generation.
-     * @implNote {@code property} attribute is omitted for collection
-     *  properties since there is no way of passing it via command line.
-     * @checkstyle MemberNameCheck (15 lines)
-     */
-    @Parameter
-    private Set<String> sodgExcludes = new SetOf<>();
-
-    @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if (this.skip) {
-            if (Logger.isInfoEnabled(this)) {
-                Logger.info(
-                    this, "Execution skipped due to eo.skip option"
-                );
-            }
-        } else {
-            try {
-                this.exec();
-            } catch (final IOException exception) {
-                //todo
-                throw new RuntimeException(exception);
-            }
-        }
-    }
 
 
     public void exec() throws IOException {
@@ -419,14 +300,14 @@ public final class MjSodg extends AbstractMojo {
             );
         }
         final Collection<TjForeign> tojos = this.scopedTojos().withShaken();
-        final Path home = this.targetDir.toPath().resolve(MjSodg.DIR);
+        final Path home = this.targetDir.toPath().resolve(Sodg.DIR);
         int total = 0;
         int instructions = 0;
         final Set<Pattern> includes = this.sodgIncludes.stream()
-            .map(i -> Pattern.compile(MjSodg.createMatcher(i)))
+            .map(i -> Pattern.compile(createMatcher(i)))
             .collect(Collectors.toSet());
         final Set<Pattern> excludes = this.sodgExcludes.stream()
-            .map(i -> Pattern.compile(MjSodg.createMatcher(i)))
+            .map(i -> Pattern.compile(createMatcher(i)))
             .collect(Collectors.toSet());
         for (final TjForeign tojo : tojos) {
             final String name = tojo.identifier();
@@ -466,17 +347,6 @@ public final class MjSodg extends AbstractMojo {
     }
 
     /**
-     * Creates a regular expression out of sodgInclude string.
-     * @param pattern String from sodgIncludes
-     * @return Created regular expression
-     */
-    private static String createMatcher(final String pattern) {
-        return pattern
-            .replace("**", "[A-Za-z0-9.]+?")
-            .replace("*", "[A-Za-z0-9]+");
-    }
-
-    /**
      * Exclude this EO program from processing?
      * @param name The name
      * @param includes Patterns for sodgs to be included
@@ -513,8 +383,8 @@ public final class MjSodg extends AbstractMojo {
         if (Logger.isTraceEnabled(this)) {
             Logger.trace(this, "XML before translating to SODG:\n%s", before);
         }
-        final XML after = new Xsline(this.measured(MjSodg.TRAIN)).pass(before);
-        final String instructions = new Xsline(this.measured(MjSodg.TO_TEXT))
+        final XML after = new Xsline(this.measured(Sodg.TRAIN)).pass(before);
+        final String instructions = new Xsline(this.measured(Sodg.TO_TEXT))
             .pass(after)
             .xpath("/text/text()")
             .get(0);
@@ -527,7 +397,7 @@ public final class MjSodg extends AbstractMojo {
             new Saved(after.toString(), sibling).value();
         }
         if (this.generateXemblyFiles) {
-            final String xembly = new Xsline(this.measured(MjSodg.TO_XEMBLY))
+            final String xembly = new Xsline(this.measured(Sodg.TO_XEMBLY))
                 .pass(after)
                 .xpath("/xembly/text()").get(0);
             final Path sibling = sodg.resolveSibling(String.format("%s.xe", sodg.getFileName()));
@@ -552,7 +422,7 @@ public final class MjSodg extends AbstractMojo {
             );
             final ListOf<Directive> directives = new ListOf<>(all);
             final Directive comment = directives.remove(0);
-            final XML graph = new Xsline(this.measured(MjSodg.FINISH)).pass(
+            final XML graph = new Xsline(this.measured(Sodg.FINISH)).pass(
                 new XMLDocument(
                     new Xembler(
                         new Directives()
@@ -582,7 +452,7 @@ public final class MjSodg extends AbstractMojo {
      */
     private void makeDot(final XML graph, final Path sodg) throws IOException {
         if (this.generateDotFiles) {
-            final String dot = new Xsline(this.measured(MjSodg.TO_DOT))
+            final String dot = new Xsline(this.measured(Sodg.TO_DOT))
                 .pass(graph).xpath("//dot/text()").get(0);
             if (Logger.isTraceEnabled(this)) {
                 Logger.trace(this, "Dot:\n%s", dot);
@@ -640,7 +510,7 @@ public final class MjSodg extends AbstractMojo {
                 continue;
             }
             seen.add(kid);
-            MjSodg.traverse(graph, kid, seen);
+            Sodg.traverse(graph, kid, seen);
         }
     }
 
@@ -687,4 +557,17 @@ public final class MjSodg extends AbstractMojo {
     protected final TjsForeign scopedTojos() {
         return this.tojos;
     }
+
+    /**
+     * Creates a regular expression out of sodgInclude string.
+     * @param pattern String from sodgIncludes
+     * @return Created regular expression
+     */
+    private static String createMatcher(final String pattern) {
+        return pattern
+            .replace("**", "[A-Za-z0-9.]+?")
+            .replace("*", "[A-Za-z0-9]+");
+    }
+
+
 }

@@ -48,23 +48,23 @@ import org.junit.jupiter.params.ParameterizedTest;
 @ExtendWith(MktmpResolver.class)
 final class MjSodgTest {
 
-//    @Test
-//    @Disabled
-//    void convertsToGraph() throws Exception {
-//        final StringBuilder program = new StringBuilder(1000);
-//        for (int idx = 0; idx < 40; ++idx) {
-//            for (int spc = 0; spc < idx; ++spc) {
-//                program.append("  ");
-//            }
-//            program.append("[x y z] > foo\n");
-//        }
-//        final XML graph = MjSodgTest.toGraph(program.toString(), "**");
-//        MatcherAssert.assertThat(
-//            "Expected locator to exist in the generated graph",
-//            ".foo .foo",
-//            new MjSodgTest.ExistsIn(graph)
-//        );
-//    }
+    @Test
+    @Disabled
+    void convertsToGraph() throws Exception {
+        final StringBuilder program = new StringBuilder(1000);
+        for (int idx = 0; idx < 40; ++idx) {
+            for (int spc = 0; spc < idx; ++spc) {
+                program.append("  ");
+            }
+            program.append("[x y z] > foo\n");
+        }
+        final XML graph = MjSodgTest.toGraph(program.toString(), "**");
+        MatcherAssert.assertThat(
+            "Expected locator to exist in the generated graph",
+            ".foo .foo",
+            new MjSodgTest.ExistsIn(graph)
+        );
+    }
 
     @ParameterizedTest
     @ClasspathSource(value = "org/eolang/maven/sodg-packs", glob = "**.yaml")
@@ -76,39 +76,39 @@ final class MjSodgTest {
         );
     }
 
-//    @ParameterizedTest
-//    @ClasspathSource(value = "org/eolang/maven/sodgs/", glob = "**.yaml")
-//    @SuppressWarnings({
-//        "unchecked",
-//        "PMD.JUnitTestContainsTooManyAsserts",
-//        "PMD.ProhibitPlainJunitAssertionsRule"
-//    })
-//    void generatesSodgForPacks(final String pack) throws Exception {
-//        final Xtory xtory = new XtSticky(new XtYaml(pack));
-//        Assumptions.assumeTrue(xtory.map().get("skip") == null);
-//        Object inclusion = xtory.map().get("inclusion");
-//        if (inclusion == null) {
-//            inclusion = "**";
-//        } else {
-//            inclusion = inclusion.toString().substring(
-//                1, inclusion.toString().length() - 1
-//            );
-//        }
-//        final XML graph = MjSodgTest.toGraph(
-//            xtory.map().get("input").toString(), inclusion.toString()
-//        );
-//        final Collection<Executable> assertions = new LinkedList<>();
-//        for (final String loc : (Iterable<String>) xtory.map().get("locators")) {
-//            assertions.add(
-//                () -> MatcherAssert.assertThat(
-//                    "Expected locator to be present in the generated graph",
-//                    loc,
-//                    new MjSodgTest.ExistsIn(graph)
-//                )
-//            );
-//        }
-//        Assertions.assertAll(assertions);
-//    }
+    @ParameterizedTest
+    @ClasspathSource(value = "org/eolang/maven/sodgs/", glob = "**.yaml")
+    @SuppressWarnings({
+        "unchecked",
+        "PMD.JUnitTestContainsTooManyAsserts",
+        "PMD.ProhibitPlainJunitAssertionsRule"
+    })
+    void generatesSodgForPacks(final String pack) throws Exception {
+        final Xtory xtory = new XtSticky(new XtYaml(pack));
+        Assumptions.assumeTrue(xtory.map().get("skip") == null);
+        Object inclusion = xtory.map().get("inclusion");
+        if (inclusion == null) {
+            inclusion = "**";
+        } else {
+            inclusion = inclusion.toString().substring(
+                1, inclusion.toString().length() - 1
+            );
+        }
+        final XML graph = MjSodgTest.toGraph(
+            xtory.map().get("input").toString(), inclusion.toString()
+        );
+        final Collection<Executable> assertions = new LinkedList<>();
+        for (final String loc : (Iterable<String>) xtory.map().get("locators")) {
+            assertions.add(
+                () -> MatcherAssert.assertThat(
+                    "Expected locator to be present in the generated graph",
+                    loc,
+                    new MjSodgTest.ExistsIn(graph)
+                )
+            );
+        }
+        Assertions.assertAll(assertions);
+    }
 
     /**
      * Convert EO source to Graph.
@@ -118,23 +118,17 @@ final class MjSodgTest {
      * @return The graph
      * @throws IOException If fails
      */
-//    private static XML toGraph(final String code, final String inclusion) throws Exception {
+    private static XML toGraph(final String code, final String inclusion) throws Exception {
+        throw new UnsupportedOperationException("Not implemented yet");
 //        final Map<String, Path> res = new FakeMaven(Files.createTempDirectory("eo"))
 //            .with("sodgIncludes", new SetOf<>(inclusion))
 //            .withProgram(code)
 //            .execute(new FakeMaven.Sodg())
 //            .result();
-//        Logger.debug(
-//            MjSodgTest.class,
-//            "XML: %s",
-//            new TextOf(
-//                new InputOf(res.get(String.format("target/%s/foo/x/main.xmir", MjShake.DIR)))
-//            ).asString()
-//        );
 //        return new XMLDocument(
 //            res.get(String.format("target/%s/foo/x/main.sodg.graph.xml", MjSodg.DIR))
 //        );
-//    }
+    }
 
     /**
      * Matcher for a single locator against the graph.
