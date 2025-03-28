@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.sodg;
 
 import com.jcabi.manifests.Manifests;
@@ -33,6 +37,7 @@ final class TrSodg extends TrEnvelope {
 
     /**
      * Ctor.
+     * @param level Logging level.
      */
     TrSodg(final Level level) {
         super(

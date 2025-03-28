@@ -12,6 +12,11 @@ package org.eolang.sodg;
 final class AttributeNotFoundException extends RuntimeException {
 
     /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 0x2F3A4B5C6D7E8F9AL;
+
+    /**
      * Ctor.
      * @param attribute The attribute of Tojo.
      */

@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.sodg;
 
 import com.jcabi.log.Logger;
@@ -23,6 +27,7 @@ final class TrFinish extends TrEnvelope {
 
     /**
      * Ctor.
+     * @param level Logging level.
      */
     TrFinish(final Level level) {
         super(new TrLogged(

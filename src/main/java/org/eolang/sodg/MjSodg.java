@@ -1,7 +1,8 @@
-package org.eolang.sodg;/*
+/*
  * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
  * SPDX-License-Identifier: MIT
  */
+package org.eolang.sodg;
 
 import com.jcabi.log.Logger;
 import java.io.File;
@@ -30,8 +31,8 @@ import org.cactoos.set.SetOf;
  * <p>
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  *
- * @checkstyle ClassFanOutComplexityCheck (500 lines)
  * @since 0.27
+ * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @Mojo(
     name = "sodg",
@@ -39,23 +40,24 @@ import org.cactoos.set.SetOf;
     threadSafe = true,
     requiresDependencyResolution = ResolutionScope.COMPILE
 )
-@SuppressWarnings("PMD.ImmutableField")
+@SuppressWarnings({"PMD.ImmutableField", "PMD.AvoidProtectedFieldInFinalClass"})
 public final class MjSodg extends AbstractMojo {
 
     /**
      * Whether we should skip goal execution.
+     * @checkstyle VisibilityModifierCheck (10 lines)
      */
     @Parameter(property = "eo.sodg.skip", defaultValue = "false")
     @SuppressWarnings("PMD.ImmutableField")
-    private boolean skip;
+    protected boolean skip;
 
     /**
      * The path of the file where XSL measurements (time of execution
      * in milliseconds) will be stored.
      *
+     * @since 0.41.0
      * @checkstyle MemberNameCheck (10 lines)
      * @checkstyle VisibilityModifierCheck (10 lines)
-     * @since 0.41.0
      */
     @Parameter(
         property = "eo.sodg.xslMeasuresFile",
@@ -94,16 +96,6 @@ public final class MjSodg extends AbstractMojo {
     protected File foreign;
 
     /**
-     * Cached tojos.
-     *
-     * @checkstyle VisibilityModifierCheck (5 lines)
-     */
-    private final TjsForeign tojos = new TjsForeign(
-        () -> Catalogs.INSTANCE.make(this.foreign.toPath(), this.foreignFormat),
-        () -> this.scope
-    );
-
-    /**
      * Target directory.
      *
      * @checkstyle MemberNameCheck (10 lines)
@@ -115,6 +107,15 @@ public final class MjSodg extends AbstractMojo {
         defaultValue = "${project.build.directory}/eo"
     )
     protected File targetDir;
+
+    /**
+     * Cached tojos.
+     * @checkstyle VisibilityModifierCheck (5 lines)
+     */
+    private final TjsForeign tojos = new TjsForeign(
+        () -> Catalogs.INSTANCE.make(this.foreign.toPath(), this.foreignFormat),
+        () -> this.scope
+    );
 
     /**
      * Shall we generate .xml files with SODGs?
@@ -178,7 +179,7 @@ public final class MjSodg extends AbstractMojo {
      * List of object names which are excluded from SODG generation.
      *
      * @implNote {@code property} attribute is omitted for collection
-     *     properties since there is no way of passing it via command line.
+     *  properties since there is no way of passing it via command line.
      * @checkstyle MemberNameCheck (15 lines)
      */
     @Parameter

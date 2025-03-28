@@ -32,7 +32,14 @@ import org.xembly.Xembler;
  * The main class for SODG generation.
  *
  * @since 0.1
+ * @todo #1:90min Refactor {@link Sodg} class to make it more readable.
+ *  Currently we have a lot of code offences in this class.
+ *  For example, long variable names, compiste methods, many params in the constructor,
+ *  etc. We need to fix all of them. Don't forget to remove Checkstyle and PMD suppressions.
+ * @checkstyle ParameterNameCheck (500 lines)
+ * @checkstyle ParameterNumberCheck (500 lines)
  */
+@SuppressWarnings("PMD.LongVariable")
 final class Sodg {
 
     /**
@@ -84,16 +91,15 @@ final class Sodg {
      *
      * @checkstyle MemberNameCheck (7 lines)
      */
-    @SuppressWarnings("PMD.LongVariable")
     private final boolean generateSodgXmlFiles;
 
     /**
      * The path of the file where XSL measurements (time of execution
      * in milliseconds) will be stored.
      *
+     * @since 0.41.0
      * @checkstyle MemberNameCheck (10 lines)
      * @checkstyle VisibilityModifierCheck (10 lines)
-     * @since 0.41.0
      */
     private final File xslMeasures;
 
@@ -102,7 +108,6 @@ final class Sodg {
      *
      * @checkstyle MemberNameCheck (7 lines)
      */
-    @SuppressWarnings("PMD.LongVariable")
     private final boolean generateDotFiles;
 
     /**
@@ -172,7 +177,7 @@ final class Sodg {
      * @param xslMeasures The path of the file where XSL measurements
      * @param generateDotFiles Shall we generate .dot files with DOT language graph commands?
      * @param targetDir The target directory
-     * @param tojos The tojos
+     * @param foreign The tojos
      * @param sodgIncludes List of object names to participate in SODG generation
      * @param sodgExcludes List of object names which are excluded from SODG generation
      */
@@ -183,7 +188,7 @@ final class Sodg {
         final File xslMeasures,
         final boolean generateDotFiles,
         final File targetDir,
-        final TjsForeign tojos,
+        final TjsForeign foreign,
         final Set<String> sodgIncludes,
         final Set<String> sodgExcludes
     ) {
@@ -193,11 +198,15 @@ final class Sodg {
         this.xslMeasures = xslMeasures;
         this.generateDotFiles = generateDotFiles;
         this.targetDir = targetDir;
-        this.tojos = tojos;
+        this.tojos = foreign;
         this.sodgIncludes = sodgIncludes;
         this.sodgExcludes = sodgExcludes;
     }
 
+    /**
+     * Generate SODG files.
+     * @throws IOException If fails.
+     */
     void exec() throws IOException {
         if (this.generateGraphFiles && !this.generateXemblyFiles) {
             throw new IllegalStateException(
@@ -209,7 +218,7 @@ final class Sodg {
                 "Setting generateDotFiles and not setting generateGraphFiles has no effect because .dot files require .graph files"
             );
         }
-        final Collection<TjForeign> tojos = this.scopedTojos().withShaken();
+        final Collection<TjForeign> scoped = this.scopedTojos().withShaken();
         final Path home = this.targetDir.toPath().resolve(Sodg.DIR);
         int total = 0;
         int instructions = 0;
@@ -219,7 +228,7 @@ final class Sodg {
         final Set<Pattern> excludes = this.sodgExcludes.stream()
             .map(i -> Pattern.compile(Sodg.createMatcher(i)))
             .collect(Collectors.toSet());
-        for (final TjForeign tojo : tojos) {
+        for (final TjForeign tojo : scoped) {
             final String name = tojo.identifier();
             if (this.exclude(name, includes, excludes)) {
                 continue;
@@ -243,7 +252,7 @@ final class Sodg {
             ++total;
         }
         if (total == 0) {
-            if (tojos.isEmpty()) {
+            if (scoped.isEmpty()) {
                 Logger.info(this, "No .xmir need to be converted to SODGs");
             } else {
                 Logger.info(this, "No .xmir converted to SODGs");

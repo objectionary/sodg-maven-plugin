@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.sodg;
 
 import com.yegor256.xsline.TrClasspath;
@@ -15,6 +19,7 @@ final class TrDot extends TrEnvelope {
 
     /**
      * Ctor.
+     * @param level Logging level.
      */
     TrDot(final Level level) {
         super(

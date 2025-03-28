@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.sodg;
 
 import com.jcabi.xml.XML;
@@ -26,13 +30,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 /**
  * Test case for {@link MjSodg}.
  *
+ * @since 0.1
  * @todo #1:30min Enable the Sodg packs. The next Sodg packs were disabled when we got rid of
  *  "abstract" attribute in XMIR: copy-of-abstract, copy-of-argument, dot-on-ref, nested-anonymous,
  *  rho, vars. We need to enable them and make sure they pass.
  * @todo #1:30min Enable the test {@link MjSodgTest#transformsThroughSheets}. The test was
  *  disabled when we got rid of "abstract" attribute in XMIR. We need to enable the test and make
  *  sure it works correctly.
- * @since 0.1
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @ExtendWith(MktmpResolver.class)
@@ -112,6 +116,7 @@ final class MjSodgTest {
      *  {@link MjSodgTest#convertsToGraph} and {@link MjSodgTest#generatesSodgForPacks}.
      *  The method should convert the EO source code to a graph in XML format.
      */
+    @SuppressWarnings("PMD.UnusedFormalParameter")
     private static XML toGraph(final String code, final String inclusion) {
         throw new UnsupportedOperationException("Not implemented yet");
     }

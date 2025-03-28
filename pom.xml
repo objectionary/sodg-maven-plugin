@@ -139,6 +139,29 @@
       <version>0.18.5</version>
     </dependency>
     <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-xml</artifactId>
+      <version>0.33.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-log</artifactId>
+      <version>0.24.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-manifests</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <!-- The artifact xml-apis:xml-apis:jar:2.0.2
+        has been relocated to xml-apis:xml-apis:jar:1.0.b2.
+        The most recent version in 1.4.01 -->
+      <version>2.0.2</version>
+    </dependency>
+    <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>farea</artifactId>
       <version>0.15.3</version>
@@ -245,40 +268,6 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.gmaven</groupId>
-            <artifactId>groovy-maven-plugin</artifactId>
-            <version>2.1.1</version>
-            <executions>
-              <execution>
-                <id>project-validate</id>
-                <phase>validate</phase>
-                <goals>
-                  <goal>execute</goal>
-                </goals>
-                <configuration>
-                  <source>${project.basedir}/src/test/groovy/verify.groovy</source>
-                </configuration>
-              </execution>
-            </executions>
-            <dependencies>
-              <dependency>
-                <groupId>com.jcabi</groupId>
-                <artifactId>jcabi-xml</artifactId>
-                <version>0.33.5</version>
-              </dependency>
-              <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-xml</artifactId>
-                <version>3.0.24</version>
-              </dependency>
-              <dependency>
-                <groupId>net.sf.saxon</groupId>
-                <artifactId>Saxon-HE</artifactId>
-                <version>12.5</version>
-              </dependency>
-            </dependencies>
           </plugin>
         </plugins>
       </build>
