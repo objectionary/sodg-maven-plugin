@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: codecov
+'on':
+  push:
+    branches:
+      - master
+concurrency:
+  group: codecov-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  codecov:
+    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: teatimeguest/setup-texlive-action@v3.4.1
+        with:
+          update-all-packages: true
+          packages: scheme-basic geometry xcolor naive-ebnf microtype etoolbox
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 20
+      - uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            maven-
+      - run: mvn install -Pjacoco
+      - uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./target/site/jacoco/jacoco.xml
+          fail_ci_if_error: true
+        if: github.ref == 'refs/heads/master'

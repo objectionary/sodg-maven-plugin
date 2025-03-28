@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: up
+'on':
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+concurrency:
+  group: up-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  up:
+    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |-
+          git fetch --tags --force && \
+          latest=$(git tag --sort=creatordate | tail -1) && \
+          export latest && \
+          sed -E -i "s/<version>[^<]+/<version>${latest}/g" eo-maven-plugin/README.md
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: version-up
+          commit-message: 'new version ${{ env.version }} in README'
+          delete-branch: true
+          title: 'New version ${{ env.version }} in README'
+          assignees: yegor256
+          base: master
