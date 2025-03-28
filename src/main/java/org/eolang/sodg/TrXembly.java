@@ -6,6 +6,11 @@ import com.yegor256.xsline.TrDefault;
 import com.yegor256.xsline.TrEnvelope;
 import com.yegor256.xsline.TrFast;
 
+/**
+ * Convert to Xembly.
+ *
+ * @since 0.1
+ */
 final class TrXembly extends TrEnvelope {
 
     /**

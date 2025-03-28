@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 /**
  * Make the place for the object.
- *
+ * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  * @since 0.1
  */
 final class Place {

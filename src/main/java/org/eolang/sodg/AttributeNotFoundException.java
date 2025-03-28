@@ -6,6 +6,7 @@ package org.eolang.sodg;
 
 /**
  * If the attributes were not found in the Tojo.
+ * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  * @since 0.35.0
  */
 final class AttributeNotFoundException extends RuntimeException {

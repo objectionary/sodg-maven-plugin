@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
+/**
+ * Graph modification right after it's generated from Xembly.
+ *
+ * @since 0.1
+ */
 final class TrFinish extends TrEnvelope {
 
     /**

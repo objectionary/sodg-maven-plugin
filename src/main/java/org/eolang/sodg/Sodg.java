@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.sodg;
 
 import com.jcabi.log.Logger;
@@ -24,6 +28,11 @@ import org.xembly.Directive;
 import org.xembly.Directives;
 import org.xembly.Xembler;
 
+/**
+ * The main class for SODG generation.
+ *
+ * @since 0.1
+ */
 final class Sodg {
 
     /**
@@ -129,6 +138,13 @@ final class Sodg {
      */
     private final Set<String> sodgExcludes;
 
+    /**
+     * Constructor.
+     *
+     * @param xslMeasures The path of the file where XSL measurements
+     * @param targetDir The target directory
+     * @param tojos The tojos
+     */
     Sodg(
         final File xslMeasures,
         final File targetDir,
@@ -147,7 +163,19 @@ final class Sodg {
         );
     }
 
-
+    /**
+     * Constructor.
+     *
+     * @param generateGraphFiles Shall we generate .graph.xml files with XML graph?
+     * @param generateXemblyFiles Shall we generate .xe files with Xembly instructions graph?
+     * @param generateSodgXmlFiles Shall we generate .xml files with SODGs?
+     * @param xslMeasures The path of the file where XSL measurements
+     * @param generateDotFiles Shall we generate .dot files with DOT language graph commands?
+     * @param targetDir The target directory
+     * @param tojos The tojos
+     * @param sodgIncludes List of object names to participate in SODG generation
+     * @param sodgExcludes List of object names which are excluded from SODG generation
+     */
     Sodg(
         final boolean generateGraphFiles,
         final boolean generateXemblyFiles,
@@ -186,10 +214,10 @@ final class Sodg {
         int total = 0;
         int instructions = 0;
         final Set<Pattern> includes = this.sodgIncludes.stream()
-            .map(i -> Pattern.compile(createMatcher(i)))
+            .map(i -> Pattern.compile(Sodg.createMatcher(i)))
             .collect(Collectors.toSet());
         final Set<Pattern> excludes = this.sodgExcludes.stream()
-            .map(i -> Pattern.compile(createMatcher(i)))
+            .map(i -> Pattern.compile(Sodg.createMatcher(i)))
             .collect(Collectors.toSet());
         for (final TjForeign tojo : tojos) {
             final String name = tojo.identifier();
@@ -423,6 +451,4 @@ final class Sodg {
             .replace("**", "[A-Za-z0-9.]+?")
             .replace("*", "[A-Za-z0-9]+");
     }
-
-
 }

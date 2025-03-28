@@ -13,7 +13,7 @@ import java.nio.file.StandardOpenOption;
 
 /**
  * Shift that measures and saves stats into a file.
- *
+ * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  * @since 0.30
  */
 final class StMeasured implements Shift {

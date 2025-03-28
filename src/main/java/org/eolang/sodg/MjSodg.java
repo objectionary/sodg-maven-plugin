@@ -27,6 +27,8 @@ import org.cactoos.set.SetOf;
  * a program using graph traversing algorithm. An example of such an executor
  * of a graph can be found in
  * <a href="https://github.com/objectionary/reo">this repository</a>.
+ * <p>
+ * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  *
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  * @since 0.27

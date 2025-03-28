@@ -4,7 +4,6 @@
  */
 package org.eolang.sodg;
 
-import com.jcabi.log.Logger;
 import com.yegor256.tojos.Tojo;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +11,7 @@ import java.util.Objects;
 
 /**
  * Foreign tojo.
- *
+ * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  * @since 0.30
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
@@ -80,7 +79,6 @@ final class TjForeign {
         this.delegate.set(TjsForeign.Attribute.SODG.getKey(), sodg.toString());
         return this;
     }
-
 
     /**
      * Return the attribute from the tojo.

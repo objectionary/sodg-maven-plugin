@@ -18,7 +18,7 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * Foreign tojos.
- *
+ * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  * @since 0.30
  */
 @SuppressWarnings("PMD.TooManyMethods")
@@ -106,7 +106,6 @@ final class TjsForeign implements Closeable {
          * The scope of compilation, either {@code compile} or {@code test}.
          */
         SCOPE("scope");
-
 
         /**
          * Attribute name.

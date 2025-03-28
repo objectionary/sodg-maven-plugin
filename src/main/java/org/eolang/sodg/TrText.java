@@ -4,6 +4,10 @@ import com.yegor256.xsline.TrClasspath;
 import com.yegor256.xsline.TrEnvelope;
 import com.yegor256.xsline.TrFast;
 
+/**
+ * Convert to text.
+ * @since 0.1
+ */
 final class TrText extends TrEnvelope {
 
     /**

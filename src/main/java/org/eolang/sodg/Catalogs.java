@@ -21,7 +21,7 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * All catalogs in one place, to avoid making multiple objects.
- *
+ * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  * @since 0.29
  */
 final class Catalogs {

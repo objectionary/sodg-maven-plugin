@@ -6,6 +6,11 @@ import com.yegor256.xsline.TrFast;
 import com.yegor256.xsline.TrLogged;
 import java.util.logging.Level;
 
+/**
+ * Convert to DOT.
+ *
+ * @since 0.1
+ */
 final class TrDot extends TrEnvelope {
 
     /**

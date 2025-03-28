@@ -24,6 +24,11 @@ import java.util.logging.Level;
 import org.eolang.parser.StXPath;
 import org.xembly.Directives;
 
+/**
+ * Main transformer for SODG.
+ *
+ * @since 0.1
+ */
 final class TrSodg extends TrEnvelope {
 
     /**
