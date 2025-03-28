@@ -1,39 +1,18 @@
 package org.eolang.sodg;
 
 import com.jcabi.log.Logger;
-import com.jcabi.manifests.Manifests;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.yegor256.xsline.Shift;
-import com.yegor256.xsline.StBefore;
-import com.yegor256.xsline.StClasspath;
-import com.yegor256.xsline.StEndless;
-import com.yegor256.xsline.StLambda;
-import com.yegor256.xsline.StSchema;
-import com.yegor256.xsline.TrClasspath;
-import com.yegor256.xsline.TrDefault;
-import com.yegor256.xsline.TrFast;
-import com.yegor256.xsline.TrJoined;
 import com.yegor256.xsline.TrLambda;
-import com.yegor256.xsline.TrLogged;
-import com.yegor256.xsline.TrMapped;
-import com.yegor256.xsline.TrWith;
 import com.yegor256.xsline.Train;
 import com.yegor256.xsline.Xsline;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.StringJoiner;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,254 +20,157 @@ import org.cactoos.list.ListOf;
 import org.cactoos.scalar.IoChecked;
 import org.cactoos.scalar.LengthOf;
 import org.cactoos.set.SetOf;
-import org.eolang.parser.StXPath;
 import org.xembly.Directive;
 import org.xembly.Directives;
 import org.xembly.Xembler;
 
-public final class Sodg {
+final class Sodg {
 
     /**
-     * Shall we generate .graph.xml files with XML graph?
-     * @checkstyle MemberNameCheck (7 lines)
+     * SODG to plain text.
      */
-    private final boolean generateGraphFiles = false;
+    private static final Train<Shift> TO_TEXT = new TrText();
 
     /**
-     * Shall we generate .xe files with Xembly instructions graph?
-     * @checkstyle MemberNameCheck (7 lines)
+     * SODG to Xembly.
      */
-    private final boolean generateXemblyFiles = false;
+    private static final Train<Shift> TO_XEMBLY = new TrXembly();
 
     /**
-     * Shall we generate .xml files with SODGs?
-     * @checkstyle MemberNameCheck (7 lines)
+     * SODG to Dot.
      */
-    @SuppressWarnings("PMD.LongVariable")
-    private final boolean generateSodgXmlFiles = false;
+    private static final Train<Shift> TO_DOT = new TrDot(Sodg.loggingLevel());
 
     /**
-     * The path of the file where XSL measurements (time of execution
-     * in milliseconds) will be stored.
-     * @since 0.41.0
-     * @checkstyle MemberNameCheck (10 lines)
-     * @checkstyle VisibilityModifierCheck (10 lines)
+     * Graph modification right after it's generated from Xembly.
      */
-    protected File xslMeasures;
+    private static final Train<Shift> FINISH = new TrFinish(Sodg.loggingLevel());
 
     /**
-     * Shall we generate .dot files with DOT language graph commands?
-     * @checkstyle MemberNameCheck (7 lines)
+     * The train that generates SODG.
      */
-    @SuppressWarnings("PMD.LongVariable")
-    private final boolean generateDotFiles = false;
-
-    /**
-     * Target directory.
-     * @checkstyle MemberNameCheck (10 lines)
-     * @checkstyle VisibilityModifierCheck (10 lines)
-     */
-    private final File targetDir = null;
-
-    /**
-     * List of object names to participate in SODG generation.
-     * @implNote {@code property} attribute is omitted for collection
-     *  properties since there is no way of passing it via command line.
-     * @checkstyle MemberNameCheck (15 lines)
-     */
-    private final Set<String> sodgIncludes = new SetOf<>("**");
-
-
-    /**
-     * List of object names which are excluded from SODG generation.
-     * @implNote {@code property} attribute is omitted for collection
-     *  properties since there is no way of passing it via command line.
-     * @checkstyle MemberNameCheck (15 lines)
-     */
-    private final Set<String> sodgExcludes = new SetOf<>();
+    private static final Train<Shift> TRAIN = new TrSodg(Sodg.loggingLevel());
 
     /**
      * The directory where to save SODG to.
      */
     private static final String DIR = "sodg";
 
-    private final TjsForeign tojos = null;
-
+    /**
+     * Shall we generate .graph.xml files with XML graph?
+     *
+     * @checkstyle MemberNameCheck (7 lines)
+     */
+    private final boolean generateGraphFiles;
 
     /**
-     * SODG to plain text.
+     * Shall we generate .xe files with Xembly instructions graph?
+     *
+     * @checkstyle MemberNameCheck (7 lines)
      */
-    private static final Train<Shift> TO_TEXT = new TrFast(
-        new TrClasspath<>(
-            "/org/eolang/maven/sodg-to/normalize-names.xsl",
-            "/org/eolang/maven/sodg-to/to-text.xsl"
-        ).back(),
-        Sodg.class
-    );
+    private final boolean generateXemblyFiles;
 
     /**
-     * SODG to Xembly.
+     * Shall we generate .xml files with SODGs?
+     *
+     * @checkstyle MemberNameCheck (7 lines)
      */
-    private static final Train<Shift> TO_XEMBLY = new TrFast(
-        new TrDefault<Shift>().with(
-            new StClasspath(
-                "/org/eolang/maven/sodg-to/to-xembly.xsl",
-                "testing no"
-            )
-        ),
-        Sodg.class
-    );
+    @SuppressWarnings("PMD.LongVariable")
+    private final boolean generateSodgXmlFiles;
 
     /**
-     * SODG to Dot.
+     * The path of the file where XSL measurements (time of execution
+     * in milliseconds) will be stored.
+     *
+     * @checkstyle MemberNameCheck (10 lines)
+     * @checkstyle VisibilityModifierCheck (10 lines)
+     * @since 0.41.0
      */
-    private static final Train<Shift> TO_DOT = new TrLogged(
-        new TrFast(
-            new TrClasspath<>(
-                "/org/eolang/maven/sodg-to/normalize-attrs.xsl",
-                "/org/eolang/maven/sodg-to/to-dot.xsl"
-            ).back(),
-            Sodg.class
-        ),
-        Sodg.class,
-        Sodg.loggingLevel()
-    );
+    private final File xslMeasures;
 
     /**
-     * Graph modification right after it's generated from Xembly.
+     * Shall we generate .dot files with DOT language graph commands?
+     *
+     * @checkstyle MemberNameCheck (7 lines)
      */
-    private static final Train<Shift> FINISH = new TrLogged(
-        new TrFast(
-            new TrJoined<>(
-                new TrClasspath<>(
-                    "/org/eolang/maven/sodg-to/catch-lost-edges.xsl",
-                    "/org/eolang/maven/sodg-to/catch-duplicate-vertices.xsl",
-                    "/org/eolang/maven/sodg-to/catch-duplicate-edges.xsl",
-                    "/org/eolang/maven/sodg-to/catch-singleton-greeks.xsl",
-                    "/org/eolang/maven/sodg-to/catch-conflicting-greeks.xsl",
-                    "/org/eolang/maven/sodg-to/catch-empty-edges.xsl"
-                ).back(),
-                new TrDefault<>(
-                    new StLambda(
-                        "graph-is-a-tree",
-                        input -> {
-                            final Set<String> seen = new HashSet<>();
-                            Sodg.traverse(input, "ν0", seen);
-                            final List<String> ids = input.xpath("//v/@id");
-                            if (ids.size() != seen.size()) {
-                                for (final String vid : ids) {
-                                    if (!seen.contains(vid)) {
-                                        Logger.error(
-                                            Sodg.class,
-                                            "Vertex is not in the tree: %s", vid
-                                        );
-                                    }
-                                }
-                                throw new IllegalStateException(
-                                    String.format(
-                                        "Not all vertices are in the tree, only %d out of %d, see log above",
-                                        seen.size(), ids.size()
-                                    )
-                                );
-                            }
-                            return input;
-                        }
-                    )
-                )
-            ),
-            Sodg.class
-        ),
-        Sodg.class,
-        Sodg.loggingLevel()
-    );
+    @SuppressWarnings("PMD.LongVariable")
+    private final boolean generateDotFiles;
 
     /**
-     * The train that generates SODG.
+     * Target directory.
+     *
+     * @checkstyle MemberNameCheck (10 lines)
+     * @checkstyle VisibilityModifierCheck (10 lines)
      */
-    private static final Train<Shift> TRAIN = new TrLogged(
-        new TrWith(
-            new TrFast(
-                new TrJoined<>(
-                    new TrClasspath<>(
-                        "/org/eolang/maven/sodg/pre-clean.xsl"
-                    ).back(),
-                    new TrDefault<>(
-                        new StEndless(
-                            new StXPath(
-                                "(//o[@name and @atom and not(@base) and @loc and not(@lambda)])[1]",
-                                xml -> {
-                                    final String loc = xml.xpath("@loc").get(0);
-                                    return new Directives().attr(
-                                        "lambda",
-                                        Sodg.utfToHex(
-                                            loc.substring(loc.indexOf('.') + 1)
-                                        )
-                                    );
-                                }
-                            )
-                        )
-                    ),
-                    new TrMapped<>(
-                        (Function<String, Shift>) path -> new StBefore(
-                            new StClasspath(path),
-                            new StClasspath(
-                                "/org/eolang/maven/sodg/before-each.xsl",
-                                String.format("sheet %s", path)
-                            )
-                        ),
-                        "/org/eolang/maven/sodg/add-sodg-root.xsl",
-                        "/org/eolang/maven/sodg/add-loc-to-objects.xsl",
-                        "/org/eolang/maven/sodg/add-root.xsl",
-                        "/org/eolang/maven/sodg/append-xi.xsl",
-                        "/org/eolang/maven/sodg/unroll-refs.xsl",
-                        "/org/eolang/maven/sodg/remove-leveled.xsl",
-                        "/org/eolang/maven/sodg/touch-all.xsl",
-                        "/org/eolang/maven/sodg/bind-sigma.xsl",
-                        "/org/eolang/maven/sodg/bind-rho.xsl",
-                        "/org/eolang/maven/sodg/pi-copies.xsl",
-                        "/org/eolang/maven/sodg/epsilon-bindings.xsl",
-                        "/org/eolang/maven/sodg/connect-dots.xsl",
-                        "/org/eolang/maven/sodg/put-data.xsl",
-                        "/org/eolang/maven/sodg/put-atoms.xsl"
-                    ).back(),
-                    new TrDefault<>(
-                        new StClasspath(
-                            "/org/eolang/maven/sodg/add-meta.xsl",
-                            "name version",
-                            String.format(
-                                "value %s",
-                                Sodg.utfToHex(
-                                    Manifests.read("EO-Version")
-                                )
-                            )
-                        ),
-                        new StClasspath(
-                            "/org/eolang/maven/sodg/add-meta.xsl",
-                            "name time",
-                            String.format(
-                                "value %s",
-                                Sodg.utfToHex(
-                                    ZonedDateTime.now(ZoneOffset.UTC).format(
-                                        DateTimeFormatter.ISO_INSTANT
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new TrClasspath<>(
-                        "/org/eolang/maven/sodg/focus.xsl"
-                    ).back()
-                ),
-                Sodg.class
-            ),
-            new StSchema("/org/eolang/maven/sodg/after.xsd")
-        ),
-        Sodg.class,
-        Sodg.loggingLevel()
-    );
+    private final File targetDir;
+
+    /**
+     * Cached tojos.
+     *
+     * @checkstyle VisibilityModifierCheck (5 lines)
+     */
+    private final TjsForeign tojos;
+
+    /**
+     * List of object names to participate in SODG generation.
+     *
+     * @implNote {@code property} attribute is omitted for collection
+     *     properties since there is no way of passing it via command line.
+     * @checkstyle MemberNameCheck (15 lines)
+     */
+    private final Set<String> sodgIncludes;
+
+    /**
+     * List of object names which are excluded from SODG generation.
+     *
+     * @implNote {@code property} attribute is omitted for collection
+     *     properties since there is no way of passing it via command line.
+     * @checkstyle MemberNameCheck (15 lines)
+     */
+    private final Set<String> sodgExcludes;
+
+    Sodg(
+        final File xslMeasures,
+        final File targetDir,
+        final TjsForeign tojos
+    ) {
+        this(
+            false,
+            false,
+            false,
+            xslMeasures,
+            false,
+            targetDir,
+            tojos,
+            new SetOf<>("**"),
+            new SetOf<>()
+        );
+    }
 
 
-    public void exec() throws IOException {
+    Sodg(
+        final boolean generateGraphFiles,
+        final boolean generateXemblyFiles,
+        final boolean generateSodgXmlFiles,
+        final File xslMeasures,
+        final boolean generateDotFiles,
+        final File targetDir,
+        final TjsForeign tojos,
+        final Set<String> sodgIncludes,
+        final Set<String> sodgExcludes
+    ) {
+        this.generateGraphFiles = generateGraphFiles;
+        this.generateXemblyFiles = generateXemblyFiles;
+        this.generateSodgXmlFiles = generateSodgXmlFiles;
+        this.xslMeasures = xslMeasures;
+        this.generateDotFiles = generateDotFiles;
+        this.targetDir = targetDir;
+        this.tojos = tojos;
+        this.sodgIncludes = sodgIncludes;
+        this.sodgExcludes = sodgExcludes;
+    }
+
+    void exec() throws IOException {
         if (this.generateGraphFiles && !this.generateXemblyFiles) {
             throw new IllegalStateException(
                 "Setting generateGraphFiles and not setting generateXemblyFiles has no effect because .graph files require .xe files"
@@ -348,6 +230,7 @@ public final class Sodg {
 
     /**
      * Exclude this EO program from processing?
+     *
      * @param name The name
      * @param includes Patterns for sodgs to be included
      * @param excludes Patterns for sodgs to be excluded
@@ -409,6 +292,7 @@ public final class Sodg {
 
     /**
      * Make graph.
+     *
      * @param xembly The Xembly script
      * @param sodg The path of SODG file
      * @throws IOException If fails
@@ -446,6 +330,7 @@ public final class Sodg {
 
     /**
      * Make graph.
+     *
      * @param graph The graph in XML
      * @param sodg The path of SODG file
      * @throws IOException If fails
@@ -466,21 +351,8 @@ public final class Sodg {
     }
 
     /**
-     * UTF-8 string to HEX.
-     * @param txt The string
-     * @return Hexadecimal value as string.
-     */
-    private static String utfToHex(final String txt) {
-        final StringJoiner out = new StringJoiner("-");
-        for (final byte bty : txt.getBytes(StandardCharsets.UTF_8)) {
-            out.add(String.format("%02X", bty));
-        }
-        return out.toString();
-    }
-
-    /**
      * We are in IntelliJ IDEA at the moment?
-     *
+     * <p>
      * This is for testing purposes, to enable higher visibility of logs inside
      * tests being executed interactively in the IDE.
      *
@@ -495,31 +367,12 @@ public final class Sodg {
     }
 
     /**
-     * Go through the graph recursively and visit all vertices.
-     * @param graph The XML graph
-     * @param root The vertex to start from
-     * @param seen List of <code>@id</code> attributes already seen
-     */
-    private static void traverse(
-        final XML graph, final String root,
-        final Set<String> seen
-    ) {
-        for (final XML edge : graph.nodes(String.format("//v[@id='%s']/e", root))) {
-            final String kid = edge.xpath("@to").get(0);
-            if (seen.contains(kid)) {
-                continue;
-            }
-            seen.add(kid);
-            Sodg.traverse(graph, kid, seen);
-        }
-    }
-
-    /**
      * Make a measured train from another train.
+     *
      * @param train The train
      * @return Measured train
      */
-    protected final Train<Shift> measured(final Train<Shift> train) {
+    private Train<Shift> measured(final Train<Shift> train) {
         if (this.xslMeasures.getParentFile().mkdirs()) {
             Logger.debug(this, "Directory created for %[file]s", this.xslMeasures);
         }
@@ -551,15 +404,17 @@ public final class Sodg {
 
     /**
      * Tojos to use, in my scope only.
+     *
      * @return Tojos to use
      * @checkstyle AnonInnerLengthCheck (100 lines)
      */
-    protected final TjsForeign scopedTojos() {
+    private TjsForeign scopedTojos() {
         return this.tojos;
     }
 
     /**
      * Creates a regular expression out of sodgInclude string.
+     *
      * @param pattern String from sodgIncludes
      * @return Created regular expression
      */

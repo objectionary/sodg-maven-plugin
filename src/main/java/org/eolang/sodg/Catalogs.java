@@ -66,17 +66,6 @@ final class Catalogs {
     /**
      * Make it.
      * @param file The file
-     * @return The Tojos
-     */
-    Tojos make(final Path file) {
-        return this.all.computeIfAbsent(
-            file.toAbsolutePath(), f -> Catalogs.build(f, "csv")
-        );
-    }
-
-    /**
-     * Make it.
-     * @param file The file
      * @param fmt The format
      * @return The Tojos
      */
