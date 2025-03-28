@@ -40,7 +40,7 @@ final class MjSodgTest {
 
     @Test
     @Disabled
-    void convertsToGraph() throws Exception {
+    void convertsToGraph() {
         final StringBuilder program = new StringBuilder(1000);
         for (int idx = 0; idx < 40; ++idx) {
             for (int spc = 0; spc < idx; ++spc) {
