@@ -1,21 +1,12 @@
 package org.eolang.sodg;
 
-import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
-import com.jcabi.xml.XMLDocument;
 import com.yegor256.MktmpResolver;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.StringJoiner;
-import org.cactoos.io.InputOf;
-import org.cactoos.set.SetOf;
-import org.cactoos.text.TextOf;
 import org.eolang.jucs.ClasspathSource;
 import org.eolang.xax.XtSticky;
 import org.eolang.xax.XtYaml;
@@ -25,7 +16,6 @@ import org.hamcrest.Description;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -36,13 +26,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 /**
  * Test case for {@link MjSodg}.
  *
- * @since 0.1
  * @todo #1:30min Enable the Sodg packs. The next Sodg packs were disabled when we got rid of
  *  "abstract" attribute in XMIR: copy-of-abstract, copy-of-argument, dot-on-ref, nested-anonymous,
  *  rho, vars. We need to enable them and make sure they pass.
  * @todo #1:30min Enable the test {@link MjSodgTest#transformsThroughSheets}. The test was
  *  disabled when we got rid of "abstract" attribute in XMIR. We need to enable the test and make
  *  sure it works correctly.
+ * @since 0.1
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @ExtendWith(MktmpResolver.class)
@@ -83,7 +73,8 @@ final class MjSodgTest {
         "PMD.JUnitTestContainsTooManyAsserts",
         "PMD.ProhibitPlainJunitAssertionsRule"
     })
-    void generatesSodgForPacks(final String pack) throws Exception {
+    @Disabled
+    void generatesSodgForPacks(final String pack) {
         final Xtory xtory = new XtSticky(new XtYaml(pack));
         Assumptions.assumeTrue(xtory.map().get("skip") == null);
         Object inclusion = xtory.map().get("inclusion");
@@ -116,18 +107,13 @@ final class MjSodgTest {
      * @param code Code in EO
      * @param inclusion Value of sodgIncludes property
      * @return The graph
-     * @throws IOException If fails
+     * @todo #1:30min Implement `toGraph` method.
+     *  The method is not implemented yet. When it's ready, enable the test
+     *  {@link MjSodgTest#convertsToGraph} and {@link MjSodgTest#generatesSodgForPacks}.
+     *  The method should convert the EO source code to a graph in XML format.
      */
-    private static XML toGraph(final String code, final String inclusion) throws Exception {
+    private static XML toGraph(final String code, final String inclusion) {
         throw new UnsupportedOperationException("Not implemented yet");
-//        final Map<String, Path> res = new FakeMaven(Files.createTempDirectory("eo"))
-//            .with("sodgIncludes", new SetOf<>(inclusion))
-//            .withProgram(code)
-//            .execute(new FakeMaven.Sodg())
-//            .result();
-//        return new XMLDocument(
-//            res.get(String.format("target/%s/foo/x/main.sodg.graph.xml", MjSodg.DIR))
-//        );
     }
 
     /**
@@ -148,10 +134,10 @@ final class MjSodgTest {
 
         /**
          * Ctor.
+         *
          * @param xml The graph
          */
         ExistsIn(final XML xml) {
-            super();
             this.graph = xml;
         }
 
@@ -176,6 +162,7 @@ final class MjSodgTest {
 
         /**
          * Check and throw if fails.
+         *
          * @param item The path to check
          * @checkstyle CyclomaticComplexityCheck (10 lines)
          * @checkstyle NPathComplexityCheck (10 lines)
@@ -318,6 +305,7 @@ final class MjSodgTest {
 
         /**
          * Bytes to HEX.
+         *
          * @param bytes Bytes.
          * @return Hexadecimal value as string.
          */
