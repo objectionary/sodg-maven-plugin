@@ -29,7 +29,7 @@ final class TrXembly extends TrEnvelope {
                         "testing no"
                     )
                 ),
-                Sodg.class
+                SodgFiles.class
             )
         );
     }

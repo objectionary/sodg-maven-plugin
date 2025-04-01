@@ -195,7 +195,7 @@ public final class MjSodg extends AbstractMojo {
             }
         } else {
             try {
-                new Sodg(
+                new SodgFiles(
                     this.generateGraphFiles,
                     this.generateXemblyFiles,
                     this.generateSodgXmlFiles,
@@ -205,7 +205,7 @@ public final class MjSodg extends AbstractMojo {
                     this.tojos,
                     this.sodgIncludes,
                     this.sodgExcludes
-                ).exec();
+                ).generate();
             } catch (final IOException exception) {
                 throw new MojoFailureException("Can't convert XMIR to SODG", exception);
             }

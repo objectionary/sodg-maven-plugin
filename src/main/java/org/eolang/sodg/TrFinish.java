@@ -52,7 +52,7 @@ final class TrFinish extends TrEnvelope {
                                     for (final String vid : ids) {
                                         if (!seen.contains(vid)) {
                                             Logger.error(
-                                                Sodg.class,
+                                                SodgFiles.class,
                                                 "Vertex is not in the tree: %s", vid
                                             );
                                         }
@@ -69,9 +69,9 @@ final class TrFinish extends TrEnvelope {
                         )
                     )
                 ),
-                Sodg.class
+                SodgFiles.class
             ),
-            Sodg.class,
+            SodgFiles.class,
             level
         ));
     }
