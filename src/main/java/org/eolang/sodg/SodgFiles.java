@@ -218,7 +218,7 @@ final class SodgFiles {
                 "Setting generateDotFiles and not setting generateGraphFiles has no effect because .dot files require .graph files"
             );
         }
-        final Collection<TjForeign> scoped = this.scopedTojos().withShaken();
+        final Collection<TjForeign> scoped = this.scopedTojos().withXmir();
         final Path home = this.targetDir.toPath().resolve(SodgFiles.DIR);
         int total = 0;
         int instructions = 0;
