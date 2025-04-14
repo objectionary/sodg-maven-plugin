@@ -67,7 +67,7 @@ final class TjForeign {
      * @return The shaken xmir.
      */
     Path shaken() {
-        return Paths.get(this.attribute(TjsForeign.Attribute.SHAKEN));
+        return Paths.get(this.attribute(TjsForeign.Attribute.XMIR));
     }
 
     /**

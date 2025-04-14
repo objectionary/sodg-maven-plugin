@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.jcabi</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.68.0</version>
+  </parent>
+  <groupId>org.eolang</groupId>
+  <artifactId>examples</artifactId>
+  <version>@project.version@</version>
+  <packaging>jar</packaging>
+  <name>Generates SODG Files</name>
+  <description>This tests compiles EO programs to XMIR and then checks that we can generate SODG files from this XMIR</description>
+  <properties>
+    <eo.version>0.55.2</eo.version>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <failIfNoTests>false</failIfNoTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eolang</groupId>
+        <artifactId>eo-maven-plugin</artifactId>
+        <version>${eo.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>register</goal>
+              <goal>assemble</goal>
+              <goal>transpile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <unrollExitError>true</unrollExitError>
+          <foreign>${project.build.directory}/eo/foreign.csv</foreign>
+          <foreignFormat>csv</foreignFormat>
+          <placed>${project.build.directory}/eo/placed.json</placed>
+          <placedFormat>json</placedFormat>
+          <trackTransformationSteps>true</trackTransformationSteps>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eolang</groupId>
+        <artifactId>sodg-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>sodg</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <foreign>${project.build.directory}/eo/foreign.csv</foreign>
+          <foreignFormat>csv</foreignFormat>
+          <generateSodgXmlFiles>true</generateSodgXmlFiles>
+          <generateXemblyFiles>true</generateXemblyFiles>
+          <!--
+            @todo #11:90min Enable 'graph' and 'dot' files generation
+             In order to generate 'graph' and 'dot' files, we need to enable
+             'generateGraphFiles' and 'generateDotFiles' options in the
+             'sodg-maven-plugin' configuration (right below:)
+             <generateGraphFiles>true</generateGraphFiles>
+             <generateDotFiles>true</generateDotFiles>
+             Currently, if we enable them, the plugin fails.
+          -->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

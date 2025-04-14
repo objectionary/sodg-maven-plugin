@@ -65,8 +65,8 @@ final class TjsForeign implements Closeable {
      * Get the tojos that have corresponding shaken XMIR.
      * @return The tojos.
      */
-    Collection<TjForeign> withShaken() {
-        return this.select(row -> row.exists(Attribute.SHAKEN.getKey()));
+    Collection<TjForeign> withXmir() {
+        return this.select(row -> row.exists(Attribute.XMIR.getKey()));
     }
 
     /**
@@ -95,7 +95,7 @@ final class TjsForeign implements Closeable {
         /**
          * Absolute path of the shaken {@code .xmir} file.
          */
-        SHAKEN("shaken"),
+        XMIR("xmir"),
 
         /**
          * Absolute path of the SODG file.

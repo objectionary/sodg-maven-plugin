@@ -81,12 +81,8 @@
   <properties>
     <!-- This is required for later correct replacement of argLine -->
     <argLine/>
-    <!-- This is the flag that allows to skip unit tests run by maven-surefire-plugin -->
-    <skipUTs/>
-    <!-- This is the flag that allows to skip integration tests run by maven-failsafe-plugin -->
+    <!-- Skip integration tests -->
     <skipITs/>
-    <!-- This is the flag that allows to skip all tests -->
-    <skipTests/>
   </properties>
   <dependencies>
     <dependency>
@@ -112,6 +108,12 @@
       <artifactId>maven-plugin-annotations</artifactId>
       <version>3.15.1</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>5.10</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>com.yegor256</groupId>
@@ -197,48 +199,15 @@
       <version>0.6.2</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.maven.plugin-testing</groupId>
-      <artifactId>maven-plugin-testing-harness</artifactId>
-      <version>3.3.0</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-invoker-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
   <profiles>
-    <profile>
-      <id>skipTests</id>
-      <activation>
-        <property>
-          <name>skipTests</name>
-        </property>
-      </activation>
-      <properties>
-        <skipITs>true</skipITs>
-        <skipUTs>true</skipUTs>
-      </properties>
-    </profile>
-    <profile>
-      <id>skipITs</id>
-      <activation>
-        <property>
-          <name>skipITs</name>
-        </property>
-      </activation>
-      <properties>
-        <skipITs>true</skipITs>
-      </properties>
-    </profile>
-    <profile>
-      <id>skipUTs</id>
-      <activation>
-        <property>
-          <name>skipUTs</name>
-        </property>
-      </activation>
-      <properties>
-        <skipUTs>true</skipUTs>
-      </properties>
-    </profile>
     <profile>
       <id>qulice</id>
       <build>

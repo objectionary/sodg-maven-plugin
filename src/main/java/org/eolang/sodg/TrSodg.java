@@ -38,6 +38,18 @@ final class TrSodg extends TrEnvelope {
     /**
      * Ctor.
      * @param level Logging level.
+     * @todo #11:90min Complete SODG file generation.
+     *  We removed the following transformations from this train:
+     *  "/org/eolang/maven/sodg/bind-sigma.xsl",
+     *  "/org/eolang/maven/sodg/bind-rho.xsl",
+     *  "/org/eolang/maven/sodg/pi-copies.xsl",
+     *  "/org/eolang/maven/sodg/epsilon-bindings.xsl",
+     *  "/org/eolang/maven/sodg/connect-dots.xsl",
+     *  "/org/eolang/maven/sodg/put-data.xsl",
+     *  "/org/eolang/maven/sodg/put-atoms.xsl"
+     *  This was done intentionally to avoid failures in the code.
+     *  The code fails, because the transformation is too outdated.
+     *  We need to update transformations and finish SODG generation.
      */
     TrSodg(final Level level) {
         super(
@@ -78,14 +90,7 @@ final class TrSodg extends TrEnvelope {
                                 "/org/eolang/maven/sodg/append-xi.xsl",
                                 "/org/eolang/maven/sodg/unroll-refs.xsl",
                                 "/org/eolang/maven/sodg/remove-leveled.xsl",
-                                "/org/eolang/maven/sodg/touch-all.xsl",
-                                "/org/eolang/maven/sodg/bind-sigma.xsl",
-                                "/org/eolang/maven/sodg/bind-rho.xsl",
-                                "/org/eolang/maven/sodg/pi-copies.xsl",
-                                "/org/eolang/maven/sodg/epsilon-bindings.xsl",
-                                "/org/eolang/maven/sodg/connect-dots.xsl",
-                                "/org/eolang/maven/sodg/put-data.xsl",
-                                "/org/eolang/maven/sodg/put-atoms.xsl"
+                                "/org/eolang/maven/sodg/touch-all.xsl"
                             ).back(),
                             new TrDefault<>(
                                 new StClasspath(
