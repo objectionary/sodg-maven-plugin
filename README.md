@@ -1,7 +1,5 @@
 <img alt="logo" src="https://www.objectionary.com/cactus.svg" height="100px" />
 
-# sodg-maven-plugin
-
 SODG (Surging Object DiGraph) Maven Plugin is a plugin for Maven that allows to
 build a graph from an EO program.
 SODG is our own format of graph representation.
