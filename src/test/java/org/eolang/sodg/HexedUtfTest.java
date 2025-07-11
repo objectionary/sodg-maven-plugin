@@ -17,7 +17,7 @@ final class HexedUtfTest {
     @Test
     void hexesString() {
         MatcherAssert.assertThat(
-            "Hex value does not match wiht expected",
+            "Hex value does not match with expected",
             new HexedUtf("foo").asString(),
             Matchers.equalTo("66-6F-6F")
         );
