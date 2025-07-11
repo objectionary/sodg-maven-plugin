@@ -199,11 +199,6 @@
       <version>0.6.2</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.jcabi</groupId>
-      <artifactId>jcabi-matchers</artifactId>
-      <!-- version from the parent pom -->
-    </dependency>
   </dependencies>
   <build>
     <plugins>

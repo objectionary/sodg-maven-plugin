@@ -8,7 +8,6 @@ import com.jcabi.manifests.Manifests;
 import com.yegor256.xsline.Shift;
 import com.yegor256.xsline.StBefore;
 import com.yegor256.xsline.StClasspath;
-import com.yegor256.xsline.StEndless;
 import com.yegor256.xsline.StSchema;
 import com.yegor256.xsline.TrClasspath;
 import com.yegor256.xsline.TrDefault;
@@ -61,7 +60,6 @@ final class TrSodg extends TrEnvelope {
                             new TrClasspath<>(
                                 "/org/eolang/maven/sodg/pre-clean.xsl"
                             ).back(),
-                            new TrDefault<>(new StEndless(new StLocHex())),
                             new TrMapped<>(
                                 (Function<String, Shift>) path -> new StBefore(
                                     new StClasspath(path),

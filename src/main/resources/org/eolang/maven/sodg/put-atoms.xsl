@@ -17,20 +17,6 @@
     </xsl:copy>
   </xsl:template>
   <xsl:template match="o[@name and eo:atom(.) and not(@base)]" mode="sodg" priority="1">
-    <xsl:if test="not(@lambda)">
-      <xsl:message terminate="yes">
-        <xsl:text>The @lambda is absent at '</xsl:text>
-        <xsl:value-of select="@loc"/>
-        <xsl:text>'</xsl:text>
-      </xsl:message>
-    </xsl:if>
-    <xsl:if test="@lambda = ''">
-      <xsl:message terminate="yes">
-        <xsl:text>The @lambda is empty at '</xsl:text>
-        <xsl:value-of select="@loc"/>
-        <xsl:text>'</xsl:text>
-      </xsl:message>
-    </xsl:if>
     <xsl:variable name="v">
       <xsl:value-of select="@loc"/>
       <xsl:text>.λ</xsl:text>
@@ -70,12 +56,6 @@
       <xsl:with-param name="args" as="item()*">
         <xsl:sequence>
           <xsl:value-of select="eo:var($v)"/>
-        </xsl:sequence>
-        <xsl:sequence>
-          <xsl:variable name="data">
-            <xsl:value-of select="replace(@lambda, ' ', '-')"/>
-          </xsl:variable>
-          <xsl:value-of select="$data"/>
         </xsl:sequence>
       </xsl:with-param>
     </xsl:call-template>
