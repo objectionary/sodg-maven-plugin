@@ -6,7 +6,9 @@ sheets:
 document:
   <program>
     <objects loc="Φ">
-      <o name="x" atom="" loc="Φ.a.b.x" lambda='01-02-03'/>
+      <o name="x" loc="Φ.a.b.x" lambda='01-02-03'>
+        <o name="λ"/>
+      </o>
     </objects>
     <sodg/>
   </program>

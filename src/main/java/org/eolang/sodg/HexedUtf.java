@@ -19,7 +19,7 @@ final class HexedUtf implements Text {
     private final String text;
 
     /**
-     * Ctor
+     * Ctor.
      * @param txt The text to transform
      */
     HexedUtf(final String txt) {
