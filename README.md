@@ -68,7 +68,7 @@ The `sodg-maven-plugin` performs the following steps:
 
 The `.sodg` file is essentially a sequence of instructions for a virtual machine
 that parses them.
-An example of such a machine can be found [here][SODG].
+An example of such a machine can be found in the [SODG] repo.
 When the graph is built by the virtual machine, it must be possible to execute
 a program using graph traversing algorithm. Once the graph is built,
 it can be used to execute a program via a graph traversal algorithm.
