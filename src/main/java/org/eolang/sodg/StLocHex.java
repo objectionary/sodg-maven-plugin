@@ -10,7 +10,7 @@ import org.xembly.Directives;
 import org.xembly.Xembler;
 
 /**
- * Shift for turning all `@loc`s into hexes.
+ * Shift for turning all atom locators into hexes.
  * @since 0.0.2
  */
 final class StLocHex implements Shift {
@@ -29,7 +29,7 @@ final class StLocHex implements Shift {
      * Empty ctor.
      */
     StLocHex() {
-        this("(//o[@name and @atom and not(@base) and @loc and not(@lambda)])[1]");
+        this("(//o[@name and o[@name='λ'] and not(@base) and @loc and not(@lambda)])[1]");
     }
 
     /**
