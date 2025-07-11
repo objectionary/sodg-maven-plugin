@@ -46,6 +46,11 @@ final class TrSodg extends TrEnvelope {
      *  This was done intentionally to avoid failures in the code.
      *  The code fails, because the transformation is too outdated.
      *  We need to update transformations and finish SODG generation.
+     * @todo #46:35min Create integration tests for full TrSodg.
+     *  Currently, we have only the unit tests in the sodg-packs, that check
+     *  sheets application in the isolation only. We should create more integration
+     *  test in order to check the integrity of the final results, with all sheets.
+     *  Seems that {@link TrSodgTest} is the best place to keep such tests.
      */
     TrSodg(final Level level) {
         super(
