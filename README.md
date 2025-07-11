@@ -19,7 +19,7 @@
 The `sodg-maven-plugin` builds a graph from an EO program.
 SODG stands for Surging Object DiGraph.  
 The primary consumer of SODG graphs is
-the [reo](https://github.com/objectionary/reo) project.  
+the [reo](https://github.com/objectionary/reo) project.
 You can
 find [some examples](https://github.com/objectionary/reo/tree/master/quick-tests)
 of `.sodg` files.
@@ -68,12 +68,11 @@ The `sodg-maven-plugin` performs the following steps:
 
 The `.sodg` file is essentially a sequence of instructions for a virtual machine
 that parses them.
-An example of such a machine can be
-found [here](https://github.com/objectionary/sodg).
+An example of such a machine can be found in the [SODG] repo.
 When the graph is built by the virtual machine, it must be possible to execute
 a program using graph traversing algorithm. Once the graph is built,
 it can be used to execute a program via a graph traversal algorithm.
-An example of such an executor is[reo](https://github.com/objectionary/reo).
+An example of such an executor is [reo](https://github.com/objectionary/reo).
 
 ## How to Contribute
 
@@ -88,3 +87,5 @@ mvn clean install -Pqulice
 ```
 
 You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.
+
+[SODG]: https://github.com/objectionary/sodg

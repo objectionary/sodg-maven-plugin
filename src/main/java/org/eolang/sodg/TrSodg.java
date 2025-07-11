@@ -8,7 +8,6 @@ import com.jcabi.manifests.Manifests;
 import com.yegor256.xsline.Shift;
 import com.yegor256.xsline.StBefore;
 import com.yegor256.xsline.StClasspath;
-import com.yegor256.xsline.StEndless;
 import com.yegor256.xsline.StSchema;
 import com.yegor256.xsline.TrClasspath;
 import com.yegor256.xsline.TrDefault;
@@ -18,15 +17,11 @@ import com.yegor256.xsline.TrJoined;
 import com.yegor256.xsline.TrLogged;
 import com.yegor256.xsline.TrMapped;
 import com.yegor256.xsline.TrWith;
-import java.nio.charset.StandardCharsets;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.logging.Level;
-import org.eolang.parser.StXPath;
-import org.xembly.Directives;
 
 /**
  * Main transformer for SODG.
@@ -50,6 +45,11 @@ final class TrSodg extends TrEnvelope {
      *  This was done intentionally to avoid failures in the code.
      *  The code fails, because the transformation is too outdated.
      *  We need to update transformations and finish SODG generation.
+     * @todo #46:35min Create integration tests for full TrSodg.
+     *  Currently, we have only the unit tests in the sodg-packs, that check
+     *  sheets application in the isolation only. We should create more integration
+     *  test in order to check the integrity of the final results, with all sheets.
+     *  Seems that {@link TrSodgTest} is the best place to keep such tests.
      */
     TrSodg(final Level level) {
         super(
@@ -60,22 +60,6 @@ final class TrSodg extends TrEnvelope {
                             new TrClasspath<>(
                                 "/org/eolang/maven/sodg/pre-clean.xsl"
                             ).back(),
-                            new TrDefault<>(
-                                new StEndless(
-                                    new StXPath(
-                                        "(//o[@name and @atom and not(@base) and @loc and not(@lambda)])[1]",
-                                        xml -> {
-                                            final String loc = xml.xpath("@loc").get(0);
-                                            return new Directives().attr(
-                                                "lambda",
-                                                TrSodg.utfToHex(
-                                                    loc.substring(loc.indexOf('.') + 1)
-                                                )
-                                            );
-                                        }
-                                    )
-                                )
-                            ),
                             new TrMapped<>(
                                 (Function<String, Shift>) path -> new StBefore(
                                     new StClasspath(path),
@@ -98,9 +82,9 @@ final class TrSodg extends TrEnvelope {
                                     "name version",
                                     String.format(
                                         "value %s",
-                                        TrSodg.utfToHex(
+                                        new HexedUtf(
                                             Manifests.read("EO-Version")
-                                        )
+                                        ).asString()
                                     )
                                 ),
                                 new StClasspath(
@@ -108,11 +92,11 @@ final class TrSodg extends TrEnvelope {
                                     "name time",
                                     String.format(
                                         "value %s",
-                                        TrSodg.utfToHex(
+                                        new HexedUtf(
                                             ZonedDateTime.now(ZoneOffset.UTC).format(
                                                 DateTimeFormatter.ISO_INSTANT
                                             )
-                                        )
+                                        ).asString()
                                     )
                                 )
                             ),
@@ -128,19 +112,5 @@ final class TrSodg extends TrEnvelope {
                 level
             )
         );
-    }
-
-    /**
-     * UTF-8 string to HEX.
-     *
-     * @param txt The string
-     * @return Hexadecimal value as string.
-     */
-    private static String utfToHex(final String txt) {
-        final StringJoiner out = new StringJoiner("-");
-        for (final byte bty : txt.getBytes(StandardCharsets.UTF_8)) {
-            out.add(String.format("%02X", bty));
-        }
-        return out.toString();
     }
 }

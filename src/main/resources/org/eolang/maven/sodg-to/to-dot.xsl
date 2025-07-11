@@ -41,9 +41,6 @@
     <xsl:value-of select="eo:node($v/@id)"/>
     <xsl:text>[shape=</xsl:text>
     <xsl:choose>
-      <xsl:when test="lambda">
-        <xsl:text>doublecircle</xsl:text>
-      </xsl:when>
       <xsl:otherwise>
         <xsl:text>circle</xsl:text>
       </xsl:otherwise>
@@ -60,10 +57,6 @@
         <xsl:value-of select="eo:node(@id)"/>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:if test="lambda">
-      <xsl:text>\n</xsl:text>
-      <xsl:value-of select="lambda"/>
-    </xsl:if>
     <xsl:text>"</xsl:text>
     <xsl:text>];</xsl:text>
     <xsl:value-of select="$EOL"/>
