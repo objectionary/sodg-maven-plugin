@@ -18,15 +18,11 @@ import com.yegor256.xsline.TrJoined;
 import com.yegor256.xsline.TrLogged;
 import com.yegor256.xsline.TrMapped;
 import com.yegor256.xsline.TrWith;
-import java.nio.charset.StandardCharsets;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.logging.Level;
-import org.eolang.parser.StXPath;
-import org.xembly.Directives;
 
 /**
  * Main transformer for SODG.
@@ -60,22 +56,7 @@ final class TrSodg extends TrEnvelope {
                             new TrClasspath<>(
                                 "/org/eolang/maven/sodg/pre-clean.xsl"
                             ).back(),
-                            new TrDefault<>(
-                                new StEndless(
-                                    new StXPath(
-                                        "(//o[@name and @atom and not(@base) and @loc and not(@lambda)])[1]",
-                                        xml -> {
-                                            final String loc = xml.xpath("@loc").get(0);
-                                            return new Directives().attr(
-                                                "lambda",
-                                                TrSodg.utfToHex(
-                                                    loc.substring(loc.indexOf('.') + 1)
-                                                )
-                                            );
-                                        }
-                                    )
-                                )
-                            ),
+                            new TrDefault<>(new StEndless(new StLocHex())),
                             new TrMapped<>(
                                 (Function<String, Shift>) path -> new StBefore(
                                     new StClasspath(path),
@@ -98,9 +79,9 @@ final class TrSodg extends TrEnvelope {
                                     "name version",
                                     String.format(
                                         "value %s",
-                                        TrSodg.utfToHex(
+                                        new HexedUtf(
                                             Manifests.read("EO-Version")
-                                        )
+                                        ).asString()
                                     )
                                 ),
                                 new StClasspath(
@@ -108,11 +89,11 @@ final class TrSodg extends TrEnvelope {
                                     "name time",
                                     String.format(
                                         "value %s",
-                                        TrSodg.utfToHex(
+                                        new HexedUtf(
                                             ZonedDateTime.now(ZoneOffset.UTC).format(
                                                 DateTimeFormatter.ISO_INSTANT
                                             )
-                                        )
+                                        ).asString()
                                     )
                                 )
                             ),
@@ -128,19 +109,5 @@ final class TrSodg extends TrEnvelope {
                 level
             )
         );
-    }
-
-    /**
-     * UTF-8 string to HEX.
-     *
-     * @param txt The string
-     * @return Hexadecimal value as string.
-     */
-    private static String utfToHex(final String txt) {
-        final StringJoiner out = new StringJoiner("-");
-        for (final byte bty : txt.getBytes(StandardCharsets.UTF_8)) {
-            out.add(String.format("%02X", bty));
-        }
-        return out.toString();
     }
 }
