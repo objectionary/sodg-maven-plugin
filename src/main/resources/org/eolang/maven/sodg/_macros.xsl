@@ -29,7 +29,7 @@
   </xsl:function>
   <xsl:function name="eo:base-to-loc" as="xs:string">
     <xsl:param name="o" as="node()"/>
-    <xsl:variable name="program" select="$o/ancestor::objects/ancestor::program"/>
+    <xsl:variable name="program" select="$o/ancestor::objects/ancestor::object"/>
     <xsl:variable name="ret">
       <xsl:choose>
         <xsl:when test="starts-with($o/@base, '.')">

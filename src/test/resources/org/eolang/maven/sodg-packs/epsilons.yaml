@@ -4,15 +4,15 @@
 sheets:
   - /org/eolang/maven/sodg/epsilon-bindings.xsl
 document:
-  <program>
-    <objects loc="Φ">
+  <object>
+    <o loc="Φ">
       <o base="foo" loc="Φ.x"/>
       <o loc="Φ.y" abstract="">
         <o base="$" loc="Φ.y.z.a"/>
       </o>
-    </objects>
+    </o>
     <sodg/>
-  </program>
+  </object>
 asserts:
   - //sodg[count(i)=2]
   - //i[@name='BIND' and a='$Φ.x' and a='$Φ.foo' and a='ε']

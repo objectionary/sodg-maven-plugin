@@ -11,7 +11,7 @@
   <xsl:import href="/org/eolang/maven/sodg/_macros.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
-    <xsl:copy-of select="program/sodg"/>
+    <xsl:copy-of select="object/sodg"/>
   </xsl:template>
   <xsl:template match="node()|@*" mode="#default">
     <xsl:copy>

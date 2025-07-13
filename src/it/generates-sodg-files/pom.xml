@@ -16,9 +16,6 @@
   <packaging>jar</packaging>
   <name>Generates SODG Files</name>
   <description>This tests compiles EO programs to XMIR and then checks that we can generate SODG files from this XMIR</description>
-  <properties>
-    <eo.version>0.55.2</eo.version>
-  </properties>
   <build>
     <plugins>
       <plugin>
@@ -30,23 +27,23 @@
       <plugin>
         <groupId>org.eolang</groupId>
         <artifactId>eo-maven-plugin</artifactId>
-        <version>${eo.version}</version>
+        <version>0.57.0</version>
         <executions>
           <execution>
             <goals>
               <goal>register</goal>
-              <goal>assemble</goal>
+              <goal>compile</goal>
               <goal>transpile</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
+          <skipLinting>true</skipLinting>
           <unrollExitError>true</unrollExitError>
           <foreign>${project.build.directory}/eo/foreign.csv</foreign>
           <foreignFormat>csv</foreignFormat>
           <placed>${project.build.directory}/eo/placed.json</placed>
           <placedFormat>json</placedFormat>
-          <trackTransformationSteps>true</trackTransformationSteps>
         </configuration>
       </plugin>
       <plugin>

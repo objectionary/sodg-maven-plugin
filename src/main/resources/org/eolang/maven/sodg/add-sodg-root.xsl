@@ -5,12 +5,12 @@
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" id="add-sodg-root" version="2.0">
   <!--
-  Here we start the graph, creating a new XML element "sodg" under "program".
+  Here we start the graph, creating a new XML element "sodg" under "object".
   All further XSL transformations will work with "i" elements inside
   this "sodg" one.
   -->
   <xsl:output encoding="UTF-8" method="xml"/>
-  <xsl:template match="/program[not(sodg)]">
+  <xsl:template match="/object[not(sodg)]">
     <xsl:copy>
       <xsl:apply-templates select="node()|@*"/>
       <xsl:element name="sodg">

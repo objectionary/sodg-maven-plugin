@@ -4,15 +4,15 @@
 sheets:
   - /org/eolang/maven/sodg/connect-dots.xsl
 document:
-  <program>
-    <objects loc="Φ">
+  <object>
+    <o loc="Φ">
       <o base=".times" line="2" loc="Φ.x" name="x">
         <o base="org.eolang.int" data="bytes" loc="Φ.x.ρ">01</o>
         <o base="org.eolang.bool" data="bytes" loc="Φ.x.y">01</o>
       </o>
-    </objects>
+    </o>
     <sodg/>
-  </program>
+  </object>
 asserts:
   - //sodg[count(i)=6]
   - //i[@name='BIND' and a='$Φ.x' and a='$Φ.x.β2' and a='π']

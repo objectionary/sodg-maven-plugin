@@ -5,7 +5,7 @@
 String log = new File(basedir, 'build.log').text;
 assert log.contains("BUILD SUCCESS"): assertionMessage("Build was not successful")
 
-def generated = new File(basedir, 'target/eo/sodg/org/eolang/examples/')
+def generated = new File(basedir, 'target/eo/sodg/org/eolang/sodg/examples/')
 assert generated.toPath().resolve("fibonacci.sodg").toFile().exists(): assertionMessage("SODG file was not generated")
 assert generated.toPath().resolve("fibonacci.sodg.xe").toFile().exists(): assertionMessage("SODG Xembly file was not generated")
 assert generated.toPath().resolve("fibonacci.sodg.xml").toFile().exists(): assertionMessage("SODG XMIR file was not generated")

@@ -6,16 +6,16 @@ sheets:
   - /org/eolang/maven/sodg/bind-rho.xsl
   - /org/eolang/maven/sodg/bind-sigma.xsl
 document:
-  <program>
-    <objects loc="Φ">
+  <object>
+    <o loc="Φ">
       <o base="z" loc="Φ.a"/>
       <o base=".not" line="2" loc="Φ.x" name="x">
         <o base="org.eolang.bool" loc="Φ.x.ρ">01</o>
       </o>
       <o base='∅' name="f" loc="Φ.f"/>
-    </objects>
+    </o>
     <sodg/>
-  </program>
+  </object>
 asserts:
   - //sodg[count(i)=1]
   - //i[@name='BIND' and a='$Φ.f' and a='ν0' and a='ρ']

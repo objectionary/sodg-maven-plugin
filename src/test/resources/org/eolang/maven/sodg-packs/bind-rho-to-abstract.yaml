@@ -4,15 +4,15 @@
 sheets:
   - /org/eolang/maven/sodg/bind-rho.xsl
 document:
-  <program>
-    <objects loc="Φ">
-      <o abstract="" name="foo" loc="Φ.foo">
+  <object>
+    <o loc="Φ">
+      <o name="foo" loc="Φ.foo">
         <o base="f" loc="Φ.foo.f">
           <o base="t" loc="Φ.foo.f.t"/>
         </o>
       </o>
-    </objects>
+    </o>
     <sodg/>
-  </program>
+  </object>
 asserts:
   - //i[@name='BIND' and a='$Φ.foo.f' and a='$Φ.foo' and a='ρ']
