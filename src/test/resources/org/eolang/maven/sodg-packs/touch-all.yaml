@@ -13,7 +13,7 @@ document:
     </metas>
     <o loc="Φ">
       <o base=".not" line="2" loc="Φ.x" name="x">
-        <o base="org.eolang.bool" data="bytes" loc="Φ.x.ρ">01</o>
+        <o base="org.eolang.bool" loc="Φ.x.ρ">01</o>
       </o>
       <o base=".^" loc="Φ.y" name="c">
         <o base="$" loc="Φ.y.ρ"/>

@@ -7,8 +7,8 @@ document:
   <object>
     <o loc="Φ">
       <o base=".times" line="2" loc="Φ.x" name="x">
-        <o base="org.eolang.int" data="bytes" loc="Φ.x.ρ">01</o>
-        <o base="org.eolang.bool" data="bytes" loc="Φ.x.y">01</o>
+        <o base="org.eolang.int" loc="Φ.x.ρ">01</o>
+        <o base="org.eolang.bool" loc="Φ.x.y">01</o>
       </o>
     </o>
     <sodg/>

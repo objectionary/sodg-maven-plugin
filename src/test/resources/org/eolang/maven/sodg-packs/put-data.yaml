@@ -6,7 +6,7 @@ sheets:
 document:
   <object>
     <o loc="Φ">
-      <o name="x" base="org.eolang.bool" data="bool" loc="Φ.a.b.x">01</o>
+      <o name="x" base="org.eolang.bool" loc="Φ.a.b.x">01</o>
     </o>
     <sodg/>
   </object>
