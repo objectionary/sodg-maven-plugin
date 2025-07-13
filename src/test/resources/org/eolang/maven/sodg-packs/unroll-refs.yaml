@@ -6,7 +6,7 @@ sheets:
 document:
   <object>
     <o loc="Φ">
-      <o loc="Φ.x" abstract="">
+      <o loc="Φ.x">
         <o base="a" loc="Φ.x.a" name="xx" ref="55"/>
         <o base="b" loc="Φ.x.yy" name="yy" ref="66"/>
         <o name="b" loc="Φ.x.b" line="66"/>

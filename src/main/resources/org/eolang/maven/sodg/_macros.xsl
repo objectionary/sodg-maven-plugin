@@ -40,7 +40,7 @@
           <xsl:text>Φ</xsl:text>
         </xsl:when>
         <xsl:when test="$o/@base = '$'">
-          <xsl:value-of select="$o/ancestor::o[@abstract][1]/@loc"/>
+          <xsl:value-of select="$o/ancestor::o[not(@base)][1]/@loc"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:text>Φ.</xsl:text>
