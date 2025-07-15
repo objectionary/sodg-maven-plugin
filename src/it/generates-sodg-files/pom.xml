@@ -17,7 +17,7 @@
   <name>Generates SODG Files</name>
   <description>This tests compiles EO programs to XMIR and then checks that we can generate SODG files from this XMIR</description>
   <properties>
-    <eo.version>0.55.2</eo.version>
+    <eo.version>0.57.1</eo.version>
   </properties>
   <build>
     <plugins>
