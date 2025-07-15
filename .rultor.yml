@@ -2,12 +2,8 @@
 # SPDX-License-Identifier: MIT
 ---
 # yamllint disable rule:line-length
-architect:
-  - volodya-lombrozo
-ec2:
-  type: t2.2xlarge
 docker:
-  image: lombrozo/rultor-image-java:master
+  image: yegor256/java
 assets:
   settings.xml: yegor256/objectionary-secrets#settings.xml
   pubring.gpg: yegor256/objectionary-secrets#pubring.gpg
