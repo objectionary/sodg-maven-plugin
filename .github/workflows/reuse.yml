@@ -1,8 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
 # SPDX-License-Identifier: MIT
 ---
-
-name: typos
+name: reuse
 'on':
   push:
     branches:
@@ -11,11 +10,9 @@ name: typos
     branches:
       - master
 jobs:
-  typos:
+  reuse:
     timeout-minutes: 15
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: crate-ci/typos@v1.34.0
-        with:
-          config: ./.github/typos.toml
+      - uses: fsfe/reuse-action@v5
