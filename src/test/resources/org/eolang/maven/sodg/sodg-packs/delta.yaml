@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets: []
+input: |
+  [] > foo
+    42 > x
+asserts:
+  - //sodg[count(i)=2]
+  - //sodg/i[@name='formation']/a[1][text()='b1']
+  - //sodg/i[@name='dispatch']/a[1][text()='b3']
+  - //sodg/i[@name='dispatch']/a[2][text()='b1']
+  - //sodg/i[@name='delta']/a[1][text()='b3']
+  - //sodg/i[@name='delta']/a[2][text()='40-45-00-00-00-00-00-00']
