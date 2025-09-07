@@ -64,14 +64,14 @@
           </a>
           <a>
             <xsl:text>b</xsl:text>
-            <xsl:value-of select="count(preceding-sibling::*) + 1"/>
+            <xsl:value-of select="count(preceding-sibling::*)"/>
           </a>
           <a>
-            <xsl:value-of select="@base"/>
+            <!-- no information about `i`s yet -->
+            <xsl:value-of select="preceding-sibling::o/@name"/>
           </a>
         </i>
       </xsl:if>
-      <!-- result of the application to put() -->
       <xsl:if test="not(eo:abstract(.)) and @base and o[@as]">
         <xsl:variable name="apos" select="position() + 1"/>
         <xsl:for-each select="o">
@@ -93,6 +93,7 @@
             </a>
             <a>
               <xsl:text>b</xsl:text>
+              <xsl:value-of select="@base"/>
               <!-- we can find it by its base -->
               <!--            <xsl:value-of select="//i[a='price']/preceding-sibling::i[1]/a[1]"/>-->
             </a>
