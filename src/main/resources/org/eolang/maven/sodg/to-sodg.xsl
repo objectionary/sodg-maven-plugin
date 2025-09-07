@@ -22,7 +22,10 @@
         <xsl:attribute name="name">
           <xsl:value-of select="'formation'"/>
         </xsl:attribute>
-        <a>b1</a>
+        <a>
+          <xsl:text>b</xsl:text>
+          <xsl:value-of select="position()"/>
+        </a>
         <xsl:for-each select="o">
           <a>
             <xsl:value-of select="eo:escape(@name)"/>
