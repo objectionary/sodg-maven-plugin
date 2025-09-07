@@ -135,6 +135,10 @@
     </xsl:variable>
     <xsl:value-of select="$ret"/>
   </xsl:function>
+  <xsl:function name="eo:escape" as="xs:string">
+    <xsl:param name="text"/>
+    <xsl:value-of select="concat('&quot;', replace(replace($text, ' ', '⌴'), '&quot;', '\\x22'), '&quot;')"/>
+  </xsl:function>
   <xsl:template name="i">
     <xsl:param name="name" as="xs:string"/>
     <xsl:param name="args" as="item()*"/>

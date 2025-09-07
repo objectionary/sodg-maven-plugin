@@ -52,7 +52,7 @@ final class SodgTest {
     }
 
     @ParameterizedTest
-    @ClasspathSource(value = "org/eolang/maven/sodgs/", glob = "**.yaml")
+    @ClasspathSource(value = "org/eolang/maven/sodg/sodgs/", glob = "**.yaml")
     @SuppressWarnings({
         "unchecked",
         "PMD.JUnitTestContainsTooManyAsserts",

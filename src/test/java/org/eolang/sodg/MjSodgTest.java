@@ -30,7 +30,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 final class MjSodgTest {
 
     @ParameterizedTest
-    @ClasspathSource(value = "org/eolang/maven/sodg-packs", glob = "**.yaml")
+    @ClasspathSource(value = "org/eolang/maven/sodg/sodg-format", glob = "**.yaml")
     void transformsThroughSheets(final String yaml) {
         MatcherAssert.assertThat(
             "passes with no exceptions",
