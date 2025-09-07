@@ -7,7 +7,7 @@ input: |
     qty.mul > cost
       price
 asserts:
-  - //sodg[count(i)=5]
+  - //sodg[count(i)=4]
   - //sodg/i[@name='formation']/a[1][text()='b1']
   - //sodg/i[@name='formation']/a[3][text()='qty']
   - //sodg/i[@name='formation']/a[4][text()='price']
@@ -21,3 +21,6 @@ asserts:
   - //sodg/i[4][@name='dispatch']/a[1][text()='b4']
   - //sodg/i[4][@name='dispatch']/a[2][text()='b1']
   - //sodg/i[4][@name='dispatch']/a[3][text()='price']
+  - //sodg/i[@name='put']/a[1][text()='b1']
+  - //sodg/i[@name='put']/a[2][text()='cost']
+  - //sodg/i[@name='put']/a[3][text()='b6']
