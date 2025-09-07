@@ -5,10 +5,10 @@
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="to-sodg" version="2.0">
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
+  <xsl:import href="/org/eolang/maven/sodg/_macros.xsl"/>
   <!--
   Here we convert all objects into SODG format.
   -->
-  <xsl:import href="/org/eolang/maven/sodg/_macros.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/object/sodg">
     <xsl:copy>
@@ -67,7 +67,8 @@
             <xsl:value-of select="count(preceding-sibling::*)"/>
           </a>
           <a>
-            <!-- no information about `i`s yet -->
+            <!-- no information about instructions here yet -->
+            <!-- should clean `ξ.qty.mul` to just `mul` -->
             <xsl:value-of select="preceding-sibling::o/@name"/>
           </a>
         </i>
@@ -94,8 +95,8 @@
             <a>
               <xsl:text>b</xsl:text>
               <xsl:value-of select="@base"/>
-              <!-- we can find it by its base -->
-              <!--            <xsl:value-of select="//i[a='price']/preceding-sibling::i[1]/a[1]"/>-->
+              <!-- we should find the correct number among other instructions by object's base -->
+              <!-- should find number attached to instruction with b5 (where argument is `price`) -->
             </a>
           </i>
         </xsl:for-each>

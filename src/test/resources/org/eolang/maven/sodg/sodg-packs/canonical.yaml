@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets: []
+input: |
+  [qty price] > order
+    qty.mul > cost
+      price
+asserts:
+  - //sodg[count(i)=7]
+  - //sodg/i[@name='formation']/a[1][text()='b1']
+  - //sodg/i[@name='formation']/a[3][text()='qty']
+  - //sodg/i[@name='formation']/a[4][text()='price']
+  - //sodg/i[@name='formation']/a[5][text()='cost']
+  - /sodg[count(i[@name='dispatch'])=4]
+  - //sodg/i[2][@name='dispatch']/a[1][text()='b2']
+  - //sodg/i[2][@name='dispatch']/a[2][text()='b1']
+  - //sodg/i[2][@name='dispatch']/a[3][text()='xi🌵']
+  - //sodg/i[3][@name='dispatch']/a[1][text()='b3']
+  - //sodg/i[3][@name='dispatch']/a[2][text()='b1']
+  - //sodg/i[3][@name='dispatch']/a[3][text()='qty']
+  - //sodg/i[4][@name='dispatch']/a[1][text()='b4']
+  - //sodg/i[4][@name='dispatch']/a[2][text()='b1']
+  - //sodg/i[4][@name='dispatch']/a[3][text()='price']
+  - //sodg/i[5][@name='dispatch']/a[1][text()='b5']
+  - //sodg/i[5][@name='dispatch']/a[2][text()='b3']
+  - //sodg/i[5][@name='dispatch']/a[3][text()='mul']
+  - //sodg/i[@name='application']/a[1][text()='b6']
+  - //sodg/i[@name='application']/a[2][text()='b5']
+  - //sodg/i[@name='application']/a[3][text()='α0']
+  - //sodg/i[@name='application']/a[4][text()='b4']
+  - //sodg/i[@name='put']/a[1][text()='b1']
+  - //sodg/i[@name='put']/a[2][text()='cost']
+  - //sodg/i[@name='put']/a[3][text()='b6']
