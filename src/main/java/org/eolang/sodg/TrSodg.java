@@ -69,44 +69,46 @@ final class TrSodg extends TrEnvelope {
                                     )
                                 ),
                                 "/org/eolang/maven/sodg/add-sodg-root.xsl",
-                                "/org/eolang/maven/sodg/add-loc-to-objects.xsl",
-                                "/org/eolang/maven/sodg/add-root.xsl",
-                                "/org/eolang/maven/sodg/append-xi.xsl",
-                                "/org/eolang/maven/sodg/unroll-refs.xsl",
-                                "/org/eolang/maven/sodg/remove-leveled.xsl",
-                                "/org/eolang/maven/sodg/touch-all.xsl"
-                            ).back(),
-                            new TrDefault<>(
-                                new StClasspath(
-                                    "/org/eolang/maven/sodg/add-meta.xsl",
-                                    "name version",
-                                    String.format(
-                                        "value %s",
-                                        new HexedUtf(
-                                            Manifests.read("EO-Version")
-                                        ).asString()
-                                    )
-                                ),
-                                new StClasspath(
-                                    "/org/eolang/maven/sodg/add-meta.xsl",
-                                    "name time",
-                                    String.format(
-                                        "value %s",
-                                        new HexedUtf(
-                                            ZonedDateTime.now(ZoneOffset.UTC).format(
-                                                DateTimeFormatter.ISO_INSTANT
-                                            )
-                                        ).asString()
-                                    )
-                                )
-                            ),
-                            new TrClasspath<>(
-                                "/org/eolang/maven/sodg/focus.xsl"
+                                "/org/eolang/maven/sodg/to-sodg.xsl",
+                                "/org/eolang/maven/sodg/applications.xsl"
+
+//                                "/org/eolang/maven/sodg/add-loc-to-objects.xsl",
+                                // do we need this? "/org/eolang/maven/sodg/add-root.xsl",
+//                                "/org/eolang/maven/sodg/append-xi.xsl",
+//                                "/org/eolang/maven/sodg/remove-leveled.xsl",
+//                                "/org/eolang/maven/sodg/touch-all.xsl"
                             ).back()
+//                            new TrDefault<>(
+//                                new StClasspath(
+//                                    "/org/eolang/maven/sodg/add-meta.xsl",
+//                                    "name version",
+//                                    String.format(
+//                                        "value %s",
+//                                        new HexedUtf(
+//                                            Manifests.read("EO-Version")
+//                                        ).asString()
+//                                    )
+//                                ),
+//                                new StClasspath(
+//                                    "/org/eolang/maven/sodg/add-meta.xsl",
+//                                    "name time",
+//                                    String.format(
+//                                        "value %s",
+//                                        new HexedUtf(
+//                                            ZonedDateTime.now(ZoneOffset.UTC).format(
+//                                                DateTimeFormatter.ISO_INSTANT
+//                                            )
+//                                        ).asString()
+//                                    )
+//                                )
+//                            ),
+//                            new TrClasspath<>(
+//                                "/org/eolang/maven/sodg/focus.xsl"
+//                            ).back()
                         ),
                         SodgFiles.class
-                    ),
-                    new StSchema("/org/eolang/maven/sodg/after.xsd")
+                    )
+//                    new StSchema("/org/eolang/maven/sodg/after.xsd")
                 ),
                 SodgFiles.class,
                 level
