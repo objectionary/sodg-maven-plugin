@@ -19,7 +19,7 @@
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:apply-templates select="i"/>
-      <xsl:variable name="root" select="position()"/>
+      <xsl:variable name="root" select="count(/object/preceding-sibling::o) + 1"/>
       <xsl:for-each select="//o">
         <xsl:if test="not(eo:abstract(.)) and @base and o[@as]">
           <xsl:variable name="apos" select="position() + 1"/>
