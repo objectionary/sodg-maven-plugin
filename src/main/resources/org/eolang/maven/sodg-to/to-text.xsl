@@ -4,6 +4,17 @@
  * SPDX-License-Identifier: MIT
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" id="to-text" version="2.0">
+  <!--
+    Here we transform SODG as part of XMIR to text representation:
+    ```
+    formation(b1, "qty", "price", "cost")
+    dispatch(b2, b1, "qty")
+    dispatch(b3, b2, "mul")
+    dispatch(b5, b1, "price")
+    application(b4, b3, 𝛼0, b5)
+    put(b1, "cost", b4)
+    ```
+  -->
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:variable name="EOL">
     <xsl:value-of select="'&#10;'"/>

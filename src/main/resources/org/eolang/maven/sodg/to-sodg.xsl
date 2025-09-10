@@ -57,6 +57,29 @@
           </a>
         </i>
       </xsl:if>
+      <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">
+        <xsl:variable name="oid" select="concat('b', position())"/>
+<!--        <i name="dispatch">-->
+<!--          <a>-->
+<!--            <xsl:value-of select="$oid"/>-->
+<!--          </a>-->
+<!--          <a>-->
+<!--            <xsl:text>b</xsl:text>-->
+<!--            <xsl:value-of select="count(../preceding-sibling::*) + 1"/>-->
+<!--          </a>-->
+<!--          <a>-->
+<!--            <xsl:value-of select="@name"/>-->
+<!--          </a>-->
+<!--        </i>-->
+        <i name="delta">
+          <a>
+            <xsl:value-of select="$oid"/>
+          </a>
+          <a>
+            <xsl:value-of select="o[1]/o[1]/text()"/>
+          </a>
+        </i>
+      </xsl:if>
       <xsl:if test="not(eo:abstract(.)) and @base and @name and starts-with(@base, 'ξ.')">
         <i>
           <xsl:attribute name="name">
