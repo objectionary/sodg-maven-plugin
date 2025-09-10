@@ -9,6 +9,7 @@ document:
       <a>b1</a>
       <a>bar</a>
       <a>xyz</a>
+      <a>x</a>
     </i>
     <i name="dispatch">
       <a>b2</a>
@@ -22,25 +23,36 @@ document:
     </i>
     <i name="dispatch">
       <a>b4</a>
+      <a>b1</a>
+      <a>x</a>
+    </i>
+    <i name="delta">
+      <a>b4</a>
+      <a>40-45-00-00-00-00-00-00</a>
+    </i>
+    <i name="dispatch">
+      <a>b5</a>
       <a>b2</a>
       <a>boom</a>
     </i>
     <i name="application">
+      <a>b6</a>
       <a>b5</a>
-      <a>b4</a>
       <a>α0</a>
       <a>b3</a>
     </i>
     <i name="put">
       <a>b1</a>
       <a>result</a>
-      <a>b5</a>
+      <a>b6</a>
     </i>
   </sodg>
 asserts:
-  - /text[contains(., 'formation(b1, "bar", "xyz");')]
+  - /text[contains(., 'formation(b1, "bar", "xyz", "x");')]
   - /text[contains(., 'dispatch(b2, b1, "bar");')]
   - /text[contains(., 'dispatch(b3, b1, "xyz");')]
-  - /text[contains(., 'dispatch(b4, b2, "boom");')]
-  - /text[contains(., 'application(b5, b4, α0, b3);')]
-  - /text[contains(., 'put(b1, "result", b5);')]
+  - /text[contains(., 'dispatch(b4, b1, "x");')]
+  - /text[contains(., 'delta(b4, "40-45-00-00-00-00-00-00");')]
+  - /text[contains(., 'dispatch(b5, b2, "boom");')]
+  - /text[contains(., 'application(b6, b5, α0, b3);')]
+  - /text[contains(., 'put(b1, "result", b6);')]

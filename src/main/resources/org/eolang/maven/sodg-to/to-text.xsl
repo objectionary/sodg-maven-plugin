@@ -68,6 +68,24 @@
       </xsl:for-each>
       <xsl:text>);</xsl:text>
     </xsl:if>
+    <xsl:if test="@name = 'delta'">
+      <xsl:value-of select="@name"/>
+      <xsl:text>(</xsl:text>
+      <xsl:for-each select="a">
+        <xsl:if test="position() &gt; 1">
+          <xsl:text>, </xsl:text>
+        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="position() = 2">
+            <xsl:value-of select="eo:escape(text())"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each>
+      <xsl:text>);</xsl:text>
+    </xsl:if>
     <xsl:if test="@name = 'application'">
       <xsl:value-of select="@name"/>
       <xsl:text>(</xsl:text>
