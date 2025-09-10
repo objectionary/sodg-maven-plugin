@@ -4,6 +4,12 @@
  * SPDX-License-Identifier: MIT
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" id="to-xembly" version="2.0">
+  <!--
+    @todo #76:45min Update translation of new instruction format to Xembly.
+     Currently it's outdated, let's update Xembly generation according to new format.
+     Test packs for this functionality should be located in the `org/eolang/maven/sodg/sodg-format`.
+     Don't forget to remove this puzzle.
+  -->
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:param name="testing"/>
   <xsl:variable name="EOL">

@@ -11,11 +11,6 @@
 [![Hits-of-Code](https://hitsofcode.com/github/objectionary/sodg-maven-plugin)](https://hitsofcode.com/view/github/objectionary/sodg-maven-plugin)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/objectionary/sodg-maven-plugin/blob/master/LICENSE.txt)
 
-> ⚠️ **Note:** This project is currently outdated.  
-> You may need to update dependencies and ensure compatibility with the latest
-> EO versions before using it.  
-> It is **not deprecated**, but active maintenance is currently paused.
-
 The `sodg-maven-plugin` builds a graph from an EO program.
 SODG stands for Surging Object DiGraph.  
 The primary consumer of SODG graphs is
@@ -27,32 +22,53 @@ of `.sodg` files.
 To generate these text files, we first use an intermediate XML format:
 
 ```xml
-
-<i name='ADD'>
-  <a>v1</a>
-</i>
-<i name='ADD'>
-  <a>v2</a>
-</i>
-<i name='BIND'>
-  <a>v1</a>
-  <a>v2</a>
-</i>
+<sodg>
+  <i name='formation'>
+    <a>b1</a>
+    <a>bar</a>
+  </i>
+  <i name='dispatch'>
+    <a>b2</a>
+    <a>b1</a>
+    <a>bar</a>
+  </i>
+  <i name="dispatch">
+    <a>b3</a>
+    <a>b2</a>
+    <a>mul</a>
+  </i>
+  <i name="application">
+    <a>b4</a>
+    <a>b3</a>
+    <a>α0</a>
+    <a>b2</a>
+  </i>
+  <i name="put">
+    <a>b1</a>
+    <a>result</a>
+    <a>b4</a>
+  </i>
+</sodg>
 ```
 
 Which is equivalent to:
 
 ```
-ADD v1
-ADD v2
-BIND v1, v2
+formation(b1, "bar")
+dispatch(b2, b1, "bar")
+dispatch(b3, b2, "mul")
+application(b4, b3, α0, b2)
+put(b1, "result", b4)
 ```
 
-This DSL consists of only three commands:
+This DSL consists of these commands:
 
-`ADD` (one argument) - adds a new node to the graph
-`BIND` (two arguments) - creates a directed edge from one node to another
-`PUT` (one argument) - attaches data to a node
+* `formation(o, attr0, attr1, ...)` – creates a new formation object
+* `dispatch(o, base, attr)` – creates a new dispatch object
+* `application(o, proto, attr, arg)` – creates a new application object
+* `delta(o, data)` – sets Δ-asset to the object
+* `lambda(o, name)` - sets λ-asset to the object
+* `put(o, attr, kid)` – sets attribute of the object
 
 The `sodg-maven-plugin` performs the following steps:
 

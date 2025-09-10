@@ -14,6 +14,10 @@
   </xsl:template>
   <!--
   Here we convert all objects into SODG format.
+    @todo #76:30min Implement `lambda(o, name)` instruction.
+     For now we are not handling lambda asset of the object. We should introduce new instruction:
+     `lambda(o, name)` - that would set lambda-asset to particular object. Don't forget to add new
+     test pack and remove this puzzle.
   -->
   <xsl:template match="/object/sodg">
     <xsl:copy>
