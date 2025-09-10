@@ -25,68 +25,30 @@
   <xsl:template match="o" mode="sodg">
     <xsl:variable name="root" select="position()"/>
     <xsl:if test="eo:abstract(.)">
-      <i>
-        <xsl:attribute name="name">
-          <xsl:value-of select="'formation'"/>
-        </xsl:attribute>
-        <a>
-          <xsl:text>b</xsl:text>
-          <xsl:value-of select="position()"/>
-        </a>
-        <xsl:for-each select="o">
-          <a>
-            <xsl:value-of select="@name"/>
-          </a>
-        </xsl:for-each>
-      </i>
+      <xsl:call-template name="i">
+        <xsl:with-param name="name" select="'formation'"/>
+        <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
+      </xsl:call-template>
     </xsl:if>
     <xsl:for-each select="//o">
       <xsl:if test="not(eo:abstract(.)) and @base and @name and not(starts-with(@base, 'ξ.'))">
-        <i>
-          <xsl:attribute name="name">
-            <xsl:value-of select="'dispatch'"/>
-          </xsl:attribute>
-          <a>
-            <xsl:text>b</xsl:text>
-            <xsl:value-of select="position()"/>
-          </a>
-          <a>
-            <xsl:text>b</xsl:text>
-            <xsl:value-of select="count(../preceding-sibling::*) + 1"/>
-          </a>
-          <a>
-            <xsl:value-of select="@name"/>
-          </a>
-        </i>
+        <xsl:call-template name="i">
+          <xsl:with-param name="name" select="'dispatch'"/>
+          <xsl:with-param name="args" select="(concat('b', position()), concat('b', count(../preceding-sibling::*) + 1), @name)"/>
+        </xsl:call-template>
       </xsl:if>
       <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">
         <xsl:variable name="oid" select="concat('b', position())"/>
-        <i name="delta">
-          <a>
-            <xsl:value-of select="$oid"/>
-          </a>
-          <a>
-            <xsl:value-of select="o[1]/o[1]/text()"/>
-          </a>
-        </i>
+        <xsl:call-template name="i">
+          <xsl:with-param name="name" select="'delta'"/>
+          <xsl:with-param name="args" select="($oid, o[1]/o[1]/text())"/>
+        </xsl:call-template>
       </xsl:if>
       <xsl:if test="not(eo:abstract(.)) and @base and @name and starts-with(@base, 'ξ.')">
-        <i>
-          <xsl:attribute name="name">
-            <xsl:value-of select="'dispatch'"/>
-          </xsl:attribute>
-          <a>
-            <xsl:text>b</xsl:text>
-            <xsl:value-of select="position()"/>
-          </a>
-          <a>
-            <xsl:text>b</xsl:text>
-            <xsl:value-of select="count(preceding-sibling::*)"/>
-          </a>
-          <a>
-            <xsl:value-of select="tokenize(@base, '\.')[last()]"/>
-          </a>
-        </i>
+        <xsl:call-template name="i">
+          <xsl:with-param name="name" select="'dispatch'"/>
+          <xsl:with-param name="args" select="(concat('b', position()), concat('b', count(preceding-sibling::*)), tokenize(@base, '\.')[last()])"/>
+        </xsl:call-template>
       </xsl:if>
     </xsl:for-each>
   </xsl:template>

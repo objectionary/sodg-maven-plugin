@@ -8,6 +8,7 @@ import com.jcabi.manifests.Manifests;
 import com.yegor256.xsline.Shift;
 import com.yegor256.xsline.StBefore;
 import com.yegor256.xsline.StClasspath;
+import com.yegor256.xsline.StSchema;
 import com.yegor256.xsline.TrClasspath;
 import com.yegor256.xsline.TrDefault;
 import com.yegor256.xsline.TrEnvelope;
@@ -32,23 +33,6 @@ final class TrSodg extends TrEnvelope {
     /**
      * Ctor.
      * @param level Logging level.
-     * @todo #11:90min Complete SODG file generation.
-     *  We removed the following transformations from this train:
-     *  "/org/eolang/maven/sodg/bind-sigma.xsl",
-     *  "/org/eolang/maven/sodg/bind-rho.xsl",
-     *  "/org/eolang/maven/sodg/pi-copies.xsl",
-     *  "/org/eolang/maven/sodg/epsilon-bindings.xsl",
-     *  "/org/eolang/maven/sodg/connect-dots.xsl",
-     *  "/org/eolang/maven/sodg/put-data.xsl",
-     *  "/org/eolang/maven/sodg/put-atoms.xsl"
-     *  This was done intentionally to avoid failures in the code.
-     *  The code fails, because the transformation is too outdated.
-     *  We need to update transformations and finish SODG generation.
-     * @todo #46:35min Create integration tests for full TrSodg.
-     *  Currently, we have only the unit tests in the sodg-packs, that check
-     *  sheets application in the isolation only. We should create more integration
-     *  test in order to check the integrity of the final results, with all sheets.
-     *  Seems that {@link TrSodgTest} is the best place to keep such tests.
      */
     TrSodg(final Level level) {
         super(
