@@ -13,7 +13,7 @@
     </xsl:copy>
   </xsl:template>
   <!--
-  Here we inject all application SODG instructions.
+  Here we inject all application instructions.
   -->
   <xsl:template match="/object/sodg">
     <xsl:copy>

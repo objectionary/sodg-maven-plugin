@@ -8,7 +8,6 @@ import com.jcabi.manifests.Manifests;
 import com.yegor256.xsline.Shift;
 import com.yegor256.xsline.StBefore;
 import com.yegor256.xsline.StClasspath;
-import com.yegor256.xsline.StSchema;
 import com.yegor256.xsline.TrClasspath;
 import com.yegor256.xsline.TrDefault;
 import com.yegor256.xsline.TrEnvelope;
@@ -71,40 +70,34 @@ final class TrSodg extends TrEnvelope {
                                 "/org/eolang/maven/sodg/add-sodg-root.xsl",
                                 "/org/eolang/maven/sodg/to-sodg.xsl",
                                 "/org/eolang/maven/sodg/applications.xsl"
-
-//                                "/org/eolang/maven/sodg/add-loc-to-objects.xsl",
-                                // do we need this? "/org/eolang/maven/sodg/add-root.xsl",
-//                                "/org/eolang/maven/sodg/append-xi.xsl",
-//                                "/org/eolang/maven/sodg/remove-leveled.xsl",
-//                                "/org/eolang/maven/sodg/touch-all.xsl"
+                            ).back(),
+                            new TrDefault<>(
+                                new StClasspath(
+                                    "/org/eolang/maven/sodg/add-meta.xsl",
+                                    "name version",
+                                    String.format(
+                                        "value %s",
+                                        new HexedUtf(
+                                            Manifests.read("EO-Version")
+                                        ).asString()
+                                    )
+                                ),
+                                new StClasspath(
+                                    "/org/eolang/maven/sodg/add-meta.xsl",
+                                    "name time",
+                                    String.format(
+                                        "value %s",
+                                        new HexedUtf(
+                                            ZonedDateTime.now(ZoneOffset.UTC).format(
+                                                DateTimeFormatter.ISO_INSTANT
+                                            )
+                                        ).asString()
+                                    )
+                                )
+                            ),
+                            new TrClasspath<>(
+                                "/org/eolang/maven/sodg/focus.xsl"
                             ).back()
-//                            new TrDefault<>(
-//                                new StClasspath(
-//                                    "/org/eolang/maven/sodg/add-meta.xsl",
-//                                    "name version",
-//                                    String.format(
-//                                        "value %s",
-//                                        new HexedUtf(
-//                                            Manifests.read("EO-Version")
-//                                        ).asString()
-//                                    )
-//                                ),
-//                                new StClasspath(
-//                                    "/org/eolang/maven/sodg/add-meta.xsl",
-//                                    "name time",
-//                                    String.format(
-//                                        "value %s",
-//                                        new HexedUtf(
-//                                            ZonedDateTime.now(ZoneOffset.UTC).format(
-//                                                DateTimeFormatter.ISO_INSTANT
-//                                            )
-//                                        ).asString()
-//                                    )
-//                                )
-//                            ),
-//                            new TrClasspath<>(
-//                                "/org/eolang/maven/sodg/focus.xsl"
-//                            ).back()
                         ),
                         SodgFiles.class
                     )

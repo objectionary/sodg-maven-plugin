@@ -7,16 +7,18 @@
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/maven/sodg/_macros.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <!--
-  Here we convert all objects into SODG format.
-  -->
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
   </xsl:template>
+  <!--
+  Here we convert all objects into SODG format.
+  -->
   <xsl:template match="/object/sodg">
     <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:apply-templates select="i"/>
       <xsl:apply-templates select="/object/o" mode="sodg"/>
     </xsl:copy>
   </xsl:template>
@@ -59,18 +61,6 @@
       </xsl:if>
       <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">
         <xsl:variable name="oid" select="concat('b', position())"/>
-<!--        <i name="dispatch">-->
-<!--          <a>-->
-<!--            <xsl:value-of select="$oid"/>-->
-<!--          </a>-->
-<!--          <a>-->
-<!--            <xsl:text>b</xsl:text>-->
-<!--            <xsl:value-of select="count(../preceding-sibling::*) + 1"/>-->
-<!--          </a>-->
-<!--          <a>-->
-<!--            <xsl:value-of select="@name"/>-->
-<!--          </a>-->
-<!--        </i>-->
         <i name="delta">
           <a>
             <xsl:value-of select="$oid"/>
