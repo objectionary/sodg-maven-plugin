@@ -15,7 +15,7 @@
     <xsl:copy>
       <xsl:apply-templates select="node()|@*"/>
       <xsl:call-template name="i">
-        <xsl:with-param name="name" select="'COMMENT'"/>
+        <xsl:with-param name="name" select="'comment'"/>
         <xsl:with-param name="args" as="item()*">
           <!-- nothing here -->
         </xsl:with-param>

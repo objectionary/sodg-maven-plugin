@@ -71,9 +71,7 @@
             <xsl:value-of select="count(preceding-sibling::*)"/>
           </a>
           <a>
-            <!-- no information about instructions here yet -->
-            <!-- should clean `ξ.qty.mul` to just `mul` -->
-            <xsl:value-of select="preceding-sibling::o/@name"/>
+            <xsl:value-of select="tokenize(@base, '\.')[last()]"/>
           </a>
         </i>
       </xsl:if>

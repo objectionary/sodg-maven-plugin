@@ -7,7 +7,7 @@ input: |
     qty.mul > cost
       price
 asserts:
-  - /object/sodg[count(i)=7]
+  - /object/sodg[count(i[not(@name='comment')])=7]
   - /object/sodg/i[@name='formation']/a[1][text()='b1']
   - /object/sodg/i[@name='formation']/a[3][text()='qty']
   - /object/sodg/i[@name='formation']/a[4][text()='price']

@@ -33,18 +33,15 @@
                 <xsl:value-of select="$apos"/>
               </a>
               <a>
-                <xsl:text>b</xsl:text>
-                <xsl:value-of select="../@base"/>
-                <!-- position of mul -->
+                <xsl:variable name="base" select="tokenize(../@base, '\.')[last()]"/>
+                <xsl:value-of select="/object/sodg/i[@name='dispatch' and a[3]=$base]/a[1]"/>
               </a>
               <a>
                 <xsl:value-of select="@as"/>
               </a>
               <a>
-                <xsl:text>b</xsl:text>
-                <xsl:value-of select="@base"/>
-                <!-- we should find the correct number among other instructions by object's base -->
-                <!-- should find number attached to instruction with b5 (where argument is `price`) -->
+                <xsl:variable name="polished" select="substring-after(@base, 'ξ.')"/>
+                <xsl:value-of select="/object/sodg/i[@name='dispatch' and a[3]=$polished]/a[1]"/>
               </a>
             </i>
           </xsl:for-each>
@@ -54,7 +51,6 @@
             </xsl:attribute>
             <a>
               <xsl:text>b</xsl:text>
-              <!-- globalization is needed here -->
               <xsl:value-of select="$root"/>
             </a>
             <a>
