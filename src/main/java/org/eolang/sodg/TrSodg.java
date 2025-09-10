@@ -84,8 +84,8 @@ final class TrSodg extends TrEnvelope {
                             ).back()
                         ),
                         SodgFiles.class
-                    )
-//                    new StSchema("/org/eolang/maven/sodg/after.xsd")
+                    ),
+                    new StSchema("/org/eolang/maven/sodg/after.xsd")
                 ),
                 SodgFiles.class,
                 level

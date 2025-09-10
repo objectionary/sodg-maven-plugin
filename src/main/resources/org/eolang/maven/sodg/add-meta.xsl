@@ -18,10 +18,10 @@
         <xsl:text>meta-</xsl:text>
         <xsl:value-of select="$name"/>
       </xsl:variable>
-      <i name="meta">
-        <a><xsl:value-of select="eo:var($v)"/></a>
-        <a><xsl:value-of select="$value"/></a>
-      </i>
+      <xsl:call-template name="i">
+        <xsl:with-param name="name" select="'meta'"/>
+        <xsl:with-param name="args" select="(eo:var($v), $value)"/>
+      </xsl:call-template>
     </xsl:copy>
   </xsl:template>
   <xsl:template match="o" mode="sodg">
