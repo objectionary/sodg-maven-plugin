@@ -32,89 +32,34 @@
     <xsl:value-of select="$EOL"/>
   </xsl:template>
   <xsl:template match="i[@name!='comment']">
-    <xsl:if test="@name = 'formation'">
-      <xsl:value-of select="@name"/>
-      <xsl:text>(</xsl:text>
-      <xsl:for-each select="a">
-        <xsl:if test="position() &gt; 1">
-          <xsl:text>, </xsl:text>
-        </xsl:if>
-        <xsl:choose>
-          <xsl:when test="position() = 1">
-            <xsl:value-of select="."/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="eo:escape(text())"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-      <xsl:text>);</xsl:text>
-    </xsl:if>
-    <xsl:if test="@name = 'dispatch'">
-      <xsl:value-of select="@name"/>
-      <xsl:text>(</xsl:text>
-      <xsl:for-each select="a">
-        <xsl:if test="position() &gt; 1">
-          <xsl:text>, </xsl:text>
-        </xsl:if>
-        <xsl:choose>
-          <xsl:when test="position() = 3">
-            <xsl:value-of select="eo:escape(text())"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="."/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-      <xsl:text>);</xsl:text>
-    </xsl:if>
-    <xsl:if test="@name = 'delta'">
-      <xsl:value-of select="@name"/>
-      <xsl:text>(</xsl:text>
-      <xsl:for-each select="a">
-        <xsl:if test="position() &gt; 1">
-          <xsl:text>, </xsl:text>
-        </xsl:if>
-        <xsl:choose>
-          <xsl:when test="position() = 2">
-            <xsl:value-of select="eo:escape(text())"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="."/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-      <xsl:text>);</xsl:text>
-    </xsl:if>
-    <xsl:if test="@name = 'application'">
-      <xsl:value-of select="@name"/>
-      <xsl:text>(</xsl:text>
-      <xsl:for-each select="a">
-        <xsl:if test="position() &gt; 1">
-          <xsl:text>, </xsl:text>
-        </xsl:if>
-        <xsl:value-of select="."/>
-      </xsl:for-each>
-      <xsl:text>);</xsl:text>
-    </xsl:if>
-    <xsl:if test="@name = 'put'">
-      <xsl:value-of select="@name"/>
-      <xsl:text>(</xsl:text>
-      <xsl:for-each select="a">
-        <xsl:if test="position() &gt; 1">
-          <xsl:text>, </xsl:text>
-        </xsl:if>
-        <xsl:choose>
-          <xsl:when test="position() = 2">
-            <xsl:value-of select="eo:escape(text())"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="."/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-      <xsl:text>);</xsl:text>
-    </xsl:if>
+    <xsl:value-of select="@name"/>
+    <xsl:text>(</xsl:text>
+    <xsl:for-each select="a">
+      <xsl:if test="position() &gt; 1">
+        <xsl:text>, </xsl:text>
+      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="../@name='application'">
+          <xsl:value-of select="."/>
+        </xsl:when>
+        <xsl:when test="../@name='formation' and position() &gt; 1">
+          <xsl:value-of select="eo:escape(text())"/>
+        </xsl:when>
+        <xsl:when test="../@name='dispatch' and position() = 3">
+          <xsl:value-of select="eo:escape(text())"/>
+        </xsl:when>
+        <xsl:when test="../@name='delta' and position() = 2">
+          <xsl:value-of select="eo:escape(text())"/>
+        </xsl:when>
+        <xsl:when test="../@name='put' and position() = 2">
+          <xsl:value-of select="eo:escape(text())"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+    <xsl:text>);</xsl:text>
     <xsl:if test="c and not(empty(c/text()))">
       <xsl:text> # </xsl:text>
       <xsl:value-of select="c"/>
