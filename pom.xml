@@ -164,6 +164,11 @@
       <version>2.0.2</version>
     </dependency>
     <dependency>
+      <groupId>com.github.volodya-lombrozo</groupId>
+      <artifactId>xnav</artifactId>
+      <version>0.1.18</version>
+    </dependency>
+    <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>farea</artifactId>
       <version>0.15.4</version>
@@ -203,6 +208,7 @@
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-matchers</artifactId>
       <!-- version from the parent pom -->
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
@@ -219,31 +225,11 @@
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
-            <configuration>
-              <additionalClasspathElements>
-                <additionalClasspathElement>
-                  ${project.build.directory}/${project.build.finalName}.jar
-                </additionalClasspathElement>
-              </additionalClasspathElements>
-            </configuration>
           </execution>
         </executions>
       </plugin>
       <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <!-- version from the parent pom -->
-        <configuration>
-          <archive>
-            <index>true</index>
-            <manifestEntries>
-              <Sodg-Version>${project.version}</Sodg-Version>
-            </manifestEntries>
-          </archive>
-        </configuration>
       </plugin>
     </plugins>
   </build>

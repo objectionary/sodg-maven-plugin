@@ -144,16 +144,23 @@ final class SodgFiles {
     private final Set<String> sodgExcludes;
 
     /**
+     * Plugin metadata.
+     */
+    private final String version;
+
+    /**
      * Constructor.
      *
      * @param xslMeasures The path of the file where XSL measurements
      * @param targetDir The target directory
      * @param tojos The tojos
+     * @param version Version
      */
     SodgFiles(
         final File xslMeasures,
         final File targetDir,
-        final TjsForeign tojos
+        final TjsForeign tojos,
+        final String version
     ) {
         this(
             false,
@@ -164,7 +171,8 @@ final class SodgFiles {
             targetDir,
             tojos,
             new SetOf<>("**"),
-            new SetOf<>()
+            new SetOf<>(),
+            version
         );
     }
 
@@ -180,7 +188,9 @@ final class SodgFiles {
      * @param foreign The tojos
      * @param sodgIncludes List of object names to participate in SODG generation
      * @param sodgExcludes List of object names which are excluded from SODG generation
+     * @param version Version
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     SodgFiles(
         final boolean generateGraphFiles,
         final boolean generateXemblyFiles,
@@ -190,7 +200,8 @@ final class SodgFiles {
         final File targetDir,
         final TjsForeign foreign,
         final Set<String> sodgIncludes,
-        final Set<String> sodgExcludes
+        final Set<String> sodgExcludes,
+        final String version
     ) {
         this.generateGraphFiles = generateGraphFiles;
         this.generateXemblyFiles = generateXemblyFiles;
@@ -201,6 +212,7 @@ final class SodgFiles {
         this.tojos = foreign;
         this.sodgIncludes = sodgIncludes;
         this.sodgExcludes = sodgExcludes;
+        this.version = version;
     }
 
     /**
@@ -311,7 +323,9 @@ final class SodgFiles {
         if (Logger.isTraceEnabled(this)) {
             Logger.trace(this, "SODGs:\n%s", instructions);
         }
-        new Saved(String.format("# %s\n\n%s", new Disclaimer(), instructions), sodg).value();
+        new Saved(
+            String.format("# %s\n\n%s", new Disclaimer(this.version), instructions), sodg
+        ).value();
         if (this.generateSodgXmlFiles) {
             final Path sibling = sodg.resolveSibling(String.format("%s.xml", sodg.getFileName()));
             new Saved(after.toString(), sibling).value();
@@ -321,7 +335,9 @@ final class SodgFiles {
                 .pass(after)
                 .xpath("/xembly/text()").get(0);
             final Path sibling = sodg.resolveSibling(String.format("%s.xe", sodg.getFileName()));
-            new Saved(String.format("# %s\n\n%s\n", new Disclaimer(), xembly), sibling).value();
+            new Saved(
+                String.format("# %s\n\n%s\n", new Disclaimer(this.version), xembly), sibling
+            ).value();
             this.makeGraph(xembly, sodg);
         }
         return instructions.split("\n").length;
@@ -381,7 +397,7 @@ final class SodgFiles {
             }
             final Path sibling = sodg.resolveSibling(String.format("%s.dot", sodg.getFileName()));
             new Saved(
-                String.format("/%s %s %1$s/\n\n%s", "*", new Disclaimer(), dot),
+                String.format("/%s %s %1$s/\n\n%s", "*", new Disclaimer(this.version), dot),
                 sibling
             ).value();
         }
