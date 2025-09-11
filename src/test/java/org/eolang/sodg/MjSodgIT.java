@@ -42,6 +42,7 @@ final class MjSodgIT {
                         .text().get()
                 ).execution().goals("sodg");
                 f.exec("process-sources");
+                System.out.println(f.log().content());
                 MatcherAssert.assertThat(
                     "the .sodg file is generated",
                     f.files().file("target/eo/sodg/foo.sodg").exists(),
