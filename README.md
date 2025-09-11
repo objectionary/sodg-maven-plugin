@@ -54,8 +54,8 @@ To generate these text files, we first use an intermediate XML format:
 Which is equivalent to:
 
 ```
-formation(b1, "bar")
-dispatch(b2, b1, "bar")
+formation(b1, "qty")
+dispatch(b2, b1, "qty")
 dispatch(b3, b2, "mul")
 application(b4, b3, α0, b2)
 put(b1, "result", b4)
