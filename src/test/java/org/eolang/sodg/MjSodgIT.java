@@ -41,6 +41,7 @@ final class MjSodgIT {
                         .element("version")
                         .text().get()
                 ).execution().goals("sodg");
+                System.out.println(f.log().content());
                 f.exec("process-sources");
                 MatcherAssert.assertThat(
                     "the .sodg file is generated",
