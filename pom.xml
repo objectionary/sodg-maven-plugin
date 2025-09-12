@@ -164,11 +164,6 @@
       <version>2.0.2</version>
     </dependency>
     <dependency>
-      <groupId>com.github.volodya-lombrozo</groupId>
-      <artifactId>xnav</artifactId>
-      <version>0.1.18</version>
-    </dependency>
-    <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>farea</artifactId>
       <version>0.15.4</version>
@@ -225,10 +220,6 @@
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
-            <configuration>
-              <forkCount>1</forkCount>
-              <reuseForks>true</reuseForks>
-            </configuration>
           </execution>
         </executions>
       </plugin>
