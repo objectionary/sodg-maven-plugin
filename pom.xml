@@ -205,6 +205,18 @@
       <!-- version from the parent pom -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.maven.shared</groupId>
+      <artifactId>maven-invoker</artifactId>
+      <version>3.3.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.volodya-lombrozo</groupId>
+      <artifactId>xnav</artifactId>
+      <version>0.1.18</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -219,6 +231,20 @@
             <goals>
               <goal>integration-test</goal>
               <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>3.1.2</version>
+        <executions>
+          <execution>
+            <id>install-before-its</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>install</goal>
             </goals>
           </execution>
         </executions>
