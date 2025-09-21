@@ -29,7 +29,8 @@ path = [
     "README.md",
     "renovate.json",
     "src/main/resources/META-INF/services/javax.xml.transform.TransformerFactory",
-    "src/main/resources/META-INF/services/javax.xml.xpath.XPathFactory"
+    "src/main/resources/META-INF/services/javax.xml.xpath.XPathFactory",
+    ".mvn/wrapper/maven-wrapper.properties"
 ]
 precedence = "override"
 SPDX-FileCopyrightText = "Copyright (c) 2025 Yegor Bugayenko"

@@ -34,3 +34,5 @@ jobs:
             **/*.properties
             **/*.toml
             **/*.groovy
+          ignore: >-
+            .mvn/wrapper/maven-wrapper.properties
