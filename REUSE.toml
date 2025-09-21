@@ -30,7 +30,9 @@ path = [
     "renovate.json",
     "src/main/resources/META-INF/services/javax.xml.transform.TransformerFactory",
     "src/main/resources/META-INF/services/javax.xml.xpath.XPathFactory",
-    ".mvn/wrapper/maven-wrapper.properties"
+    ".mvn/wrapper/maven-wrapper.properties",
+    "mvnw",
+    "mvnw.cmd"
 ]
 precedence = "override"
 SPDX-FileCopyrightText = "Copyright (c) 2025 Yegor Bugayenko"
