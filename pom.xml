@@ -211,12 +211,6 @@
       <version>3.3.0</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.github.volodya-lombrozo</groupId>
-      <artifactId>xnav</artifactId>
-      <version>0.1.18</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -232,6 +226,11 @@
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
+            <configuration>
+              <systemPropertyVariables>
+                <sodg.version>${project.version}</sodg.version>
+              </systemPropertyVariables>
+            </configuration>
           </execution>
         </executions>
       </plugin>

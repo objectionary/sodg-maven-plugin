@@ -4,13 +4,13 @@
  */
 package org.eolang.sodg;
 
-import com.github.lombrozo.xnav.Xnav;
 import com.yegor256.Mktmp;
 import com.yegor256.MktmpResolver;
 import com.yegor256.WeAreOnline;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
 import org.apache.maven.shared.invoker.InvocationRequest;
@@ -39,9 +39,7 @@ final class MjSodgIT {
             MjSodgIT.executed(
                 temp.toFile(),
                 String.format(
-                    "org.eolang:sodg-maven-plugin:%s:sodg",
-                    new Xnav(Paths.get("pom.xml")).element("project").element("version").text()
-                        .get()
+                    "org.eolang:sodg-maven-plugin:%s:sodg", System.getProperty("sodg.version")
                 )
             ).getExitCode(),
             Matchers.equalTo(0)
@@ -61,9 +59,21 @@ final class MjSodgIT {
         request.addArg(goal);
         request.setBaseDirectory(wdir);
         final Invoker invoker = new DefaultInvoker();
-        final String mhome = System.getenv("M2_HOME");
-        System.out.println(mhome);
-        invoker.setMavenHome(new File(mhome));
+        invoker.setMavenExecutable(MjSodgIT.executableMavenPath().toFile());
         return invoker.execute(request);
+    }
+
+    /**
+     * Executable path for `mvn`.
+     * @return Path to executable maven
+     */
+    private static Path executableMavenPath() {
+        final String executable;
+        if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win")) {
+            executable = "mvnw.cmd";
+        } else {
+            executable = "mvnw";
+        }
+        return Paths.get(executable).toAbsolutePath();
     }
 }
