@@ -61,7 +61,9 @@ final class MjSodgIT {
         request.addArg(goal);
         request.setBaseDirectory(wdir);
         final Invoker invoker = new DefaultInvoker();
-        invoker.setMavenHome(new File(System.getenv("MAVEN_HOME")));
+        final String mhome = System.getenv("MAVEN_HOME");
+        System.out.println(mhome);
+        invoker.setMavenHome(new File(mhome));
         return invoker.execute(request);
     }
 }
