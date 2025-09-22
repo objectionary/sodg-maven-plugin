@@ -68,12 +68,6 @@ final class MjSodgIT {
      * @return Path to executable maven
      */
     private static Path executableMavenPath() {
-        final String executable;
-        if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win")) {
-            executable = "mvnw.cmd";
-        } else {
-            executable = "mvnw";
-        }
-        return Paths.get(executable).toAbsolutePath();
+        return Paths.get(System.getenv("MAVEN_PATH"));
     }
 }

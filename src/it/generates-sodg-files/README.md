@@ -6,5 +6,5 @@ generates [SODG](https://github.com/objectionary/sodg-maven-plugin) files.
 If you only need to run this test, use the following command:
 
 ```shell
-./mvnw clean integration-test -Dinvoker.test=generates-sodg-files -DskipTests
+mvn clean integration-test -Dinvoker.test=generates-sodg-files -DskipTests
 ```
