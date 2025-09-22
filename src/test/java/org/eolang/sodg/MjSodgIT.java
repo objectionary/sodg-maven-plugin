@@ -16,6 +16,7 @@ import org.apache.maven.shared.invoker.InvocationRequest;
 import org.apache.maven.shared.invoker.InvocationResult;
 import org.apache.maven.shared.invoker.Invoker;
 import org.apache.maven.shared.invoker.MavenInvocationException;
+import org.cactoos.text.TextOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 final class MjSodgIT {
 
     @Test
-    void executesMojoWithoutMavenProject(@Mktmp final Path temp) throws MavenInvocationException {
+    void executesMojoWithoutMavenProject(@Mktmp final Path temp) throws Exception {
         MatcherAssert.assertThat(
             "Mojo is not runnable without a pom.xml (project), but it should",
             MjSodgIT.executed(
@@ -52,8 +53,7 @@ final class MjSodgIT {
      * @return Invocation result
      * @throws MavenInvocationException if maven fails
      */
-    private static InvocationResult executed(final File wdir, final String goal)
-        throws MavenInvocationException {
+    private static InvocationResult executed(final File wdir, final String goal) throws Exception {
         final InvocationRequest request = new DefaultInvocationRequest();
         request.addArg(goal);
         request.setBaseDirectory(wdir);
@@ -66,7 +66,17 @@ final class MjSodgIT {
      * Executable path for `mvn`.
      * @return Path to executable maven
      */
-    private static Path executableMavenPath() {
-        return Paths.get(System.getenv("MAVEN_PATH"));
+    private static Path executableMavenPath() throws Exception {
+        final String executable;
+        if (System.getenv("MAVEN_PATH") != null) {
+            executable = System.getenv("MAVEN_PATH");
+        } else {
+            executable = new TextOf(
+                new ProcessBuilder(
+                    "/usr/bin/env", "sh", "-lc", "command -v mvn || which mvn"
+                ).start().getInputStream()
+            ).asString().trim();
+        }
+        return Paths.get(executable);
     }
 }
