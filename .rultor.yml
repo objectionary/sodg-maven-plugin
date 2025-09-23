@@ -8,6 +8,8 @@ assets:
   settings.xml: yegor256/objectionary-secrets#settings.xml
   pubring.gpg: yegor256/objectionary-secrets#pubring.gpg
   secring.gpg: yegor256/objectionary-secrets#secring.gpg
+install: |
+  export MAVEN_PATH="$(command -v mvn || true)"
 merge:
   script: mvn clean install -Pqulice --errors --batch-mode
 release:

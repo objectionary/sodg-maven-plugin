@@ -39,7 +39,8 @@ import org.cactoos.set.SetOf;
     name = "sodg",
     defaultPhase = LifecyclePhase.PROCESS_SOURCES,
     threadSafe = true,
-    requiresDependencyResolution = ResolutionScope.COMPILE
+    requiresDependencyResolution = ResolutionScope.COMPILE,
+    requiresProject = false
 )
 @SuppressWarnings({"PMD.ImmutableField", "PMD.AvoidProtectedFieldInFinalClass"})
 public final class MjSodg extends AbstractMojo {
