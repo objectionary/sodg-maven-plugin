@@ -4,9 +4,9 @@
  */
 package org.eolang.sodg;
 
+import com.yegor256.Jaxec;
 import com.yegor256.Mktmp;
 import com.yegor256.MktmpResolver;
-import com.yegor256.WeAreOnline;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,7 +16,6 @@ import org.apache.maven.shared.invoker.InvocationRequest;
 import org.apache.maven.shared.invoker.InvocationResult;
 import org.apache.maven.shared.invoker.Invoker;
 import org.apache.maven.shared.invoker.MavenInvocationException;
-import org.cactoos.text.TextOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * @since 0.0.0
  */
 @SuppressWarnings("JTCOP.RuleEveryTestHasProductionClass")
-@ExtendWith(WeAreOnline.class)
 @ExtendWith(MktmpResolver.class)
 final class MjSodgIT {
 
@@ -66,16 +64,14 @@ final class MjSodgIT {
      * Executable path for `mvn`.
      * @return Path to executable maven
      */
-    private static Path executableMavenPath() throws Exception {
+    private static Path executableMavenPath() {
         final String executable;
         if (System.getenv("MAVEN_PATH") != null) {
             executable = System.getenv("MAVEN_PATH");
         } else {
-            executable = new TextOf(
-                new ProcessBuilder(
-                    "/usr/bin/env", "sh", "-lc", "command -v mvn || which mvn"
-                ).start().getInputStream()
-            ).asString().trim();
+            executable = new Jaxec(
+                "/usr/bin/env", "sh", "-lc", "command -v mvn || which mvn"
+            ).exec().stdout().trim();
         }
         return Paths.get(executable);
     }

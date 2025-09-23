@@ -212,6 +212,11 @@
       <version>3.3.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.yegor256</groupId>
+      <artifactId>jaxec</artifactId>
+      <version>0.4.1</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
