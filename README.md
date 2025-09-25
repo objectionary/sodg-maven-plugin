@@ -15,46 +15,112 @@ The `sodg-maven-plugin` builds a graph from an EO program.
 SODG stands for Surging Object DiGraph. The primary consumer of SODG graphs is
 the [reo] project. You can find [some examples][reo-tests] of `.sodg` files.
 
+## Quick Start
+
+Then, start with a simple EO program in the `order.eo` file:
+
+```eo
+[qty price] > order
+  qty.mul > cost
+    price
+```
+
+That can be translated to the following [XMIR][XMIR guide]:
+
+```xml
+<object>
+   <o name="order">
+      <o base="ξ" name="xi🌵"/>
+      <o base="∅" name="qty"/>
+      <o base="∅" name="price"/>
+      <o base="ξ.qty.mul" name="cost">
+         <o as="α0" base="ξ.price"/>
+      </o>
+   </o>
+</object>
+```
+
+Then, add this plugin to your `pom.xml`:
+
+```xml
+<plugin>
+   <groupId>org.eolang</groupId>
+   <artifactId>sodg-maven-plugin</artifactId>
+   <!-- Check the latest version at Maven central-->
+   <executions>
+      <execution>
+         <goals>
+            <goal>sodg</goal>
+         </goals>
+      </execution>
+   </executions>
+</plugin>
+```
+
+Or invoke it directly:
+
+```bash
+mvn org.eolang:sodg-maven-plugin:<version>:sodg
+```
+
+You should see `order.sodg` file being created under `target/eo/sodg` folder,
+with the following content:
+
+```sodg
+formation(b1, "xi🌵", "qty", "price", "cost")
+dispatch(b2, b1, "xi🌵")
+dispatch(b3, b1, "qty")
+dispatch(b4, b1, "price")
+dispatch(b5, b3, "mul")
+application(b6, b5, α0, b4)
+put(b1, "cost", b6)
+```
+
+## SODG Format
+
 To generate these text files, we first use an intermediate XML format:
 
 ```xml
 <sodg>
-  <i name='formation'>
-    <a>b1</a>
-    <a>bar</a>
-  </i>
-  <i name='dispatch'>
-    <a>b2</a>
-    <a>b1</a>
-    <a>bar</a>
-  </i>
-  <i name="dispatch">
-    <a>b3</a>
-    <a>b2</a>
-    <a>mul</a>
-  </i>
-  <i name="application">
-    <a>b4</a>
-    <a>b3</a>
-    <a>α0</a>
-    <a>b2</a>
-  </i>
-  <i name="put">
-    <a>b1</a>
-    <a>result</a>
-    <a>b4</a>
-  </i>
+   <i name="formation">
+      <a>b1</a>
+      <a>xi🌵</a>
+      <a>qty</a>
+      <a>price</a>
+      <a>cost</a>
+   </i>
+   <i name="dispatch">
+      <a>b2</a>
+      <a>b1</a>
+      <a>xi🌵</a>
+   </i>
+   <i name="dispatch">
+      <a>b3</a>
+      <a>b1</a>
+      <a>qty</a>
+   </i>
+   <i name="dispatch">
+      <a>b4</a>
+      <a>b1</a>
+      <a>price</a>
+   </i>
+   <i name="dispatch">
+      <a>b5</a>
+      <a>b3</a>
+      <a>mul</a>
+   </i>
+   <i name="application">
+      <a>b6</a>
+      <a>b5</a>
+      <a>α0</a>
+      <a>b4</a>
+   </i>
+   <i name="put">
+      <a>b1</a>
+      <a>cost</a>
+      <a>b6</a>
+   </i>
 </sodg>
-```
-
-Which is equivalent to:
-
-```sodg
-formation(b1, "qty")
-dispatch(b2, b1, "qty")
-dispatch(b3, b2, "mul")
-application(b4, b3, α0, b2)
-put(b1, "result", b4)
 ```
 
 This DSL consists of these commands:
