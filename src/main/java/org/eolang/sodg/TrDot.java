@@ -29,9 +29,9 @@ final class TrDot extends TrEnvelope {
                         "/org/eolang/maven/sodg-to/normalize-attrs.xsl",
                         "/org/eolang/maven/sodg-to/to-dot.xsl"
                     ).back(),
-                    SodgFiles.class
+                    TrDot.class
                 ),
-                SodgFiles.class,
+                TrDot.class,
                 level
             )
         );
