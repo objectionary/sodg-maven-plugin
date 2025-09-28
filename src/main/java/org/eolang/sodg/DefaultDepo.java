@@ -1,9 +1,12 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.sodg;
 
 import com.yegor256.xsline.Shift;
 import com.yegor256.xsline.Train;
 import java.io.File;
-import java.io.ObjectStreamClass;
 import java.util.Map;
 import java.util.logging.Level;
 import org.cactoos.map.MapEntry;
@@ -21,20 +24,24 @@ class DefaultDepo implements Depo {
     private final Map<String, Train<Shift>> trains;
 
     /**
-     * The train environment.
+     * Ctor.
+     * @param measures Measures
      */
-    private final Map<String, Boolean> environment;
-
-    DefaultDepo(final File measures, final Map<String, Boolean> env) {
+    DefaultDepo(final File measures) {
         this(
-            new MapOf<String, Train<Shift>>(
-                new MapEntry<>("sodg", new TrMeasured(new TrSodg(DefaultDepo.loggingLevel()), measures)),
-                new MapEntry<>("dot", new TrMeasured(new TrDot(DefaultDepo.loggingLevel()), measures)),
+            new MapOf<>(
+                new MapEntry<>(
+                    "sodg", new TrMeasured(new TrSodg(DefaultDepo.loggingLevel()), measures)
+                ),
+                new MapEntry<>(
+                    "dot", new TrMeasured(new TrDot(DefaultDepo.loggingLevel()), measures)
+                ),
                 new MapEntry<>("xembly", new TrMeasured(new TrXembly(), measures)),
                 new MapEntry<>("text", new TrMeasured(new TrText(), measures)),
-                new MapEntry<>("finish", new TrMeasured(new TrFinish(DefaultDepo.loggingLevel()), measures))
-            ),
-            env
+                new MapEntry<>(
+                    "finish", new TrMeasured(new TrFinish(DefaultDepo.loggingLevel()), measures)
+                )
+            )
         );
     }
 
@@ -42,21 +49,13 @@ class DefaultDepo implements Depo {
      * Ctor.
      * @param trns The trains
      */
-    DefaultDepo(
-        final Map<String, Train<Shift>> trns, final Map<String, Boolean> env
-    ) {
+    DefaultDepo(final Map<String, Train<Shift>> trns) {
         this.trains = trns;
-        this.environment = env;
     }
 
     @Override
     public Train<Shift> train(final String name) {
         return this.trains.get(name);
-    }
-
-    @Override
-    public Boolean value(final String env) {
-        return this.environment.get(env);
     }
 
     /**

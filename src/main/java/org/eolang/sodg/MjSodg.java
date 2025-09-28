@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -38,8 +39,7 @@ import org.cactoos.set.SetOf;
  * <p>
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  *
- * @since 0.27
- * @checkstyle ClassFanOutComplexityCheck (500 lines)
+ * @since 0.0.1
  */
 @Mojo(
     name = "sodg",
@@ -132,16 +132,7 @@ public final class MjSodg extends AbstractMojo {
     /**
      * Depo.
      */
-    private final Depo depo = new DefaultDepo(
-        this.xslMeasures,
-        new MapOf<>(
-            new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
-            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
-            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
-            new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
-            new MapEntry<>("generateDotFiles", this.generateDotFiles)
-        )
-    );
+    private final Depo depo = new DefaultDepo(this.xslMeasures);
 
     /**
      * Shall we generate .xml files with SODGs?
@@ -235,10 +226,10 @@ public final class MjSodg extends AbstractMojo {
     }
 
     /**
-     * Generate SODG files.
-     * @throws IOException If fails.
+     * Generate SODG.
+     * @throws IOException if I/O fails
      */
-    void generate() throws IOException {
+    private void generate() throws IOException {
         if (this.generateGraphFiles && !this.generateXemblyFiles) {
             throw new IllegalStateException(
                 "Setting generateGraphFiles and not setting generateXemblyFiles has no effect because .graph files require .xe files"
@@ -249,6 +240,13 @@ public final class MjSodg extends AbstractMojo {
                 "Setting generateDotFiles and not setting generateGraphFiles has no effect because .dot files require .graph files"
             );
         }
+        final Map<String, Boolean> config = new MapOf<>(
+            new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
+            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
+            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
+            new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
+            new MapEntry<>("generateDotFiles", this.generateDotFiles)
+        );
         final Collection<TjForeign> scoped = this.tojos.withXmir();
         final Path home = this.targetDir.toPath().resolve(MjSodg.DIR);
         int total = 0;
@@ -274,8 +272,10 @@ public final class MjSodg extends AbstractMojo {
                 continue;
             }
             final int extra = new SodgRendering(
-                this.depo, this.descriptor.getVersion()
-            ).rendered(xmir, sodg);
+                this.depo, config, this.descriptor.getVersion()
+            ).rendered(
+                xmir, sodg
+            );
             instructions += extra;
             tojo.withSodg(sodg.toAbsolutePath());
             Logger.info(
@@ -302,8 +302,8 @@ public final class MjSodg extends AbstractMojo {
      * Exclude this EO program from processing?
      *
      * @param name The name
-     * @param includes Patterns for sodgs to be included
-     * @param excludes Patterns for sodgs to be excluded
+     * @param includes Patterns for SODGs to be included
+     * @param excludes Patterns for SODGs to be excluded
      * @return TRUE if to exclude
      */
     private boolean excluded(

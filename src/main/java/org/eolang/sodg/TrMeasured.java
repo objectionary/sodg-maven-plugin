@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.sodg;
 
 import com.jcabi.log.Logger;
@@ -6,7 +10,6 @@ import com.yegor256.xsline.TrLambda;
 import com.yegor256.xsline.Train;
 import java.io.File;
 import java.util.Iterator;
-import org.cactoos.Scalar;
 
 /**
  * Measured train.
@@ -14,26 +17,27 @@ import org.cactoos.Scalar;
  */
 final class TrMeasured implements Train<Shift> {
     /**
-     * The origin
+     * The origin.
      */
     private final Train<Shift> origin;
 
     /**
-     * XSL Measures.
+     * XSL measures.
      */
     private final File measures;
 
     /**
      * Ctor.
      * @param train Train
-     * @param msrs XSL Measures
+     * @param msrs XSL measures
      */
     TrMeasured(final Train<Shift> train, final File msrs) {
         this.origin = train;
         this.measures = msrs;
     }
 
-    private Train<Shift> measured() {
+    @Override
+    public Train<Shift> with(final Shift element) {
         if (this.measures.getParentFile().mkdirs()) {
             Logger.debug(this, "Directory created for %[file]s", this.measures);
         }
@@ -60,12 +64,7 @@ final class TrMeasured implements Train<Shift> {
                 shift,
                 this.measures.toPath()
             )
-        );
-    }
-
-    @Override
-    public Train<Shift> with(final Shift element) {
-        return this.measured().with(element);
+        ).with(element);
     }
 
     @Override

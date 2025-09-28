@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.sodg;
 
 import com.jcabi.log.Logger;
@@ -7,6 +11,7 @@ import com.yegor256.xsline.Xsline;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.Map;
 import org.cactoos.list.ListOf;
 import org.cactoos.scalar.IoChecked;
 import org.cactoos.scalar.LengthOf;
@@ -20,11 +25,30 @@ import org.xembly.Xembler;
  */
 final class SodgRendering {
 
+    /**
+     * The depo.
+     */
     private final Depo depo;
+
+    /**
+     * The configuration.
+     */
+    private final Map<String, Boolean> config;
+
+    /**
+     * The version.
+     */
     private final String version;
 
-    SodgRendering(final Depo dpo, final String vrsn) {
+    /**
+     * Ctor.
+     * @param dpo The depo
+     * @param cfg The configuration
+     * @param vrsn The version
+     */
+    SodgRendering(final Depo dpo, final Map<String, Boolean> cfg, final String vrsn) {
         this.depo = dpo;
+        this.config = cfg;
         this.version = vrsn;
     }
 
@@ -44,11 +68,11 @@ final class SodgRendering {
         new Saved(
             String.format("# %s\n\n%s", new Disclaimer(this.version), instructions), base
         ).value();
-        if (this.depo.value("generateSodgXmlFiles")) {
+        if (this.config.get("generateSodgXmlFiles")) {
             final Path sibling = base.resolveSibling(String.format("%s.xml", base.getFileName()));
             new Saved(after.toString(), sibling).value();
         }
-        if (this.depo.value("generateXemblyFiles")) {
+        if (this.config.get("generateXemblyFiles")) {
             final String xembly = new Xsline(this.depo.train("xembly")).pass(after)
                 .xpath("/xembly/text()").get(0);
             final Path sibling = base.resolveSibling(String.format("%s.xe", base.getFileName()));
@@ -68,7 +92,7 @@ final class SodgRendering {
      * @throws IOException If fails
      */
     private void makeGraph(final String xembly, final Path sodg) throws IOException {
-        if (this.depo.value("generateGraphFiles")) {
+        if (this.config.get("generateGraphFiles")) {
             final Directives all = new Directives(xembly);
             Logger.debug(
                 this, "There are %d Xembly directives for %s",
@@ -106,7 +130,7 @@ final class SodgRendering {
      * @throws IOException If fails
      */
     private void makeDot(final XML graph, final Path sodg) throws IOException {
-        if (this.depo.value("generateDotFiles")) {
+        if (this.config.get("generateDotFiles")) {
             final String dot = new Xsline(this.depo.train("dot"))
                 .pass(graph).xpath("//dot/text()").get(0);
             if (Logger.isTraceEnabled(this)) {
