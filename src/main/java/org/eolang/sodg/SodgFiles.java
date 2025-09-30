@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 /**
  * Sodg generated files.
  * @since 0.0.3
+ * @todo #9:30min Create unit tests for SodgFiles.
+ *  For now there are no test for SODG file generation logic. Let's introduce them,
+ *  to make our refactorings safer and faster. Don't forget to remove this puzzle.
  */
 final class SodgFiles {
     /**
@@ -132,8 +135,6 @@ final class SodgFiles {
      * @return Created regular expression
      */
     private static String createMatcher(final String pattern) {
-        return pattern
-            .replace("**", "[A-Za-z0-9.]+?")
-            .replace("*", "[A-Za-z0-9]+");
+        return pattern.replace("**", "[A-Za-z0-9.]+?").replace("*", "[A-Za-z0-9]+");
     }
 }
