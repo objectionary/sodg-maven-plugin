@@ -4,7 +4,9 @@
  */
 package org.eolang.sodg;
 
+import com.jcabi.log.Logger;
 import com.yegor256.xsline.Shift;
+import com.yegor256.xsline.TrLambda;
 import com.yegor256.xsline.Train;
 import java.io.File;
 import java.util.Map;
@@ -31,15 +33,15 @@ final class Railway {
         this(
             new MapOf<>(
                 new MapEntry<>(
-                    "sodg", new TrMeasured(new TrSodg(Railway.loggingLevel()), measures)
+                    "sodg", Railway.measured(new TrSodg(Railway.loggingLevel()), measures)
                 ),
                 new MapEntry<>(
-                    "dot", new TrMeasured(new TrDot(Railway.loggingLevel()), measures)
+                    "dot", Railway.measured(new TrDot(Railway.loggingLevel()), measures)
                 ),
-                new MapEntry<>("xembly", new TrMeasured(new TrXembly(), measures)),
-                new MapEntry<>("text", new TrMeasured(new TrText(), measures)),
+                new MapEntry<>("xembly", Railway.measured(new TrXembly(), measures)),
+                new MapEntry<>("text", Railway.measured(new TrText(), measures)),
                 new MapEntry<>(
-                    "finish", new TrMeasured(new TrFinish(Railway.loggingLevel()), measures)
+                    "finish", Railway.measured(new TrFinish(Railway.loggingLevel()), measures)
                 )
             )
         );
@@ -76,5 +78,41 @@ final class Railway {
             lvl = Level.INFO;
         }
         return lvl;
+    }
+
+    /**
+     * Measured train.
+     * @param train Train to measure
+     * @param measures Measures
+     * @return Measured train.
+     */
+    private static Train<Shift> measured(final Train<Shift> train, final File measures) {
+        if (measures.getParentFile().mkdirs()) {
+            Logger.debug(Railway.class, "Directory created for %[file]s", measures);
+        }
+        if (!measures.getParentFile().exists()) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "For some reason, the directory %s is absent, can't write measures to %s",
+                    measures.getParentFile(),
+                    measures
+                )
+            );
+        }
+        if (measures.isDirectory()) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "This is not a file but a directory, can't write to it: %s",
+                    measures
+                )
+            );
+        }
+        return new TrLambda(
+            train,
+            shift -> new StMeasured(
+                shift,
+                measures.toPath()
+            )
+        );
     }
 }

@@ -208,41 +208,33 @@ public final class MjSodg extends AbstractMojo {
             }
         } else {
             try {
-                this.generate();
+                if (this.generateGraphFiles && !this.generateXemblyFiles) {
+                    throw new IllegalStateException(
+                        "Setting generateGraphFiles and not setting generateXemblyFiles has no effect because .graph files require .xe files"
+                    );
+                }
+                if (this.generateDotFiles && !this.generateGraphFiles) {
+                    throw new IllegalStateException(
+                        "Setting generateDotFiles and not setting generateGraphFiles has no effect because .dot files require .graph files"
+                    );
+                }
+                new SodgFiles(
+                    new SodgInstructions(
+                        new Railway(this.xslMeasures),
+                        new MapOf<>(
+                            new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
+                            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
+                            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
+                            new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
+                            new MapEntry<>("generateDotFiles", this.generateDotFiles)
+                        )
+                    ),
+                    this.sodgIncludes,
+                    this.sodgExcludes
+                ).generate(this.tojos.withXmir(), this.targetDir.toPath().resolve(MjSodg.DIR));
             } catch (final IOException exception) {
                 throw new MojoFailureException("Can't convert XMIR to SODG", exception);
             }
         }
-    }
-
-    /**
-     * Generate SODG.
-     * @throws IOException if I/O fails
-     */
-    private void generate() throws IOException {
-        if (this.generateGraphFiles && !this.generateXemblyFiles) {
-            throw new IllegalStateException(
-                "Setting generateGraphFiles and not setting generateXemblyFiles has no effect because .graph files require .xe files"
-            );
-        }
-        if (this.generateDotFiles && !this.generateGraphFiles) {
-            throw new IllegalStateException(
-                "Setting generateDotFiles and not setting generateGraphFiles has no effect because .dot files require .graph files"
-            );
-        }
-        new SodgFiles(
-            new SodgInstructions(
-                new Railway(this.xslMeasures),
-                new MapOf<>(
-                    new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
-                    new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
-                    new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
-                    new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
-                    new MapEntry<>("generateDotFiles", this.generateDotFiles)
-                )
-            ),
-            this.sodgIncludes,
-            this.sodgExcludes
-        ).generate(this.tojos.withXmir(), this.targetDir.toPath().resolve(MjSodg.DIR));
     }
 }
