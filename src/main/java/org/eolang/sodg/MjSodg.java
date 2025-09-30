@@ -130,9 +130,9 @@ public final class MjSodg extends AbstractMojo {
     );
 
     /**
-     * Depo.
+     * The railway.
      */
-    private final Depo depo = new DefaultDepo(this.xslMeasures);
+    private final Railway railway = new Railway(this.xslMeasures);
 
     /**
      * Shall we generate .xml files with SODGs?
@@ -271,9 +271,9 @@ public final class MjSodg extends AbstractMojo {
                 );
                 continue;
             }
-            final int extra = new SodgRendering(
-                this.depo, config, this.descriptor.getVersion()
-            ).rendered(
+            final int extra = new SodgInstructions(
+                this.railway, config, this.descriptor.getVersion()
+            ).total(
                 xmir, sodg
             );
             instructions += extra;

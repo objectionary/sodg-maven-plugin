@@ -23,12 +23,12 @@ import org.xembly.Xembler;
  * SODG instruction rendering.
  * @since 0.0.3
  */
-final class SodgRendering {
+final class SodgInstructions {
 
     /**
      * The depo.
      */
-    private final Depo depo;
+    private final Railway railway;
 
     /**
      * The configuration.
@@ -42,23 +42,39 @@ final class SodgRendering {
 
     /**
      * Ctor.
-     * @param dpo The depo
+     * @param rwy The railway
+     * @param cfg The configuration
+     */
+    SodgInstructions(final Railway rwy, final Map<String, Boolean> cfg) {
+        this(rwy, cfg, "0.0.0");
+    }
+
+    /**
+     * Ctor.
+     * @param rwy The railway
      * @param cfg The configuration
      * @param vrsn The version
      */
-    SodgRendering(final Depo dpo, final Map<String, Boolean> cfg, final String vrsn) {
-        this.depo = dpo;
+    SodgInstructions(final Railway rwy, final Map<String, Boolean> cfg, final String vrsn) {
+        this.railway = rwy;
         this.config = cfg;
         this.version = vrsn;
     }
 
-    public int rendered(final Path xmir, final Path base) throws IOException {
+    /**
+     * Total instructions rendered.
+     * @param xmir XMIR
+     * @param base Base path
+     * @return The number of total instructions rendered
+     * @throws IOException if I/O operation fails
+     */
+    public int total(final Path xmir, final Path base) throws IOException {
         final XML before = new XMLDocument(xmir);
         if (Logger.isTraceEnabled(this)) {
             Logger.trace(this, "XML before translating to SODG:\n%s", before);
         }
-        final XML after = new Xsline(this.depo.train("sodg")).pass(before);
-        final String instructions = new Xsline(this.depo.train("text"))
+        final XML after = new Xsline(this.railway.train("sodg")).pass(before);
+        final String instructions = new Xsline(this.railway.train("text"))
             .pass(after)
             .xpath("/text/text()")
             .get(0);
@@ -73,7 +89,7 @@ final class SodgRendering {
             new Saved(after.toString(), sibling).value();
         }
         if (this.config.get("generateXemblyFiles")) {
-            final String xembly = new Xsline(this.depo.train("xembly")).pass(after)
+            final String xembly = new Xsline(this.railway.train("xembly")).pass(after)
                 .xpath("/xembly/text()").get(0);
             final Path sibling = base.resolveSibling(String.format("%s.xe", base.getFileName()));
             new Saved(
@@ -81,7 +97,9 @@ final class SodgRendering {
             ).value();
             this.makeGraph(xembly, base);
         }
-        return instructions.split("\n").length;
+        return (int) new ListOf<>(instructions.trim().split("\n")).stream().filter(
+            i -> !(!i.isEmpty() && i.charAt(0) == '#') && !i.isEmpty()
+        ).count();
     }
 
     /**
@@ -100,7 +118,7 @@ final class SodgRendering {
             );
             final ListOf<Directive> directives = new ListOf<>(all);
             final Directive comment = directives.remove(0);
-            final XML graph = new Xsline(this.depo.train("finish")).pass(
+            final XML graph = new Xsline(this.railway.train("finish")).pass(
                 new XMLDocument(
                     new Xembler(
                         new Directives()
@@ -131,7 +149,7 @@ final class SodgRendering {
      */
     private void makeDot(final XML graph, final Path sodg) throws IOException {
         if (this.config.get("generateDotFiles")) {
-            final String dot = new Xsline(this.depo.train("dot"))
+            final String dot = new Xsline(this.railway.train("dot"))
                 .pass(graph).xpath("//dot/text()").get(0);
             if (Logger.isTraceEnabled(this)) {
                 Logger.trace(this, "Dot:\n%s", dot);
