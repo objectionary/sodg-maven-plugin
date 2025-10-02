@@ -220,7 +220,7 @@ public final class MjSodg extends AbstractMojo {
                 }
                 new SodgFiles(
                     new SodgInstructions(
-                        new Railway(this.xslMeasures),
+                        new Depot(this.xslMeasures),
                         new MapOf<>(
                             new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
                             new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),

@@ -23,18 +23,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Tests for {@link SodgInstructions}.
  *
  * @since 0.0.3
+ * @todo #9:45min Add more tests for `SodgInstructions#textInstructions()` method.
+ *  The method not only computes the number, but also performs XMIR-to-SODG transformations,
+ *  and leaves footprint on the system. Would be nice to test as much as we can.
  */
 @ExtendWith(MktmpResolver.class)
 final class SodgInstructionsTest {
 
     @Test
-    void returnsTotalInstructionsRendered(@Mktmp final Path temp) throws IOException {
+    void returnsTextInstructionsRendered(@Mktmp final Path temp) throws IOException {
         MatcherAssert.assertThat(
-            "The number of total instructsion does not match with expected",
+            "The number of total instructions does not match with expected",
             new SodgInstructions(
-                new Railway(temp.resolve("measures.csv").toFile()),
+                new Depot(temp.resolve("measures.csv").toFile()),
                 SodgInstructionsTest.defaultConfig()
-            ).total(
+            ).textInstructions(
                 Files.write(
                     temp.resolve("foo.xmir"),
                     new EoSyntax(

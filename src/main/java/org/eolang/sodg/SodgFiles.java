@@ -80,7 +80,7 @@ final class SodgFiles {
                 );
                 continue;
             }
-            final int extra = this.instructions.total(xmir, sodg);
+            final int extra = this.instructions.textInstructions(xmir, sodg);
             rendered += extra;
             tojo.withSodg(sodg.toAbsolutePath());
             Logger.info(

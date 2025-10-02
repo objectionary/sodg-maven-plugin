@@ -15,10 +15,13 @@ import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
 
 /**
- * Railway.
+ * The depot that produces trains.
  * @since 0.0.3
+ * @todo #9:35min Add unit tests for `Depot`.
+ *  We should test the trains inside of it, and method `train()`, that supposed
+ *  to return proper train by it's name. Don't forget to remove this puzzle.
  */
-final class Railway {
+final class Depot {
 
     /**
      * The trains.
@@ -29,19 +32,19 @@ final class Railway {
      * Ctor.
      * @param measures Measures
      */
-    Railway(final File measures) {
+    Depot(final File measures) {
         this(
             new MapOf<>(
                 new MapEntry<>(
-                    "sodg", Railway.measured(new TrSodg(Railway.loggingLevel()), measures)
+                    "sodg", Depot.measured(new TrSodg(Depot.loggingLevel()), measures)
                 ),
                 new MapEntry<>(
-                    "dot", Railway.measured(new TrDot(Railway.loggingLevel()), measures)
+                    "dot", Depot.measured(new TrDot(Depot.loggingLevel()), measures)
                 ),
-                new MapEntry<>("xembly", Railway.measured(new TrXembly(), measures)),
-                new MapEntry<>("text", Railway.measured(new TrText(), measures)),
+                new MapEntry<>("xembly", Depot.measured(new TrXembly(), measures)),
+                new MapEntry<>("text", Depot.measured(new TrText(), measures)),
                 new MapEntry<>(
-                    "finish", Railway.measured(new TrFinish(Railway.loggingLevel()), measures)
+                    "finish", Depot.measured(new TrFinish(Depot.loggingLevel()), measures)
                 )
             )
         );
@@ -51,7 +54,7 @@ final class Railway {
      * Ctor.
      * @param trns The trains
      */
-    Railway(final Map<String, Train<Shift>> trns) {
+    Depot(final Map<String, Train<Shift>> trns) {
         this.trains = trns;
     }
 
@@ -88,7 +91,7 @@ final class Railway {
      */
     private static Train<Shift> measured(final Train<Shift> train, final File measures) {
         if (measures.getParentFile().mkdirs()) {
-            Logger.debug(Railway.class, "Directory created for %[file]s", measures);
+            Logger.debug(Depot.class, "Directory created for %[file]s", measures);
         }
         if (!measures.getParentFile().exists()) {
             throw new IllegalArgumentException(
