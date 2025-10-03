@@ -78,7 +78,7 @@ final class SodgFilesTest {
     }
 
     /**
-     * Configuration-file matrix.
+     * Configuration-files matrix.
      *
      * @return Matrix as stream of arguments
      */
