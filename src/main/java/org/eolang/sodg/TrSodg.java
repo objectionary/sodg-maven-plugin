@@ -53,6 +53,7 @@ final class TrSodg extends TrEnvelope {
                                 ),
                                 "/org/eolang/maven/sodg/add-sodg-root.xsl",
                                 "/org/eolang/maven/sodg/to-sodg.xsl",
+                                "/org/eolang/maven/sodg/drop-lambda.xsl",
                                 "/org/eolang/maven/sodg/applications.xsl"
                             ).back(),
                             new TrDefault<>(

@@ -31,10 +31,17 @@
     <xsl:if test="eo:abstract(.)">
       <xsl:call-template name="i">
         <xsl:with-param name="name" select="'formation'"/>
+        <!-- distill each @name with lambda removal -->
         <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
       </xsl:call-template>
     </xsl:if>
-    <xsl:for-each select="//o">
+    <xsl:if test="eo:atom(.)">
+      <xsl:call-template name="i">
+        <xsl:with-param name="name" select="'lambda'"/>
+        <xsl:with-param name="args" select="(concat('b', position()), @name)"/>
+      </xsl:call-template>
+    </xsl:if>
+    <xsl:for-each select="//o[not(eo:atom(.))]">
       <xsl:if test="not(eo:abstract(.)) and @base and @name and not(starts-with(@base, 'ξ.'))">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'dispatch'"/>
