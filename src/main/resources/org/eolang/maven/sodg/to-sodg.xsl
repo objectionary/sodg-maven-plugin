@@ -13,11 +13,11 @@
     </xsl:copy>
   </xsl:template>
   <!--
-  Here we convert all objects into SODG format.
-    @todo #76:30min Implement `lambda(o, name)` instruction.
-     For now we are not handling lambda asset of the object. We should introduce new instruction:
-     `lambda(o, name)` - that would set lambda-asset to particular object. Don't forget to add new
-     test pack and remove this puzzle.
+  Here we convert all objects into SODG format with the following instructions:
+  1. `formation(o, attr0, attr1, ...)`
+  2. `dispatch(o, base, attr)`
+  3. `delta(o, data)`
+  4. `lambda(o, name)`
   -->
   <xsl:template match="/object/sodg">
     <xsl:copy>
@@ -31,7 +31,6 @@
     <xsl:if test="eo:abstract(.)">
       <xsl:call-template name="i">
         <xsl:with-param name="name" select="'formation'"/>
-        <!-- distill each @name with lambda removal -->
         <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
       </xsl:call-template>
     </xsl:if>
