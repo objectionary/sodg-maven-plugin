@@ -15,6 +15,8 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.cactoos.map.MapEntry;
+import org.cactoos.map.MapOf;
 import org.cactoos.set.SetOf;
 
 /**
@@ -32,8 +34,7 @@ import org.cactoos.set.SetOf;
  * <p>
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  *
- * @since 0.27
- * @checkstyle ClassFanOutComplexityCheck (500 lines)
+ * @since 0.0.1
  */
 @Mojo(
     name = "sodg",
@@ -44,6 +45,10 @@ import org.cactoos.set.SetOf;
 )
 @SuppressWarnings({"PMD.ImmutableField", "PMD.AvoidProtectedFieldInFinalClass"})
 public final class MjSodg extends AbstractMojo {
+    /**
+     * The directory where to save SODG to.
+     */
+    private static final String DIR = "sodg";
 
     /**
      * Whether we should skip goal execution.
@@ -203,18 +208,30 @@ public final class MjSodg extends AbstractMojo {
             }
         } else {
             try {
+                if (this.generateGraphFiles && !this.generateXemblyFiles) {
+                    throw new IllegalStateException(
+                        "Setting generateGraphFiles and not setting generateXemblyFiles has no effect because .graph files require .xe files"
+                    );
+                }
+                if (this.generateDotFiles && !this.generateGraphFiles) {
+                    throw new IllegalStateException(
+                        "Setting generateDotFiles and not setting generateGraphFiles has no effect because .dot files require .graph files"
+                    );
+                }
                 new SodgFiles(
-                    this.generateGraphFiles,
-                    this.generateXemblyFiles,
-                    this.generateSodgXmlFiles,
-                    this.xslMeasures,
-                    this.generateDotFiles,
-                    this.targetDir,
-                    this.tojos,
+                    new SodgInstructions(
+                        new Depot(this.xslMeasures),
+                        new MapOf<>(
+                            new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
+                            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
+                            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
+                            new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
+                            new MapEntry<>("generateDotFiles", this.generateDotFiles)
+                        )
+                    ),
                     this.sodgIncludes,
-                    this.sodgExcludes,
-                    this.descriptor.getVersion()
-                ).generate();
+                    this.sodgExcludes
+                ).generate(this.tojos.withXmir(), this.targetDir.toPath().resolve(MjSodg.DIR));
             } catch (final IOException exception) {
                 throw new MojoFailureException("Can't convert XMIR to SODG", exception);
             }

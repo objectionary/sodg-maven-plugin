@@ -24,7 +24,7 @@ final class TrText extends TrEnvelope {
                     "/org/eolang/maven/sodg-to/normalize-names.xsl",
                     "/org/eolang/maven/sodg-to/to-text.xsl"
                 ).back(),
-                SodgFiles.class
+                TrText.class
             )
         );
     }
