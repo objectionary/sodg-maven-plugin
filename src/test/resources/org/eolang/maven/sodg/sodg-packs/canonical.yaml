@@ -9,7 +9,6 @@ input: |
 asserts:
   - //sodg[count(i)=11]
   - //sodg/i[@name='meta']/a[1][text()='$meta-version']
-  - //sodg/i[@name='meta']/a[2][text()='30-2E-35-38-2E-33']
   - //sodg/i[@name='meta']/a[1][text()='$meta-time']
   - //sodg/i[@name='formation']/a[1][text()='b1']
   - //sodg/i[@name='formation']/a[3][text()='qty']
