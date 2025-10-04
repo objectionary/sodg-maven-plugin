@@ -21,10 +21,10 @@ import org.xembly.Directives;
 import org.xembly.Xembler;
 
 /**
- * SODG instruction rendering.
+ * Default SODG instruction rendering.
  * @since 0.0.3
  */
-final class SodgInstructions {
+final class ItsDefault implements Instructions {
 
     /**
      * The depot.
@@ -46,7 +46,7 @@ final class SodgInstructions {
      * @param dpt Depot
      * @param cfg Configuration
      */
-    SodgInstructions(final Depot dpt, final Map<String, Boolean> cfg) {
+    ItsDefault(final Depot dpt, final Map<String, Boolean> cfg) {
         this(dpt, cfg, "0.0.0");
     }
 
@@ -56,19 +56,13 @@ final class SodgInstructions {
      * @param cfg Configuration
      * @param vrsn Version
      */
-    SodgInstructions(final Depot dpt, final Map<String, Boolean> cfg, final String vrsn) {
+    ItsDefault(final Depot dpt, final Map<String, Boolean> cfg, final String vrsn) {
         this.depot = dpt;
         this.config = cfg;
         this.version = vrsn;
     }
 
-    /**
-     * Total instructions rendered, from XMIR to SODG.
-     * @param xmir XMIR
-     * @param base Base path
-     * @return The number of total instructions rendered
-     * @throws IOException if I/O operation fails
-     */
+    @Override
     public int textInstructions(final Path xmir, final Path base) throws IOException {
         final XML before = new XMLDocument(xmir);
         if (Logger.isTraceEnabled(this)) {

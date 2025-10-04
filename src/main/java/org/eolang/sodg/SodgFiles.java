@@ -23,7 +23,7 @@ final class SodgFiles {
     /**
      * The instructions.
      */
-    private final SodgInstructions instructions;
+    private final Instructions instructions;
 
     /**
      * The programs to include.
@@ -42,7 +42,7 @@ final class SodgFiles {
      * @param exclds Programs to exclude
      */
     SodgFiles(
-        final SodgInstructions instrctns,
+        final Instructions instrctns,
         final Set<String> inclds,
         final Set<String> exclds
     ) {
