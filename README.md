@@ -46,7 +46,7 @@ Then, add this plugin to your `pom.xml`:
 <plugin>
    <groupId>org.eolang</groupId>
    <artifactId>sodg-maven-plugin</artifactId>
-   <!-- Check the latest version at Maven central-->
+   <version>0.0.3</version>
    <executions>
       <execution>
          <goals>
@@ -60,7 +60,7 @@ Then, add this plugin to your `pom.xml`:
 Or invoke it directly:
 
 ```bash
-mvn org.eolang:sodg-maven-plugin:<version>:sodg
+mvn org.eolang:sodg-maven-plugin:0.0.3:sodg
 ```
 
 You should see `order.sodg` file being created under `target/eo/sodg` folder,
