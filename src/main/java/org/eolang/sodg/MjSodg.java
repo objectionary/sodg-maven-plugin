@@ -173,6 +173,18 @@ public final class MjSodg extends AbstractMojo {
     private boolean generateDotFiles;
 
     /**
+     * Shall we fail SODG generation if XMIRs contain errors?
+     *
+     * @checkstyle MemberNameCheck (7 lines)
+     */
+    @Parameter(
+        property = "eo.failOnXmirErrors",
+        defaultValue = "true"
+    )
+    @SuppressWarnings("PMD.LongVariable")
+    private boolean failOnXmirErrors;
+
+    /**
      * List of object names to participate in SODG generation.
      *
      * @implNote {@code property} attribute is omitted for collection
@@ -219,15 +231,18 @@ public final class MjSodg extends AbstractMojo {
                     );
                 }
                 new SodgFiles(
-                    new SodgInstructions(
-                        new Depot(this.xslMeasures),
-                        new MapOf<>(
-                            new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
-                            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
-                            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
-                            new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
-                            new MapEntry<>("generateDotFiles", this.generateDotFiles)
-                        )
+                    new ItsAngry(
+                        new ItsDefault(
+                            new Depot(this.xslMeasures),
+                            new MapOf<>(
+                                new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
+                                new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
+                                new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
+                                new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
+                                new MapEntry<>("generateDotFiles", this.generateDotFiles)
+                            )
+                        ),
+                        this.failOnXmirErrors
                     ),
                     this.sodgIncludes,
                     this.sodgExcludes

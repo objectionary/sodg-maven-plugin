@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
- * Tests for {@link SodgInstructions}.
+ * Tests for {@link ItsDefault}.
  *
  * @since 0.0.3
  * @todo #9:45min Add more tests for `SodgInstructions#textInstructions()` method.
@@ -28,15 +28,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
  *  and leaves footprint on the system. Would be nice to test as much as we can.
  */
 @ExtendWith(MktmpResolver.class)
-final class SodgInstructionsTest {
+final class ItsDefaultTest {
 
     @Test
     void returnsTextInstructionsRendered(@Mktmp final Path temp) throws IOException {
         MatcherAssert.assertThat(
             "The number of total instructions does not match with expected",
-            new SodgInstructions(
+            new ItsDefault(
                 new Depot(temp.resolve("measures.csv").toFile()),
-                SodgInstructionsTest.defaultConfig()
+                ItsDefaultTest.defaultConfig()
             ).textInstructions(
                 Files.write(
                     temp.resolve("foo.xmir"),

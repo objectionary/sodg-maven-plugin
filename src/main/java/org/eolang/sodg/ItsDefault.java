@@ -21,10 +21,10 @@ import org.xembly.Directives;
 import org.xembly.Xembler;
 
 /**
- * SODG instruction rendering.
+ * Default SODG instruction rendering.
  * @since 0.0.3
  */
-final class SodgInstructions implements Instructions {
+final class ItsDefault implements Instructions {
 
     /**
      * The depot.
@@ -46,7 +46,7 @@ final class SodgInstructions implements Instructions {
      * @param dpt Depot
      * @param cfg Configuration
      */
-    SodgInstructions(final Depot dpt, final Map<String, Boolean> cfg) {
+    ItsDefault(final Depot dpt, final Map<String, Boolean> cfg) {
         this(dpt, cfg, "0.0.0");
     }
 
@@ -56,7 +56,7 @@ final class SodgInstructions implements Instructions {
      * @param cfg Configuration
      * @param vrsn Version
      */
-    SodgInstructions(final Depot dpt, final Map<String, Boolean> cfg, final String vrsn) {
+    ItsDefault(final Depot dpt, final Map<String, Boolean> cfg, final String vrsn) {
         this.depot = dpt;
         this.config = cfg;
         this.version = vrsn;
