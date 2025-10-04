@@ -62,7 +62,6 @@ final class SodgInstructionsTest {
         return new MapOf<>(
             new MapEntry<>("generateSodgXmlFiles", false),
             new MapEntry<>("generateXemblyFiles", false),
-            new MapEntry<>("generateXemblyFiles", false),
             new MapEntry<>("generateGraphFiles", false),
             new MapEntry<>("generateDotFiles", false)
         );
