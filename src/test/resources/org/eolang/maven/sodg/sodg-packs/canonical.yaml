@@ -7,7 +7,7 @@ input: |
     qty.mul > cost
       price
 asserts:
-  - //sodg[count(i)=11]
+  - //sodg[count(i[not(@name='comment')])=9]
   - //sodg/i[@name='meta']/a[1][text()='$meta-version']
   - //sodg/i[@name='meta']/a[2][text()='30-2E-35-38-2E-33']
   - //sodg/i[@name='meta']/a[1][text()='$meta-time']

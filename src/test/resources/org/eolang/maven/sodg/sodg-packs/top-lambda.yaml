@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets: []
+input: |
+  [] > foo ?
+asserts:
+  - //sodg[count(i[not(@name='comment')])=5]
+  - //sodg/i[@name='formation' and count(a)=2 and a[1][text()='b1'] and a[2][text()='xi🌵']]
+  - //sodg/i[@name='lambda' and count(a)=2 and a[1][text()='b1'] and a[2][text()='foo']]
+  - //sodg/i[@name='dispatch' and a[1][text()='b1'] and a[2][text()='b1'] and a[3][text()='xi🌵']]
