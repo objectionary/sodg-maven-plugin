@@ -24,7 +24,7 @@ import org.xembly.Xembler;
  * SODG instruction rendering.
  * @since 0.0.3
  */
-final class SodgInstructions {
+final class SodgInstructions implements Instructions {
 
     /**
      * The depot.
@@ -69,6 +69,7 @@ final class SodgInstructions {
      * @return The number of total instructions rendered
      * @throws IOException if I/O operation fails
      */
+    @Override
     public int textInstructions(final Path xmir, final Path base) throws IOException {
         final XML before = new XMLDocument(xmir);
         if (Logger.isTraceEnabled(this)) {

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.jcabi</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.70.0</version>
+  </parent>
+  <groupId>org.eolang</groupId>
+  <artifactId>examples</artifactId>
+  <version>@project.version@</version>
+  <packaging>jar</packaging>
+  <name>Generates SODG Files</name>
+  <description>This tests compiles EO programs to XMIR and then checks that we can generate SODG files from this XMIR</description>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <failIfNoTests>false</failIfNoTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eolang</groupId>
+        <artifactId>eo-maven-plugin</artifactId>
+        <version>0.58.6</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>register</goal>
+              <goal>compile</goal>
+              <goal>transpile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <skipLinting>true</skipLinting>
+          <unrollExitError>true</unrollExitError>
+          <foreign>${project.build.directory}/eo/foreign.csv</foreign>
+          <foreignFormat>csv</foreignFormat>
+          <placed>${project.build.directory}/eo/placed.json</placed>
+          <placedFormat>json</placedFormat>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eolang</groupId>
+        <artifactId>sodg-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>sodg</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <foreign>${project.build.directory}/eo/foreign.csv</foreign>
+          <foreignFormat>csv</foreignFormat>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
