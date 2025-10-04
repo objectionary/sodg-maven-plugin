@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.sodg;
 
 import com.jcabi.log.Logger;
@@ -10,7 +14,7 @@ import java.nio.file.Path;
  * Angry instructions.
  * @since 0.0.4
  */
-public class ItsAngry implements Instructions {
+final class ItsAngry implements Instructions {
 
     /**
      * The origin.
@@ -27,7 +31,7 @@ public class ItsAngry implements Instructions {
      * @param instructions Instructions
      * @param ext Fail or not
      */
-    public ItsAngry(final Instructions instructions, final boolean ext) {
+    ItsAngry(final Instructions instructions, final boolean ext) {
         this.origin = instructions;
         this.exit = ext;
     }

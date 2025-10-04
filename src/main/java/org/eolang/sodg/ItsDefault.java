@@ -62,13 +62,6 @@ final class ItsDefault implements Instructions {
         this.version = vrsn;
     }
 
-    /**
-     * Total instructions rendered, from XMIR to SODG.
-     * @param xmir XMIR
-     * @param base Base path
-     * @return The number of total instructions rendered
-     * @throws IOException if I/O operation fails
-     */
     @Override
     public int textInstructions(final Path xmir, final Path base) throws IOException {
         final XML before = new XMLDocument(xmir);
