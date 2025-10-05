@@ -6,7 +6,7 @@ input: |
   [] > foo
     42 > x
 asserts:
-  - //sodg[count(i)=8]
+  - //sodg[count(i[not(@name='comment')])=6]
   - //sodg/i[@name='formation']/a[1][text()='b1']
   - //sodg/i[@name='formation']/a[2][text()='xi🌵']
   - //sodg/i[@name='formation']/a[3][text()='x']
