@@ -88,7 +88,7 @@ public final class MjSodg extends AbstractMojo {
      * @checkstyle VisibilityModifierCheck (5 lines)
      */
     @Parameter(property = "eo.sodg.foreignFormat", required = true, defaultValue = "csv")
-    protected String foreignFormat = "csv";
+    protected String foreignFormat;
 
     /**
      * File with foreign "tojos".
@@ -96,9 +96,9 @@ public final class MjSodg extends AbstractMojo {
      * @checkstyle VisibilityModifierCheck (10 lines)
      */
     @Parameter(
-        property = "eo.foreign",
+        property = "eo.sodg.foreign",
         required = true,
-        defaultValue = "${project.build.directory}/eo-foreign.json"
+        defaultValue = "${project.build.directory}/eo-foreign.csv"
     )
     protected File foreign;
 
@@ -109,7 +109,7 @@ public final class MjSodg extends AbstractMojo {
      * @checkstyle VisibilityModifierCheck (10 lines)
      */
     @Parameter(
-        property = "eo.targetDir",
+        property = "eo.sodg.targetDir",
         required = true,
         defaultValue = "${project.build.directory}/eo"
     )
@@ -130,7 +130,7 @@ public final class MjSodg extends AbstractMojo {
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
-        property = "eo.generateSodgXmlFiles",
+        property = "eo.sodg.generateSodgXmlFiles",
         defaultValue = "false"
     )
     @SuppressWarnings("PMD.LongVariable")
@@ -166,7 +166,7 @@ public final class MjSodg extends AbstractMojo {
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
-        property = "eo.generateDotFiles",
+        property = "eo.sodg.generateDotFiles",
         defaultValue = "false"
     )
     @SuppressWarnings("PMD.LongVariable")
@@ -203,7 +203,7 @@ public final class MjSodg extends AbstractMojo {
         if (this.skip) {
             if (Logger.isInfoEnabled(this)) {
                 Logger.info(
-                    this, "Execution skipped due to eo.skip option"
+                    this, "Execution skipped due to eo.sodg.skip option"
                 );
             }
         } else {
