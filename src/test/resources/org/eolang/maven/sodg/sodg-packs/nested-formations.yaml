@@ -6,14 +6,17 @@ sheets: []
 input: |
   [] > head
     [] > second
-      [] > third
+      [a b c] > third
         [] > tail
 asserts:
   - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b1'] and a[2][text()='xi🌵'] and a[3][text()='second']]
   - //sodg/i[@name='dispatch' and count(a)=3 and a[1][text()='b2'] and a[2][text()='b1'] and a[3][text()='xi🌵']]
   - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b3'] and a[2][text()='xi🌵'] and a[3][text()='third']]
   - //sodg/i[@name='dispatch' and count(a)=3 and a[1][text()='b4'] and a[2][text()='b3'] and a[3][text()='xi🌵']]
-  - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b5'] and a[2][text()='xi🌵'] and a[3][text()='tail']]
+  - //sodg/i[@name='formation' and count(a)=6 and a[1][text()='b5'] and a[2][text()='xi🌵'] and a[3][text()='a'] and a[4][text()='b'] and a[5][text()='c'] and a[6][text()='tail']]
   - //sodg/i[@name='dispatch' and count(a)=3 and a[1][text()='b6'] and a[2][text()='b5'] and a[3][text()='xi🌵']]
-  - //sodg/i[@name='formation' and count(a)=2 and a[1][text()='b7'] and a[2][text()='xi🌵']]
-  - //sodg/i[@name='dispatch' and count(a)=3 and a[1][text()='b8'] and a[2][text()='b7'] and a[3][text()='xi🌵']]
+  - //sodg/i[@name='dispatch' and count(a)=3 and a[1][text()='b7'] and a[2][text()='b5'] and a[3][text()='a']]
+  - //sodg/i[@name='dispatch' and count(a)=3 and a[1][text()='b8'] and a[2][text()='b5'] and a[3][text()='b']]
+  - //sodg/i[@name='dispatch' and count(a)=3 and a[1][text()='b9'] and a[2][text()='b5'] and a[3][text()='c']]
+  - //sodg/i[@name='formation' and count(a)=2 and a[1][text()='b10'] and a[2][text()='xi🌵']]
+  - //sodg/i[@name='dispatch' and count(a)=3 and a[1][text()='b11'] and a[2][text()='b10'] and a[3][text()='xi🌵']]

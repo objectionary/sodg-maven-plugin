@@ -41,20 +41,10 @@
         </xsl:call-template>
       </xsl:if>
       <xsl:if test="not(eo:abstract(.)) and @base and @name and not(starts-with(@base, 'ξ.'))">
-        <xsl:choose>
-          <xsl:when test="..[eo:abstract(.)] and not(preceding-sibling::*)">
-            <xsl:call-template name="i">
-              <xsl:with-param name="name" select="'dispatch'"/>
-              <xsl:with-param name="args" select="(concat('b', position()), ('b' || (position() - 1)), @name)"/>
-            </xsl:call-template>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:call-template name="i">
-              <xsl:with-param name="name" select="'dispatch'"/>
-              <xsl:with-param name="args" select="(concat('b', position()), concat('b', count(../preceding-sibling::*) + 1), @name)"/>
-            </xsl:call-template>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:call-template name="i">
+          <xsl:with-param name="name" select="'dispatch'"/>
+          <xsl:with-param name="args" select="('b' || position(), 'b' || ( position() - count(preceding-sibling::o[not(eo:abstract(.))]) - 1), @name)"/>
+        </xsl:call-template>
       </xsl:if>
       <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">
         <xsl:variable name="oid" select="concat('b', position())"/>
