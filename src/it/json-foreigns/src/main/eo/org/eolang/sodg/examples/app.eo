@@ -5,15 +5,7 @@
 +spdx SPDX-FileCopyrightText Copyright (c) 2016-2025 Objectionary.com
 +spdx SPDX-License-Identifier: MIT
 
-# Fibonacci numbers
-[n] > fibonacci
-  if. > @
-    lt
-      n
-      2
-    n
-    plus.
-      ^.fibonacci
-        n.minus 1
-      ^.fibonacci
-        n.minus 2
+# Application
+[args] > app
+  foo > @
+    args.size

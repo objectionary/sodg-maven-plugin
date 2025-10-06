@@ -40,8 +40,8 @@
         <configuration>
           <skipLinting>true</skipLinting>
           <unrollExitError>true</unrollExitError>
-          <foreign>${project.build.directory}/eo/foreign.csv</foreign>
-          <foreignFormat>csv</foreignFormat>
+          <foreign>${project.build.directory}/eo/foreign.json</foreign>
+          <foreignFormat>json</foreignFormat>
           <placed>${project.build.directory}/eo/placed.json</placed>
           <placedFormat>json</placedFormat>
         </configuration>
@@ -58,19 +58,8 @@
           </execution>
         </executions>
         <configuration>
-          <foreign>${project.build.directory}/eo/foreign.csv</foreign>
-          <foreignFormat>csv</foreignFormat>
-          <generateSodgXmlFiles>true</generateSodgXmlFiles>
-          <generateXemblyFiles>false</generateXemblyFiles>
-          <!--
-            @todo #11:90min Enable 'graph' and 'dot' files generation
-             In order to generate 'graph' and 'dot' files, we need to enable
-             'generateGraphFiles' and 'generateDotFiles' options in the
-             'sodg-maven-plugin' configuration (right below:)
-             <generateGraphFiles>true</generateGraphFiles>
-             <generateDotFiles>true</generateDotFiles>
-             Currently, if we enable them, the plugin fails.
-          -->
+          <foreign>${project.build.directory}/eo/foreign.json</foreign>
+          <foreignFormat>json</foreignFormat>
         </configuration>
       </plugin>
     </plugins>
