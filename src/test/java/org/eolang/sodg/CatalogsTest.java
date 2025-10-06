@@ -8,6 +8,8 @@ import com.yegor256.Mktmp;
 import com.yegor256.MktmpResolver;
 import com.yegor256.tojos.MnJson;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
 import org.cactoos.list.ListOf;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
@@ -27,23 +29,22 @@ final class CatalogsTest {
     @ExtendWith(MktmpResolver.class)
     void makesInJson(@Mktmp final Path temp) {
         final Path foreigns = temp.resolve("foreigns.json");
-        new MnJson(foreigns).write(
-            new ListOf<>(
-                new MapOf<>(
-                    new MapEntry<>("id", "org.eolang.sodg.examples.应用程序")
-                ),
-                new MapOf<>(
-                    new MapEntry<>("id", "org.eolang.io.stdout")
-                ),
-                new MapOf<>(
-                    new MapEntry<>("id", "org.eolang.io.系统故障")
-                )
+        final List<Map<String, String>> rows = new ListOf<>(
+            new MapOf<>(
+                new MapEntry<>("id", "org.eolang.sodg.examples.应用程序")
+            ),
+            new MapOf<>(
+                new MapEntry<>("id", "org.eolang.io.stdout")
+            ),
+            new MapOf<>(
+                new MapEntry<>("id", "org.eolang.io.系统故障")
             )
         );
+        new MnJson(foreigns).write(rows);
         MatcherAssert.assertThat(
             "Size of the returned tojos does not match with expected",
             Catalogs.INSTANCE.make(foreigns, "json").select(t -> true).size(),
-            Matchers.equalTo(3)
+            Matchers.equalTo(rows.size())
         );
     }
 }
