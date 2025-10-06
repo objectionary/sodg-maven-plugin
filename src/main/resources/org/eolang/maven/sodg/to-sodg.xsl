@@ -27,13 +27,6 @@
     </xsl:copy>
   </xsl:template>
   <xsl:template match="o" mode="sodg">
-    <xsl:variable name="root" select="position()"/>
-    <xsl:if test="eo:abstract(.)">
-      <xsl:call-template name="i">
-        <xsl:with-param name="name" select="'formation'"/>
-        <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
-      </xsl:call-template>
-    </xsl:if>
     <xsl:if test="eo:atom(.)">
       <xsl:call-template name="i">
         <xsl:with-param name="name" select="'lambda'"/>
@@ -41,11 +34,27 @@
       </xsl:call-template>
     </xsl:if>
     <xsl:for-each select="//o[not(eo:atom(.))]">
-      <xsl:if test="not(eo:abstract(.)) and @base and @name and not(starts-with(@base, 'ξ.'))">
+      <xsl:if test="eo:abstract(.)">
         <xsl:call-template name="i">
-          <xsl:with-param name="name" select="'dispatch'"/>
-          <xsl:with-param name="args" select="(concat('b', position()), concat('b', count(../preceding-sibling::*) + 1), @name)"/>
+          <xsl:with-param name="name" select="'formation'"/>
+          <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
         </xsl:call-template>
+      </xsl:if>
+      <xsl:if test="not(eo:abstract(.)) and @base and @name and not(starts-with(@base, 'ξ.'))">
+        <xsl:choose>
+          <xsl:when test="..[eo:abstract(.)] and not(preceding-sibling::*)">
+            <xsl:call-template name="i">
+              <xsl:with-param name="name" select="'dispatch'"/>
+              <xsl:with-param name="args" select="(concat('b', position()), ('b' || (position() - 1)), @name)"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="i">
+              <xsl:with-param name="name" select="'dispatch'"/>
+              <xsl:with-param name="args" select="(concat('b', position()), concat('b', count(../preceding-sibling::*) + 1), @name)"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:if>
       <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">
         <xsl:variable name="oid" select="concat('b', position())"/>
