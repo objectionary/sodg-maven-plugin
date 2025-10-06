@@ -27,17 +27,17 @@
     </xsl:copy>
   </xsl:template>
   <xsl:template match="o" mode="sodg">
-    <xsl:if test="eo:atom(.)">
-      <xsl:call-template name="i">
-        <xsl:with-param name="name" select="'lambda'"/>
-        <xsl:with-param name="args" select="(concat('b', position()), @name)"/>
-      </xsl:call-template>
-    </xsl:if>
-    <xsl:for-each select="//o[not(eo:atom(.))]">
-      <xsl:if test="eo:abstract(.) and not(eo:has-data(.))">
+    <xsl:for-each select="//o">
+      <xsl:if test="eo:abstract(.) and not(eo:has-data(.)) and not(@name=$eo:lambda)">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'formation'"/>
           <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
+        </xsl:call-template>
+      </xsl:if>
+      <xsl:if test="eo:atom(.)">
+        <xsl:call-template name="i">
+          <xsl:with-param name="name" select="'lambda'"/>
+          <xsl:with-param name="args" select="(concat('b', position()), @name)"/>
         </xsl:call-template>
       </xsl:if>
       <xsl:if test="not(eo:abstract(.)) and @base and @name and not(starts-with(@base, 'ξ.'))">
