@@ -34,7 +34,7 @@
       </xsl:call-template>
     </xsl:if>
     <xsl:for-each select="//o[not(eo:atom(.))]">
-      <xsl:if test="eo:abstract(.)">
+      <xsl:if test="eo:abstract(.) and not(eo:has-data(.))">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'formation'"/>
           <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
