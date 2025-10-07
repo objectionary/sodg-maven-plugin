@@ -2,11 +2,6 @@
 # SPDX-License-Identifier: MIT
 ---
 # yamllint disable rule:line-length
-# @todo #82: Enable `nested-with-lambda` test pack after nested `formation()` instructions will be fixed.
-#  Now test is red, since `formation()` instruction works only for root formation `foo`. It should
-#  for all formations. Besides that, collection of object names under formation should go deeper for
-#  all abstract objects.
-skip: true
 sheets: []
 input: |
   [] > foo
@@ -15,9 +10,10 @@ input: |
         [] > buz
           [] > boom ?
 asserts:
-  - //sodg/i[@name='formation' and count(a)=7 and a[1][text()='b1'] and a[2][text()='xi🌵']]
-  - //sodg/i[@name='formation' and a[3][text()='bar'] and a[4][text()='baz'] and a[5][text()='buz'] and a[6][text()='boom']]
-  - //sodg/i[@name='formation' and a[1][text()='b2'] and a[2][text()='xi🌵'] and a[3][text()='baz']]
-  - //sodg/i[@name='formation' and a[1][text()='b3'] and a[2][text()='xi🌵'] and a[3][text()='buz']]
-  - //sodg/i[@name='formation' and a[1][text()='b4'] and a[2][text()='xi🌵'] and a[3][text()='boom']]
-  - //sodg/i[@name='lambda' and count(a)=2 and a[1][text()='b4'] and a[2][text()='boom']]
+  - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b1'] and a[2][text()='xi🌵'] and a[3][text()='bar']]
+  - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b3'] and a[2][text()='xi🌵'] and a[3][text()='baz']]
+  - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b5'] and a[2][text()='xi🌵'] and a[3][text()='buz']]
+  - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b7'] and a[2][text()='xi🌵'] and a[3][text()='boom']]
+  - //sodg/i[@name='formation' and count(a)=2 and a[1][text()='b9'] and a[2][text()='xi🌵']]
+  - //sodg/i[@name='lambda' and count(a)=2 and a[1][text()='b9'] and a[2][text()='boom']]
+  - //sodg/i[@name='dispatch' and count(a)=3 and a[1][text()='b10'] and a[2][text()='b9'] and a[3][text()='xi🌵']]

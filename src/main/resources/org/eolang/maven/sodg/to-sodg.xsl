@@ -27,24 +27,23 @@
     </xsl:copy>
   </xsl:template>
   <xsl:template match="o" mode="sodg">
-    <xsl:variable name="root" select="position()"/>
-    <xsl:if test="eo:abstract(.)">
-      <xsl:call-template name="i">
-        <xsl:with-param name="name" select="'formation'"/>
-        <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
-      </xsl:call-template>
-    </xsl:if>
-    <xsl:if test="eo:atom(.)">
-      <xsl:call-template name="i">
-        <xsl:with-param name="name" select="'lambda'"/>
-        <xsl:with-param name="args" select="(concat('b', position()), @name)"/>
-      </xsl:call-template>
-    </xsl:if>
-    <xsl:for-each select="//o[not(eo:atom(.))]">
+    <xsl:for-each select="//o">
+      <xsl:if test="eo:abstract(.) and not(eo:has-data(.)) and not(@name=$eo:lambda)">
+        <xsl:call-template name="i">
+          <xsl:with-param name="name" select="'formation'"/>
+          <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
+        </xsl:call-template>
+      </xsl:if>
+      <xsl:if test="eo:atom(.)">
+        <xsl:call-template name="i">
+          <xsl:with-param name="name" select="'lambda'"/>
+          <xsl:with-param name="args" select="(concat('b', position()), @name)"/>
+        </xsl:call-template>
+      </xsl:if>
       <xsl:if test="not(eo:abstract(.)) and @base and @name and not(starts-with(@base, 'ξ.'))">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'dispatch'"/>
-          <xsl:with-param name="args" select="(concat('b', position()), concat('b', count(../preceding-sibling::*) + 1), @name)"/>
+          <xsl:with-param name="args" select="('b' || position(), 'b' || ( position() - count(preceding-sibling::o[not(eo:abstract(.))]) - 1), @name)"/>
         </xsl:call-template>
       </xsl:if>
       <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">

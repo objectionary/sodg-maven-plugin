@@ -9,4 +9,4 @@ asserts:
   - //sodg[count(i[not(@name='comment')])=5]
   - //sodg/i[@name='formation' and count(a)=2 and a[1][text()='b1'] and a[2][text()='xi🌵']]
   - //sodg/i[@name='lambda' and count(a)=2 and a[1][text()='b1'] and a[2][text()='foo']]
-  - //sodg/i[@name='dispatch' and a[1][text()='b1'] and a[2][text()='b1'] and a[3][text()='xi🌵']]
+  - //sodg/i[@name='dispatch' and a[1][text()='b2'] and a[2][text()='b1'] and a[3][text()='xi🌵']]
