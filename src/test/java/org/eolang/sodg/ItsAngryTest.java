@@ -68,4 +68,20 @@ final class ItsAngryTest {
             )
         );
     }
+
+    @Test
+    void processesBrokenXmir(@Mktmp final Path temp) throws IOException {
+        MatcherAssert.assertThat(
+            "Instructions were not generated, but they should",
+            new ItsAngry(new ItsDefault(new Depot(temp.resolve("measures.csv").toFile())), false)
+                .textInstructions(
+                    Files.write(
+                        temp.resolve("safe.xmir"), new EoSyntax("# it's safe!\n[] > safe\n\n[] > safe")
+                            .parsed().toString().getBytes(StandardCharsets.UTF_8)
+                    ),
+                    temp.resolve("sodg")
+                ),
+            Matchers.equalTo(4)
+        );
+    }
 }
