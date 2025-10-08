@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.cactoos.list.ListOf;
+import org.cactoos.map.MapEntry;
+import org.cactoos.map.MapOf;
 import org.cactoos.scalar.IoChecked;
 import org.cactoos.scalar.LengthOf;
 import org.xembly.Directive;
@@ -40,6 +42,19 @@ final class ItsDefault implements Instructions {
      * The version.
      */
     private final String version;
+
+    ItsDefault(final Depot dpt) {
+        this(
+            dpt,
+            new MapOf<>(
+                new MapEntry<>("generateSodgXmlFiles", false),
+                new MapEntry<>("generateXemblyFiles", false),
+                new MapEntry<>("generateXemblyFiles", false),
+                new MapEntry<>("generateGraphFiles", false),
+                new MapEntry<>("generateDotFiles", false)
+            )
+        );
+    }
 
     /**
      * Ctor.

@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
-import org.cactoos.map.MapEntry;
-import org.cactoos.map.MapOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -35,8 +32,7 @@ final class ItsDefaultTest {
         MatcherAssert.assertThat(
             "The number of total instructions does not match with expected",
             new ItsDefault(
-                new Depot(temp.resolve("measures.csv").toFile()),
-                ItsDefaultTest.defaultConfig()
+                new Depot(temp.resolve("measures.csv").toFile())
             ).textInstructions(
                 Files.write(
                     temp.resolve("foo.xmir"),
@@ -51,20 +47,6 @@ final class ItsDefaultTest {
                 temp.resolve("foo.sodg")
             ),
             Matchers.equalTo(8)
-        );
-    }
-
-    /**
-     * Default config.
-     * @return Map, where parameter name is key and value is boolean flag
-     */
-    private static Map<String, Boolean> defaultConfig() {
-        return new MapOf<>(
-            new MapEntry<>("generateSodgXmlFiles", false),
-            new MapEntry<>("generateXemblyFiles", false),
-            new MapEntry<>("generateXemblyFiles", false),
-            new MapEntry<>("generateGraphFiles", false),
-            new MapEntry<>("generateDotFiles", false)
         );
     }
 }
