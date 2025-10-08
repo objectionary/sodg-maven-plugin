@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -43,6 +44,28 @@ final class ItsAngryTest {
                     temp.resolve("sodg")
                 ),
             Matchers.greaterThan(0)
+        );
+    }
+
+    @Test
+    void failsBrokenXmir(@Mktmp final Path temp) {
+        MatcherAssert.assertThat(
+            "Exception was not thrown, but it should be, since XMIR is broken",
+            Assertions.assertThrows(
+                IllegalStateException.class,
+                () -> new ItsAngry(new ItsDefault(new Depot(temp.resolve("measures.csv").toFile())), true)
+                    .textInstructions(
+                        Files.write(
+                            temp.resolve("broken.xmir"), new EoSyntax("#")
+                                .parsed().toString().getBytes(StandardCharsets.UTF_8)
+                        ),
+                        temp.resolve("sodg")
+                    )
+            ).getMessage(),
+            Matchers.allOf(
+                Matchers.containsString("Failing SODG generation"),
+                Matchers.containsString("broken")
+            )
         );
     }
 }
