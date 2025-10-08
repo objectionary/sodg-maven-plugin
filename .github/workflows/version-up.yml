@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: version-up
+'on':
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+concurrency:
+  group: version-up-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  version-up:
+    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          latest=$(git ls-remote --tags https://github.com/objectionary/sodg-maven-plugin.git | \
+            grep -o 'refs/tags/[0-9]\+\.[0-9]\+\.[0-9]\+' | \
+            sed 's/refs\/tags\///' | \
+            sort -V | \
+            tail -n1)
+          echo "LATEST=$latest" >> "$GITHUB_ENV"
+      - run: |
+          echo "CURRENT=$(sed -nE 's#.*<version>([0-9]+\.[0-9]+\.[0-9]+)</version>.*#\1#p' README.md)" >> "$GITHUB_ENV"
+      - id: check
+        run: |
+          if [ "${{ env.LATEST }}" = "${{ env.CURRENT }}" ]; then
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+          else
+            sed -i -E "s#<version>[0-9]+\.[0-9]+\.[0-9]+</version>#<version>${{ env.LATEST }}</version>#g" README.md
+            sed -i -E "s#mvn org.eolang:sodg-maven-plugin:[0-9]+\.[0-9]+\.[0-9]+:sodg#mvn org.eolang:sodg-maven-plugin:${{ env.LATEST }}:sodg#g" README.md
+            echo "updated=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.check.outputs.updated == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          sign-commits: true
+          branch: version-up
+          commit-message: "new version ${{ env.LATEST }} in README"
+          delete-branch: true
+          title: "New version ${{ env.LATEST }} in README"
+          assignees: yegor256
+          base: master
