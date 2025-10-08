@@ -13,11 +13,11 @@
     </xsl:copy>
   </xsl:template>
   <!--
-  Here we convert all objects into SODG format.
-    @todo #76:30min Implement `lambda(o, name)` instruction.
-     For now we are not handling lambda asset of the object. We should introduce new instruction:
-     `lambda(o, name)` - that would set lambda-asset to particular object. Don't forget to add new
-     test pack and remove this puzzle.
+  Here we convert all objects into SODG format with the following instructions:
+  1. `formation(o, attr0, attr1, ...)`
+  2. `dispatch(o, base, attr)`
+  3. `delta(o, data)`
+  4. `lambda(o, name)`
   -->
   <xsl:template match="/object/sodg">
     <xsl:copy>
@@ -27,18 +27,23 @@
     </xsl:copy>
   </xsl:template>
   <xsl:template match="o" mode="sodg">
-    <xsl:variable name="root" select="position()"/>
-    <xsl:if test="eo:abstract(.)">
-      <xsl:call-template name="i">
-        <xsl:with-param name="name" select="'formation'"/>
-        <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
-      </xsl:call-template>
-    </xsl:if>
     <xsl:for-each select="//o">
+      <xsl:if test="eo:abstract(.) and not(eo:has-data(.)) and not(@name=$eo:lambda)">
+        <xsl:call-template name="i">
+          <xsl:with-param name="name" select="'formation'"/>
+          <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
+        </xsl:call-template>
+      </xsl:if>
+      <xsl:if test="eo:atom(.)">
+        <xsl:call-template name="i">
+          <xsl:with-param name="name" select="'lambda'"/>
+          <xsl:with-param name="args" select="(concat('b', position()), @name)"/>
+        </xsl:call-template>
+      </xsl:if>
       <xsl:if test="not(eo:abstract(.)) and @base and @name and not(starts-with(@base, 'ξ.'))">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'dispatch'"/>
-          <xsl:with-param name="args" select="(concat('b', position()), concat('b', count(../preceding-sibling::*) + 1), @name)"/>
+          <xsl:with-param name="args" select="('b' || position(), 'b' || ( position() - count(preceding-sibling::o[not(eo:abstract(.))]) - 1), @name)"/>
         </xsl:call-template>
       </xsl:if>
       <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">

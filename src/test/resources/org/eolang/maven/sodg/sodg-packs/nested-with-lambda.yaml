@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets: []
+input: |
+  [] > foo
+    [] > bar
+      [] > baz
+        [] > buz
+          [] > boom ?
+asserts:
+  - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b1'] and a[2][text()='xi🌵'] and a[3][text()='bar']]
+  - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b3'] and a[2][text()='xi🌵'] and a[3][text()='baz']]
+  - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b5'] and a[2][text()='xi🌵'] and a[3][text()='buz']]
+  - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b7'] and a[2][text()='xi🌵'] and a[3][text()='boom']]
+  - //sodg/i[@name='formation' and count(a)=2 and a[1][text()='b9'] and a[2][text()='xi🌵']]
+  - //sodg/i[@name='lambda' and count(a)=2 and a[1][text()='b9'] and a[2][text()='boom']]
+  - //sodg/i[@name='dispatch' and count(a)=3 and a[1][text()='b10'] and a[2][text()='b9'] and a[3][text()='xi🌵']]
