@@ -53,14 +53,15 @@ final class ItsAngryTest {
             "Exception was not thrown, but it should be, since XMIR is broken",
             Assertions.assertThrows(
                 IllegalStateException.class,
-                () -> new ItsAngry(new ItsDefault(new Depot(temp.resolve("measures.csv").toFile())), true)
-                    .textInstructions(
-                        Files.write(
-                            temp.resolve("broken.xmir"), new EoSyntax("#")
-                                .parsed().toString().getBytes(StandardCharsets.UTF_8)
-                        ),
-                        temp.resolve("sodg")
-                    )
+                () -> new ItsAngry(
+                    new ItsDefault(new Depot(temp.resolve("measures.csv").toFile())), true
+                ).textInstructions(
+                    Files.write(
+                        temp.resolve("broken.xmir"), new EoSyntax("#")
+                            .parsed().toString().getBytes(StandardCharsets.UTF_8)
+                    ),
+                    temp.resolve("sodg")
+                )
             ).getMessage(),
             Matchers.allOf(
                 Matchers.containsString("Failing SODG generation"),
@@ -76,7 +77,8 @@ final class ItsAngryTest {
             new ItsAngry(new ItsDefault(new Depot(temp.resolve("measures.csv").toFile())), false)
                 .textInstructions(
                     Files.write(
-                        temp.resolve("safe.xmir"), new EoSyntax("# it's safe!\n[] > safe\n\n[] > safe")
+                        temp.resolve("safe.xmir"),
+                        new EoSyntax("# it's safe!\n[] > safe\n\n[] > safe")
                             .parsed().toString().getBytes(StandardCharsets.UTF_8)
                     ),
                     temp.resolve("sodg")
