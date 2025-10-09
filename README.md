@@ -151,6 +151,39 @@ a program using graph traversing algorithm. Once the graph is built, it can be
 used to execute a program via a graph traversal algorithm. An example of such
 an executor is [reo].
 
+## Configuration
+
+You can configure the plugin goal's behavior using `<configuration/>`. The most
+important parameters:
+
+* `scope` - current object scope, default: `compile`.
+* `generateSodgXmlFiles` - shall we generate `.sodg.xml` files with SODGs?
+* `generateXemblyFiles` - shall we generate `.xe` files with Xembly
+instructions graph?
+* `generateGraphFiles` - shall we generate `.graph.xml` files with XML graph?
+* `generateDotFiles` - shall we generate `.dot` files with DOT language graph
+commands?
+* `sodgIncludes` - object names to participate in SODG generation, in the
+[glob] format, default: `**`.
+* `sodgExcludes` - object names to be excluded from SODG generation, in the
+[glob] format.
+* `failOnXmirErrors` - shall we fail SODG generation if XMIRs contain errors?
+
+For `failOnXmirErrors` default value is `true`. It means that, if `.xmir`
+contains `/object/errors`, then SODG generation will be failed:
+
+```xml
+<object>
+   ...
+   <errors>
+      <error check="validate-object-name" severity="critical">...</error>
+   </errors>
+</object>
+```
+
+If `failOnXmirErrors` set to `false`, then even `.xmir` contains
+`/object/errors`, the plugin will try to convert it to SODG.
+
 ## How to Contribute
 
 Fork repository, make changes, then send us
