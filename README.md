@@ -204,3 +204,4 @@ You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.
 [GraphViz]: https://graphviz.org
 [XMIR guide]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [reo-tests]: https://github.com/objectionary/reo/tree/master/quick-tests
+[glob]: https://en.wikipedia.org/wiki/Glob_(programming)
