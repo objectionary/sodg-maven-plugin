@@ -45,7 +45,7 @@ final class SodgFilesTest {
     ) throws IOException {
         final Path sodg = temp.resolve("sodg");
         new SodgFiles(
-            new SodgInstructions(
+            new ItsDefault(
                 new Depot(temp.resolve("measures.csv").toFile()),
                 options
             ),
