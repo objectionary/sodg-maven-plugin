@@ -154,7 +154,7 @@ an executor is [reo].
 ## Configuration
 
 You can configure the plugin goal's behavior using `<configuration/>`. The most
-important parameters:
+important parameters are:
 
 * `scope` - current object scope, default: `compile`.
 * `generateSodgXmlFiles` - shall we generate `.sodg.xml` files with SODGs?
