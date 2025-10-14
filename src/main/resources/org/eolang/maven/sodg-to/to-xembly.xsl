@@ -38,7 +38,7 @@
     <xsl:text>";</xsl:text>
     <xsl:value-of select="$TAB"/>
     <xsl:text>ATTR "attrs", "</xsl:text>
-    <xsl:value-of select="a[position() > 1]"/>
+    <xsl:value-of select="a[position() &gt; 1]"/>
     <xsl:text>";</xsl:text>
     <xsl:value-of select="$EOL"/>
   </xsl:template>
