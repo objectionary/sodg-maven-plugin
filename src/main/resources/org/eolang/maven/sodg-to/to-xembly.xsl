@@ -20,8 +20,8 @@
       <xsl:apply-templates select="i"/>
     </xsl:element>
   </xsl:template>
-  <!-- ADD(V1) -->
-  <xsl:template match="i[@name='ADD']">
+  <!-- Add formation vertex -->
+  <xsl:template match="i[@name='formation']">
     <xsl:if test="$testing = 'yes'">
       <!-- Validate the absence of vertex V1: -->
       <xsl:text>XPATH "/graph/v[@id='</xsl:text>
@@ -36,10 +36,17 @@
     <xsl:text>ATTR "id", "</xsl:text>
     <xsl:value-of select="a[1]"/>
     <xsl:text>";</xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <xsl:text>ATTR "attrs", "</xsl:text>
+    <xsl:value-of select="a[position() > 1]"/>
+    <xsl:text>";</xsl:text>
     <xsl:value-of select="$EOL"/>
   </xsl:template>
-  <!-- BIND(V1, V2, A) -->
-  <xsl:template match="i[@name='BIND']">
+  <xsl:template match="i[@name='lambda']">
+
+  </xsl:template>
+  <!-- Bind an object to it's formation -->
+  <xsl:template match="i[@name='dispatch']">
     <xsl:if test="$testing = 'yes'">
       <!-- Validate the presence of vertex V2: -->
       <xsl:text>XPATH "/graph/v[@id='</xsl:text>
@@ -76,14 +83,95 @@
     <xsl:text>";</xsl:text>
     <xsl:value-of select="$EOL"/>
   </xsl:template>
-  <!-- PUT(V1, BYTES) -->
-  <xsl:template match="i[@name='PUT']">
-    <!-- Go to vertex V1: -->
+  <!-- Add application to graph -->
+  <xsl:template match="i[@name='application']">
+    <xsl:if test="$testing = 'yes'">
+      <!-- Validate the presence of application vertex: -->
+      <xsl:text>XPATH "/graph/v[@id='</xsl:text>
+      <xsl:value-of select="a[1]"/>
+      <xsl:text>']"; STRICT "1"; </xsl:text>
+      <!-- Validate the absence of V2.A edge: -->
+      <xsl:text>XPATH "/graph/v[@id='</xsl:text>
+      <xsl:value-of select="a[2]"/>
+      <xsl:text>']/e[@title='</xsl:text>
+      <xsl:value-of select="a[3]"/>
+      <xsl:text>']"; STRICT "0"; </xsl:text>
+    </xsl:if>
+    <!-- Delete A-edge at V1 if it already exists: -->
+    <xsl:text>XPATH "/graph/v[@id='</xsl:text>
+    <xsl:value-of select="a[1]"/>
+    <xsl:text>']/e[@title='</xsl:text>
+    <xsl:value-of select="a[3]"/>
+    <xsl:text>']"; REMOVE; </xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <!-- Go to V1: -->
     <xsl:text>XPATH "/graph/v[@id='</xsl:text>
     <xsl:value-of select="a[1]"/>
     <xsl:text>']"; STRICT "1"; </xsl:text>
     <xsl:value-of select="$TAB"/>
-    <!-- Set Bytes to V1: -->
+    <!-- Add edge: -->
+    <xsl:text>ADD "e";</xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <xsl:text>ATTR "to", "</xsl:text>
+    <xsl:value-of select="a[2]"/>
+    <xsl:text>"; </xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <xsl:text>ATTR "bindings", "</xsl:text>
+    <xsl:for-each select="a[position() &gt; 2][position() mod 2 = 1][following-sibling::a]">
+      <xsl:value-of select="concat(., ':', following-sibling::a[1])"/>
+      <xsl:if test="position() != last()">
+        <xsl:text> </xsl:text>
+      </xsl:if>
+    </xsl:for-each>
+    <xsl:text>";</xsl:text>
+    <xsl:value-of select="$EOL"/>
+  </xsl:template>
+  <!-- Add an application result to it's formation -->
+  <xsl:template match="i[@name='put']">
+    <xsl:if test="$testing = 'yes'">
+      <!-- Validate the presence of vertex V2: -->
+      <xsl:text>XPATH "/graph/v[@id='</xsl:text>
+      <xsl:value-of select="a[3]"/>
+      <xsl:text>']"; STRICT "1"; </xsl:text>
+      <!-- Validate the absence of V1.A edge: -->
+      <xsl:text>XPATH "/graph/v[@id='</xsl:text>
+      <xsl:value-of select="a[1]"/>
+      <xsl:text>']/e[@title='</xsl:text>
+      <xsl:value-of select="a[3]"/>
+      <xsl:text>']"; STRICT "0"; </xsl:text>
+    </xsl:if>
+    <!-- Delete A-edge at V3 if it already exists: -->
+    <xsl:text>XPATH "/graph/v[@id='</xsl:text>
+    <xsl:value-of select="a[3]"/>
+    <xsl:text>']/e[@title='</xsl:text>
+    <xsl:value-of select="a[2]"/>
+    <xsl:text>']"; REMOVE; </xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <!-- Go to V3: -->
+    <xsl:text>XPATH "/graph/v[@id='</xsl:text>
+    <xsl:value-of select="a[3]"/>
+    <xsl:text>']"; STRICT "1"; </xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <!-- Add edge: -->
+    <xsl:text>ADD "e";</xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <xsl:text>ATTR "to", "</xsl:text>
+    <xsl:value-of select="a[1]"/>
+    <xsl:text>"; </xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <xsl:text>ATTR "attr", "</xsl:text>
+    <xsl:value-of select="a[2]"/>
+    <xsl:text>";</xsl:text>
+    <xsl:value-of select="$EOL"/>
+  </xsl:template>
+  <!-- Set delta-asset to the object -->
+  <xsl:template match="i[@name='delta']">
+    <!-- Go to object `o`: -->
+    <xsl:text>XPATH "/graph/v[@id='</xsl:text>
+    <xsl:value-of select="a[1]"/>
+    <xsl:text>']"; STRICT "1"; </xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <!-- Set data to object: -->
     <xsl:text>ADD "data"; </xsl:text>
     <xsl:value-of select="$TAB"/>
     <xsl:text>SET "</xsl:text>
@@ -91,7 +179,7 @@
     <xsl:text>";</xsl:text>
     <xsl:value-of select="$EOL"/>
   </xsl:template>
-  <xsl:template match="i[@name='COMMENT']">
+  <xsl:template match="i[@name='comment']">
     <!-- Ignore it -->
   </xsl:template>
   <xsl:template match="i">
