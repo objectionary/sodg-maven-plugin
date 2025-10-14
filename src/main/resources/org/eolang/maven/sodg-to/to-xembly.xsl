@@ -43,7 +43,22 @@
     <xsl:value-of select="$EOL"/>
   </xsl:template>
   <xsl:template match="i[@name='lambda']">
-
+    <!-- Go to object `o`: -->
+    <xsl:text>XPATH "/graph/v[@id='</xsl:text>
+    <xsl:value-of select="a[1]"/>
+    <xsl:text>']"; STRICT "1"; </xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <!-- Add lambda to vertex: -->
+    <xsl:text>ADD "e";</xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <xsl:text>ATTR "to", "</xsl:text>
+    <xsl:value-of select="a[1]"/>
+    <xsl:text>"; </xsl:text>
+    <xsl:value-of select="$TAB"/>
+    <xsl:text>ATTR "name", "</xsl:text>
+    <xsl:value-of select="a[2]"/>
+    <xsl:text>";</xsl:text>
+    <xsl:value-of select="$EOL"/>
   </xsl:template>
   <!-- Bind an object to it's formation -->
   <xsl:template match="i[@name='dispatch']">
@@ -97,13 +112,6 @@
       <xsl:value-of select="a[3]"/>
       <xsl:text>']"; STRICT "0"; </xsl:text>
     </xsl:if>
-    <!-- Delete A-edge at V1 if it already exists: -->
-    <xsl:text>XPATH "/graph/v[@id='</xsl:text>
-    <xsl:value-of select="a[1]"/>
-    <xsl:text>']/e[@title='</xsl:text>
-    <xsl:value-of select="a[3]"/>
-    <xsl:text>']"; REMOVE; </xsl:text>
-    <xsl:value-of select="$TAB"/>
     <!-- Go to V1: -->
     <xsl:text>XPATH "/graph/v[@id='</xsl:text>
     <xsl:value-of select="a[1]"/>

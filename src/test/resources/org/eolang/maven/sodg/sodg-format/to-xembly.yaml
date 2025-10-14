@@ -48,6 +48,10 @@ document:
       <a>result</a>
       <a>b6</a>
     </i>
+    <i name="lambda">
+      <a>b55</a>
+      <a>atomic</a>
+    </i>
   </sodg>
 asserts:
   - //xembly[contains(., 'ADD "graph";')]
@@ -73,3 +77,6 @@ asserts:
   - //xembly[contains(., 'ATTR "bindings", "α0:b3 α1:b42";')]
   - //xembly[contains(., 'ATTR "to", "b1";')]
   - //xembly[contains(., 'ATTR "attr", "result";')]
+  - //xembly[contains(., concat('XPATH "', '/graph/v[@id=', "'", 'b55', "'", ']"', '; STRICT "1";'))]
+  - //xembly[contains(., 'ATTR "to", "b55";')]
+  - //xembly[contains(., 'ATTR "name", "atomic";')]
