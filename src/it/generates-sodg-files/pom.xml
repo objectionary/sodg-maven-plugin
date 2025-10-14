@@ -61,7 +61,7 @@
           <foreign>${project.build.directory}/eo/foreign.csv</foreign>
           <foreignFormat>csv</foreignFormat>
           <generateSodgXmlFiles>true</generateSodgXmlFiles>
-          <generateXemblyFiles>false</generateXemblyFiles>
+          <generateXemblyFiles>true</generateXemblyFiles>
           <!--
             @todo #11:90min Enable 'graph' and 'dot' files generation
              In order to generate 'graph' and 'dot' files, we need to enable

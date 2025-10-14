@@ -187,7 +187,7 @@
     <xsl:text>";</xsl:text>
     <xsl:value-of select="$EOL"/>
   </xsl:template>
-  <xsl:template match="i[@name='comment']">
+  <xsl:template match="i[@name='comment' or @name='meta']">
     <!-- Ignore it -->
   </xsl:template>
   <xsl:template match="i">
