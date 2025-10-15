@@ -1,0 +1,83 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/maven/sodg-to/to-xembly.xsl
+document:
+  <sodg>
+    <i name="formation">
+      <a>b1</a>
+      <a>bar</a>
+      <a>xyz</a>
+      <a>x</a>
+    </i>
+    <i name="dispatch">
+      <a>b2</a>
+      <a>b1</a>
+      <a>bar</a>
+    </i>
+    <i name="dispatch">
+      <a>b3</a>
+      <a>b1</a>
+      <a>xyz</a>
+    </i>
+    <i name="dispatch">
+      <a>b4</a>
+      <a>b1</a>
+      <a>x</a>
+    </i>
+    <i name="delta">
+      <a>b4</a>
+      <a>40-45-00-00-00-00-00-00</a>
+    </i>
+    <i name="dispatch">
+      <a>b5</a>
+      <a>b2</a>
+      <a>boom</a>
+    </i>
+    <i name="application">
+      <a>b6</a>
+      <a>b5</a>
+      <a>α0</a>
+      <a>b3</a>
+      <a>α1</a>
+      <a>b42</a>
+    </i>
+    <i name="put">
+      <a>b1</a>
+      <a>result</a>
+      <a>b6</a>
+    </i>
+    <i name="lambda">
+      <a>b55</a>
+      <a>atomic</a>
+    </i>
+  </sodg>
+asserts:
+  - //xembly[contains(., 'ADD "graph";')]
+  - //xembly[contains(., 'XPATH "/graph";')]
+  - //xembly[contains(., 'ADD "v";')]
+  - //xembly[contains(., 'ATTR "id", "b1";')]
+  - //xembly[contains(., 'ATTR "attrs", "bar xyz x";')]
+  - //xembly[contains(., concat('XPATH "', '/graph/v[@id=', "'", 'b2', "'", ']"', '; STRICT "1";'))]
+  - //xembly[contains(., 'ADD "e";')]
+  - //xembly[contains(., 'ATTR "to", "b1";')]
+  - //xembly[contains(., 'ATTR "title", "bar";')]
+  - //xembly[contains(., concat('XPATH "', '/graph/v[@id=', "'", 'b3', "'", ']"', '; STRICT "1";'))]
+  - //xembly[contains(., 'ATTR "title", "xyz";')]
+  - //xembly[contains(., concat('XPATH "', '/graph/v[@id=', "'", 'b4', "'", ']"', '; STRICT "1";'))]
+  - //xembly[contains(., 'ATTR "title", "x";')]
+  - //xembly[contains(., 'ADD "data"; ')]
+  - //xembly[contains(., 'SET "40-45-00-00-00-00-00-00";')]
+  - //xembly[contains(., concat('XPATH "', '/graph/v[@id=', "'", 'b5', "'", ']"', '; STRICT "1";'))]
+  - //xembly[contains(., 'ATTR "to", "b2";')]
+  - //xembly[contains(., 'ATTR "title", "boom";')]
+  - //xembly[contains(., concat('XPATH "', '/graph/v[@id=', "'", 'b6', "'", ']"', '; STRICT "1";'))]
+  - //xembly[contains(., 'ATTR "to", "b5";')]
+  - //xembly[contains(., 'ATTR "bindings", "α0:b3 α1:b42";')]
+  - //xembly[contains(., 'ATTR "to", "b1";')]
+  - //xembly[contains(., 'ATTR "attr", "result";')]
+  - //xembly[contains(., concat('XPATH "', '/graph/v[@id=', "'", 'b55', "'", ']"', '; STRICT "1";'))]
+  - //xembly[contains(., 'ATTR "to", "b55";')]
+  - //xembly[contains(., 'ATTR "name", "atomic";')]
