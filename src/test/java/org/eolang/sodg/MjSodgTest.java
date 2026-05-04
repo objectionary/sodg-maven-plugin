@@ -8,7 +8,9 @@ import com.jcabi.matchers.XhtmlMatchers;
 import com.yegor256.MktmpResolver;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.jucs.ClasspathSource;
@@ -22,10 +24,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Test case for {@link MjSodg}.
- *
  * @since 0.1
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @ExtendWith(MktmpResolver.class)
 final class MjSodgTest {
 
@@ -41,22 +41,20 @@ final class MjSodgTest {
 
     @Test
     void checksIdsInXslStylesheets() throws IOException {
-        Files.walk(Paths.get("src/main/resources/org/eolang/maven/sodg"))
+        for (final Path path : Files.walk(Paths.get("src/main/resources/org/eolang/maven/sodg"))
             .filter(Files::isRegularFile)
             .filter(file -> file.getFileName().toString().endsWith(".xsl"))
-            .forEach(
-                path -> MatcherAssert.assertThat(
-                    String.format("@id is wrong in: %s", path),
-                    XhtmlMatchers.xhtml(
-                        new UncheckedText(new TextOf(path)).asString()
-                    ),
-                    XhtmlMatchers.hasXPath(
-                        String.format(
-                            "/xsl:stylesheet[@id='%s']",
-                            path.getFileName().toString().replaceAll("\\.xsl$", "")
-                        )
+            .collect(Collectors.toList())) {
+            MatcherAssert.assertThat(
+                String.format("@id is wrong in: %s", path),
+                XhtmlMatchers.xhtml(new UncheckedText(new TextOf(path)).asString()),
+                XhtmlMatchers.hasXPath(
+                    String.format(
+                        "/xsl:stylesheet[@id='%s']",
+                        path.getFileName().toString().replaceAll("\\.xsl$", "")
                     )
                 )
             );
+        }
     }
 }

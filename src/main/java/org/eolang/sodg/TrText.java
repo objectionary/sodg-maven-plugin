@@ -16,6 +16,7 @@ final class TrText extends TrEnvelope {
 
     /**
      * Ctor.
+     * @checkstyle ConstructorsCodeFreeCheck (15 lines)
      */
     TrText() {
         super(

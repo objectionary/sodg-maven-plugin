@@ -18,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests for {@link ItsDefault}.
- *
  * @since 0.0.3
  * @todo #9:45min Add more tests for `SodgInstructions#textInstructions()` method.
  *  The method not only computes the number, but also performs XMIR-to-SODG transformations,
@@ -38,7 +37,7 @@ final class ItsDefaultTest {
                     temp.resolve("foo.xmir"),
                     new EoSyntax(
                         String.join(
-                            "\n",
+                            System.lineSeparator(),
                             "[] > foo",
                             "  QQ.io.stdout \"编程就是我的生命\" > @"
                         )

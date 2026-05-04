@@ -7,6 +7,7 @@ package org.eolang.sodg;
 import com.jcabi.xml.XML;
 import com.yegor256.xsline.Shift;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -44,24 +45,32 @@ final class StMeasured implements Shift {
     }
 
     @Override
-    @SuppressWarnings("PMD.PrematureDeclaration")
     public XML apply(final int position, final XML xml) {
-        final long start = System.currentTimeMillis();
-        final XML out = this.origin.apply(position, xml);
+        long elapsed = System.currentTimeMillis();
+        try {
+            return this.origin.apply(position, xml);
+        } finally {
+            elapsed = System.currentTimeMillis() - elapsed;
+            this.recordDuration(elapsed);
+        }
+    }
+
+    /**
+     * Record the duration of the last shift.
+     * @param duration The duration in milliseconds
+     */
+    private void recordDuration(final long duration) {
         try {
             Files.write(
                 this.path,
-                String.format(
-                    "%s,%d\n",
-                    this.origin.uid(),
-                    System.currentTimeMillis() - start
-                ).getBytes(),
+                String.format("%s,%d%n", this.origin.uid(), duration).getBytes(
+                    StandardCharsets.UTF_8
+                ),
                 StandardOpenOption.APPEND,
                 StandardOpenOption.CREATE
             );
         } catch (final IOException ex) {
             throw new IllegalArgumentException(ex);
         }
-        return out;
     }
 }

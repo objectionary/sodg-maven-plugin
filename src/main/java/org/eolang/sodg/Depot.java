@@ -11,8 +11,11 @@ import com.yegor256.xsline.Train;
 import java.io.File;
 import java.util.Map;
 import java.util.logging.Level;
+import org.cactoos.Scalar;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Unchecked;
 
 /**
  * The depot that produces trains.
@@ -26,28 +29,26 @@ final class Depot {
     /**
      * The trains.
      */
-    private final Map<String, Train<Shift>> trains;
+    private final Unchecked<Map<String, Train<Shift>>> trains;
 
     /**
      * Ctor.
      * @param measures Measures
      */
     Depot(final File measures) {
-        this(
-            new MapOf<>(
-                new MapEntry<>(
-                    "sodg", Depot.measured(new TrSodg(Depot.loggingLevel()), measures)
-                ),
-                new MapEntry<>(
-                    "dot", Depot.measured(new TrDot(Depot.loggingLevel()), measures)
-                ),
-                new MapEntry<>("xembly", Depot.measured(new TrXembly(), measures)),
-                new MapEntry<>("text", Depot.measured(new TrText(), measures)),
-                new MapEntry<>(
-                    "finish", Depot.measured(new TrFinish(Depot.loggingLevel()), measures)
-                )
+        this((Scalar<Map<String, Train<Shift>>>) () -> new MapOf<>(
+            new MapEntry<>(
+                "sodg", Depot.measured(new TrSodg(Depot.loggingLevel()), measures)
+            ),
+            new MapEntry<>(
+                "dot", Depot.measured(new TrDot(Depot.loggingLevel()), measures)
+            ),
+            new MapEntry<>("xembly", Depot.measured(new TrXembly(), measures)),
+            new MapEntry<>("text", Depot.measured(new TrText(), measures)),
+            new MapEntry<>(
+                "finish", Depot.measured(new TrFinish(Depot.loggingLevel()), measures)
             )
-        );
+        ));
     }
 
     /**
@@ -55,7 +56,15 @@ final class Depot {
      * @param trns The trains
      */
     Depot(final Map<String, Train<Shift>> trns) {
-        this.trains = trns;
+        this((Scalar<Map<String, Train<Shift>>>) () -> trns);
+    }
+
+    /**
+     * Primary ctor.
+     * @param scalar The trains scalar
+     */
+    private Depot(final Scalar<Map<String, Train<Shift>>> scalar) {
+        this.trains = new Unchecked<>(new Sticky<>(scalar));
     }
 
     /**
@@ -64,7 +73,7 @@ final class Depot {
      * @return Train
      */
     Train<Shift> train(final String name) {
-        return this.trains.get(name);
+        return this.trains.value().get(name);
     }
 
     /**
@@ -72,7 +81,6 @@ final class Depot {
      * <p>
      * This is for testing purposes, to enable higher visibility of logs inside
      * tests being executed interactively in the IDE.
-     *
      * @return TRUE if inside IDE
      */
     private static Level loggingLevel() {
@@ -87,7 +95,7 @@ final class Depot {
      * Measured train.
      * @param train Train to measure
      * @param measures Measures
-     * @return Measured train.
+     * @return Measured train
      */
     private static Train<Shift> measured(final Train<Shift> train, final File measures) {
         if (measures.getParentFile().mkdirs()) {

@@ -12,13 +12,13 @@ import com.yegor256.xsline.TrFast;
 
 /**
  * Convert to Xembly.
- *
  * @since 0.1
  */
 final class TrXembly extends TrEnvelope {
 
     /**
      * Ctor.
+     * @checkstyle ConstructorsCodeFreeCheck (15 lines)
      */
     TrXembly() {
         super(

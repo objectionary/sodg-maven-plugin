@@ -32,7 +32,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Tests for {@link SodgFiles}.
- *
  * @since 0.0.4
  */
 final class SodgFilesTest {
@@ -58,7 +57,7 @@ final class SodgFilesTest {
                     new MapEntry<>(
                         "app",
                         String.join(
-                            "\n",
+                            System.lineSeparator(),
                             "[] > app",
                             "  QQ.io.stdout > @",
                             "    \"我是一名来自莫斯科的计算机科学家!\""
@@ -85,7 +84,6 @@ final class SodgFilesTest {
 
     /**
      * Configuration-files matrix.
-     *
      * @return Matrix as stream of arguments
      */
     private static Stream<Arguments> fileMatrix() {
@@ -139,42 +137,51 @@ final class SodgFilesTest {
 
         /**
          * As tojos.
-         * @return Collection of tojos.
+         * @return Collection of tojos
          * @throws IOException if I/O operation fails
          */
         Collection<TjForeign> asTojos() throws IOException {
             try (Mono mono = new MnCsv(this.home.resolve("foreign.csv"))) {
                 final Collection<Map<String, String>> foreigns = new ArrayList<>(16);
-                this.programs.forEach(
-                    (name, sources) -> {
-                        final Path xmir = this.home.resolve(String.format("%s.xmir", name));
-                        try {
-                            Files.write(
-                                xmir, new EoSyntax(sources).parsed().toString().getBytes(
-                                    StandardCharsets.UTF_8
-                                )
-                            );
-                        } catch (final IOException exception) {
-                            throw new IllegalStateException(
-                                String.format("Failed to write XMIR to %s", xmir), exception
-                            );
-                        }
-                        foreigns.add(
-                            new MapOf<>(
-                                new MapEntry<>(
-                                    "id",
-                                    String.format("org.eolang.sodg.examples.%s", name)
-                                ),
-                                new MapEntry<>("xmir", xmir.toString()),
-                                new MapEntry<>("scope", "compile")
-                            )
-                        );
-                    }
-                );
+                this.programs.forEach((name, sources) -> this.append(foreigns, name, sources));
                 mono.write(foreigns);
                 return new TjsForeign(() -> new TjDefault(mono), () -> "compile").withXmir();
             }
         }
-    }
 
+        /**
+         * Append a single program tojo into the collection.
+         * @param foreigns The foreigns
+         * @param name The name
+         * @param sources The sources
+         */
+        private void append(
+            final Collection<Map<String, String>> foreigns,
+            final String name,
+            final String sources
+        ) {
+            final Path xmir = this.home.resolve(String.format("%s.xmir", name));
+            try {
+                Files.write(
+                    xmir, new EoSyntax(sources).parsed().toString().getBytes(
+                        StandardCharsets.UTF_8
+                    )
+                );
+            } catch (final IOException exception) {
+                throw new IllegalStateException(
+                    String.format("Failed to write XMIR to %s", xmir), exception
+                );
+            }
+            foreigns.add(
+                new MapOf<>(
+                    new MapEntry<>(
+                        "id",
+                        String.format("org.eolang.sodg.examples.%s", name)
+                    ),
+                    new MapEntry<>("xmir", xmir.toString()),
+                    new MapEntry<>("scope", "compile")
+                )
+            );
+        }
+    }
 }

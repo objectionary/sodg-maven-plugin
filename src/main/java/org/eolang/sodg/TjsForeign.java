@@ -21,7 +21,6 @@ import org.cactoos.scalar.Unchecked;
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  * @since 0.30
  */
-@SuppressWarnings("PMD.TooManyMethods")
 final class TjsForeign implements Closeable {
 
     /**
@@ -45,8 +44,8 @@ final class TjsForeign implements Closeable {
 
     /**
      * Main constructor.
-     * @param tojos The tojos.
-     * @param scope The scope.
+     * @param tojos The tojos
+     * @param scope The scope
      */
     private TjsForeign(
         final Unchecked<Tojos> tojos,
@@ -63,7 +62,7 @@ final class TjsForeign implements Closeable {
 
     /**
      * Get the tojos that have corresponding shaken XMIR.
-     * @return The tojos.
+     * @return The tojos
      */
     Collection<TjForeign> withXmir() {
         return this.select(row -> row.exists(Attribute.XMIR.getKey()));
@@ -71,15 +70,14 @@ final class TjsForeign implements Closeable {
 
     /**
      * Select tojos.
-     * @param filter Filter.
-     * @return Selected tojos.
+     * @param filter Filter
+     * @return Selected tojos
      */
     private Collection<TjForeign> select(final Predicate<? super Tojo> filter) {
-        final Predicate<Tojo> scoped = t ->
-            t.get(Attribute.SCOPE.getKey()).equals(this.scope.get());
-        return this.tojos.value()
-            .select(t -> filter.test(t) && scoped.test(t))
-            .stream().map(TjForeign::new).collect(Collectors.toList());
+        return this.tojos.value().select(
+            t -> filter.test(t)
+                && t.get(Attribute.SCOPE.getKey()).equals(this.scope.get())
+        ).stream().map(TjForeign::new).collect(Collectors.toList());
     }
 
     /**
@@ -114,7 +112,7 @@ final class TjsForeign implements Closeable {
 
         /**
          * Ctor.
-         * @param attribute The attribute name.
+         * @param attribute The attribute name
          */
         Attribute(final String attribute) {
             this.key = attribute;
@@ -122,7 +120,7 @@ final class TjsForeign implements Closeable {
 
         /**
          * Get the attribute name.
-         * @return The attribute name.
+         * @return The attribute name
          */
         String getKey() {
             return this.key;

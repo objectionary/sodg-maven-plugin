@@ -23,7 +23,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Test cases for {@link Sodg}.
- *
  * @since 0.1
  * @todo #5:90min Enable all the {@link Sodg} tests.
  *  Currently they are disabled because the SODG generation is outdated.
@@ -41,23 +40,18 @@ final class SodgTest {
             for (int spc = 0; spc < idx; ++spc) {
                 program.append("  ");
             }
-            program.append("[x y z] > foo\n");
+            program.append(String.format("[x y z] > foo%n"));
         }
-        final XML graph = new Sodg(new EoSyntax(program.toString()).parsed()).value();
         MatcherAssert.assertThat(
             "Expected locator to exist in the generated graph",
             ".foo .foo",
-            new ExistsIn(graph)
+            new ExistsIn(new Sodg(new EoSyntax(program.toString()).parsed()).value())
         );
     }
 
     @ParameterizedTest
     @ClasspathSource(value = "org/eolang/maven/sodg/sodgs/", glob = "**.yaml")
-    @SuppressWarnings({
-        "unchecked",
-        "PMD.JUnitTestContainsTooManyAsserts",
-        "PMD.ProhibitPlainJunitAssertionsRule"
-    })
+    @SuppressWarnings("unchecked")
     @Disabled
     void generatesSodgForPacks(final String pack) throws IOException {
         final Xtory xtory = new XtSticky(new XtYaml(pack));
@@ -80,8 +74,8 @@ final class SodgTest {
 
     /**
      * Get the inclusion string from the Xtory object.
-     * @param xtory The Xtory object.
-     * @return The inclusion string.
+     * @param xtory The Xtory object
+     * @return The inclusion string
      */
     @SuppressWarnings("PMD.UnusedPrivateMethod")
     private static String inclusion(final Xtory xtory) {
