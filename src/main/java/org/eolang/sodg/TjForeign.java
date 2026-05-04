@@ -14,7 +14,6 @@ import java.util.Objects;
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
  * @since 0.30
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 final class TjForeign {
 
     /**
@@ -24,7 +23,7 @@ final class TjForeign {
 
     /**
      * Ctor.
-     * @param original The delegate.
+     * @param original The delegate
      */
     TjForeign(final Tojo original) {
         this.delegate = original;
@@ -43,8 +42,7 @@ final class TjForeign {
         } else if (other == null || this.getClass() != other.getClass()) {
             result = false;
         } else {
-            final TjForeign tojo = (TjForeign) other;
-            result = Objects.equals(this.delegate, tojo.delegate);
+            result = Objects.equals(this.delegate, ((TjForeign) other).delegate);
         }
         return result;
     }
@@ -56,7 +54,7 @@ final class TjForeign {
 
     /**
      * The id of the tojo.
-     * @return The id of the tojo.
+     * @return The id of the tojo
      */
     String identifier() {
         return this.attribute(TjsForeign.Attribute.ID);
@@ -64,7 +62,7 @@ final class TjForeign {
 
     /**
      * The tojo shaken xmir.
-     * @return The shaken xmir.
+     * @return The shaken xmir
      */
     Path shaken() {
         return Paths.get(this.attribute(TjsForeign.Attribute.XMIR));
@@ -72,8 +70,8 @@ final class TjForeign {
 
     /**
      * Set sodg.
-     * @param sodg Sodg.
-     * @return The tojo itself.
+     * @param sodg Sodg
+     * @return The tojo itself
      */
     TjForeign withSodg(final Path sodg) {
         this.delegate.set(TjsForeign.Attribute.SODG.getKey(), sodg.toString());
@@ -82,8 +80,8 @@ final class TjForeign {
 
     /**
      * Return the attribute from the tojo.
-     * @param attribute The attribute from ForeignTojos.Attribute.
-     * @return The attribute.
+     * @param attribute The attribute from ForeignTojos.Attribute
+     * @return The attribute
      */
     private String attribute(final TjsForeign.Attribute attribute) {
         final String attr = this.delegate.get(attribute.getKey());

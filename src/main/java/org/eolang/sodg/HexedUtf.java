@@ -13,6 +13,7 @@ import org.cactoos.Text;
  * @since 0.0.2
  */
 final class HexedUtf implements Text {
+
     /**
      * The text to transform.
      */

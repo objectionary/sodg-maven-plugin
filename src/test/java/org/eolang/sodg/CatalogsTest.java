@@ -20,7 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests for {@link Catalogs}.
- *
  * @since 0.0.4
  */
 final class CatalogsTest {

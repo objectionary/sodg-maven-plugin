@@ -41,13 +41,12 @@ final class ItsAngry implements Instructions {
         final XML document = new XMLDocument(xmir);
         if (!document.nodes("/object/errors").isEmpty() && this.exit) {
             final String message = String.format(
-                "Failing SODG generation, since the object in '%s' contains errors ('failOnXmirErrors=true'):\n%s",
+                "Failing SODG generation, since the object in '%s' contains errors ('failOnXmirErrors=true'):%n%s",
                 xmir, document
             );
             Logger.error(this, message);
             throw new IllegalStateException(message);
-        } else {
-            return this.origin.textInstructions(xmir, base);
         }
+        return this.origin.textInstructions(xmir, base);
     }
 }

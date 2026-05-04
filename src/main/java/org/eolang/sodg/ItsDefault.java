@@ -81,7 +81,7 @@ final class ItsDefault implements Instructions {
     public int textInstructions(final Path xmir, final Path base) throws IOException {
         final XML before = new XMLDocument(xmir);
         if (Logger.isTraceEnabled(this)) {
-            Logger.trace(this, "XML before translating to SODG:\n%s", before);
+            Logger.trace(this, "XML before translating to SODG:%n%s", before);
         }
         final XML after = new Xsline(this.depot.train("sodg")).pass(before);
         final String instructions = new Xsline(this.depot.train("text"))
@@ -89,10 +89,10 @@ final class ItsDefault implements Instructions {
             .xpath("/text/text()")
             .get(0);
         if (Logger.isTraceEnabled(this)) {
-            Logger.trace(this, "SODGs:\n%s", instructions);
+            Logger.trace(this, "SODGs:%n%s", instructions);
         }
         new Saved(
-            String.format("# %s\n\n%s", new Disclaimer(this.version), instructions), base
+            String.format("# %s%n%n%s", new Disclaimer(this.version), instructions), base
         ).value();
         if (this.config.get("generateSodgXmlFiles")) {
             new Saved(
@@ -103,19 +103,20 @@ final class ItsDefault implements Instructions {
             final String xembly = new Xsline(this.depot.train("xembly")).pass(after)
                 .xpath("/xembly/text()").get(0);
             new Saved(
-                String.format("# %s\n\n%s\n", new Disclaimer(this.version), xembly),
+                String.format("# %s%n%n%s%n", new Disclaimer(this.version), xembly),
                 base.resolveSibling(String.format("%s.xe", base.getFileName()))
             ).value();
             this.makeGraph(xembly, base);
         }
-        return (int) new ListOf<>(instructions.trim().split("\n")).stream().filter(
+        return (int) new ListOf<>(
+            instructions.trim().split(String.valueOf((char) 10))
+        ).stream().filter(
             i -> !(!i.isEmpty() && i.charAt(0) == '#') && !i.isEmpty()
         ).count();
     }
 
     /**
      * Make graph.
-     *
      * @param xembly The Xembly script
      * @param sodg The path of SODG file
      * @throws IOException If fails
@@ -128,24 +129,25 @@ final class ItsDefault implements Instructions {
                 new IoChecked<>(new LengthOf(all)).value(), sodg
             );
             final List<Directive> directives = new ListOf<>(all);
-            final Directive comment = directives.remove(0);
             final XML graph = new Xsline(this.depot.train("finish")).pass(
                 new XMLDocument(
                     new Xembler(
                         new Directives()
-                            .append(Collections.singleton(comment))
+                            .append(Collections.singleton(directives.remove(0)))
                             .append(directives)
                             .xpath("/graph")
                             .attr("sodg-path", sodg)
                     ).domQuietly()
                 )
             );
-            final Path sibling = sodg.resolveSibling(
-                String.format("%s.graph.xml", sodg.getFileName())
-            );
-            new Saved(graph.toString(), sibling).value();
+            new Saved(
+                graph.toString(),
+                sodg.resolveSibling(
+                    String.format("%s.graph.xml", sodg.getFileName())
+                )
+            ).value();
             if (Logger.isTraceEnabled(this)) {
-                Logger.trace(this, "Graph:\n%s", graph.toString());
+                Logger.trace(this, "Graph:%n%s", graph.toString());
             }
             this.makeDot(graph, sodg);
         }
@@ -153,7 +155,6 @@ final class ItsDefault implements Instructions {
 
     /**
      * Make dot.
-     *
      * @param graph The graph in XML
      * @param sodg The path of SODG file
      * @throws IOException If fails
@@ -163,12 +164,11 @@ final class ItsDefault implements Instructions {
             final String dot = new Xsline(this.depot.train("dot"))
                 .pass(graph).xpath("//dot/text()").get(0);
             if (Logger.isTraceEnabled(this)) {
-                Logger.trace(this, "Dot:\n%s", dot);
+                Logger.trace(this, "Dot:%n%s", dot);
             }
-            final Path sibling = sodg.resolveSibling(String.format("%s.dot", sodg.getFileName()));
             new Saved(
-                String.format("/%s %s %1$s/\n\n%s", "*", new Disclaimer(this.version), dot),
-                sibling
+                String.format("/%s %s %1$s/%n%n%s", "*", new Disclaimer(this.version), dot),
+                sodg.resolveSibling(String.format("%s.dot", sodg.getFileName()))
             ).value();
         }
     }

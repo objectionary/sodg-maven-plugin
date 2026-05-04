@@ -13,10 +13,10 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for a single locator against the graph.
- *
  * @since 0.27
  */
 final class ExistsIn extends TypeSafeMatcher<String> {
+
     /**
      * Graph in XML.
      */
@@ -29,7 +29,6 @@ final class ExistsIn extends TypeSafeMatcher<String> {
 
     /**
      * Ctor.
-     *
      * @param xml The graph
      */
     ExistsIn(final XML xml) {
@@ -39,7 +38,7 @@ final class ExistsIn extends TypeSafeMatcher<String> {
     @Override
     public void describeTo(final Description desc) {
         desc.appendText(this.failure)
-            .appendText(" in this XML:\n")
+            .appendText(String.format(" in this XML:%n"))
             .appendText(this.graph.toString());
     }
 
@@ -57,16 +56,11 @@ final class ExistsIn extends TypeSafeMatcher<String> {
 
     /**
      * Check and throw if fails.
-     *
      * @param item The path to check
      * @checkstyle CyclomaticComplexityCheck (10 lines)
      * @checkstyle NPathComplexityCheck (10 lines)
      */
-    @SuppressWarnings({
-        "PMD.NPathComplexity",
-        "PMD.ExcessiveMethodLength",
-        "PMD.CognitiveComplexity"
-    })
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private void matches(final String item) {
         String vertex = "ν0";
         final String[] parts = item.split(" ");
@@ -200,9 +194,8 @@ final class ExistsIn extends TypeSafeMatcher<String> {
 
     /**
      * Bytes to HEX.
-     *
-     * @param bytes Bytes.
-     * @return Hexadecimal value as string.
+     * @param bytes Bytes
+     * @return Hexadecimal value as string
      */
     private static String bytesToHex(final byte... bytes) {
         final StringJoiner out = new StringJoiner("-");

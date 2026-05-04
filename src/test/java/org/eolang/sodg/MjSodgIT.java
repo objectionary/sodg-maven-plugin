@@ -15,7 +15,6 @@ import org.apache.maven.shared.invoker.DefaultInvoker;
 import org.apache.maven.shared.invoker.InvocationRequest;
 import org.apache.maven.shared.invoker.InvocationResult;
 import org.apache.maven.shared.invoker.Invoker;
-import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Integration test for {@link MjSodg}.
- *
  * @since 0.0.0
  */
 @SuppressWarnings("JTCOP.RuleEveryTestHasProductionClass")
@@ -49,7 +47,7 @@ final class MjSodgIT {
      * @param wdir Working directory
      * @param goal Goal to run
      * @return Invocation result
-     * @throws MavenInvocationException if maven fails
+     * @throws Exception if maven fails
      */
     private static InvocationResult executed(final File wdir, final String goal) throws Exception {
         final InvocationRequest request = new DefaultInvocationRequest();

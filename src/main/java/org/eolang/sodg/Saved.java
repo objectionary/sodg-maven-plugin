@@ -24,6 +24,7 @@ import org.cactoos.scalar.LengthOf;
  * @since 0.41.0
  */
 final class Saved implements Scalar<Path> {
+
     /**
      * Absolute path to save content to.
      */
@@ -40,7 +41,7 @@ final class Saved implements Scalar<Path> {
      * @param target Path to save content to
      */
     Saved(final String content, final Path target) {
-        this(content.getBytes(StandardCharsets.UTF_8), target);
+        this(new InputOf(content, StandardCharsets.UTF_8), target);
     }
 
     /**

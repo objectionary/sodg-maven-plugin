@@ -11,6 +11,7 @@ import java.nio.file.Path;
  * Instructions.
  * @since 0.0.4
  */
+@FunctionalInterface
 interface Instructions {
 
     /**

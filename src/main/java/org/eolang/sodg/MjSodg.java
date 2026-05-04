@@ -33,7 +33,6 @@ import org.cactoos.set.SetOf;
  * <a href="https://github.com/objectionary/reo">this repository</a>.
  * <p>
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
- *
  * @since 0.0.1
  */
 @Mojo(
@@ -45,6 +44,7 @@ import org.cactoos.set.SetOf;
 )
 @SuppressWarnings({"PMD.ImmutableField", "PMD.AvoidProtectedFieldInFinalClass"})
 public final class MjSodg extends AbstractMojo {
+
     /**
      * The directory where to save SODG to.
      */
@@ -55,13 +55,11 @@ public final class MjSodg extends AbstractMojo {
      * @checkstyle VisibilityModifierCheck (10 lines)
      */
     @Parameter(property = "eo.sodg.skip", defaultValue = "false")
-    @SuppressWarnings("PMD.ImmutableField")
     protected boolean skip;
 
     /**
      * The path of the file where XSL measurements (time of execution
      * in milliseconds) will be stored.
-     *
      * @since 0.41.0
      * @checkstyle MemberNameCheck (10 lines)
      * @checkstyle VisibilityModifierCheck (10 lines)
@@ -75,7 +73,6 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Current scope (either "compile" or "test").
-     *
      * @checkstyle VisibilityModifierCheck (5 lines)
      */
     @Parameter(property = "eo.sodg.scope")
@@ -83,7 +80,6 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Format of "foreign" file ("json" or "csv").
-     *
      * @checkstyle MemberNameCheck (7 lines)
      * @checkstyle VisibilityModifierCheck (5 lines)
      */
@@ -92,7 +88,6 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * File with foreign "tojos".
-     *
      * @checkstyle VisibilityModifierCheck (10 lines)
      */
     @Parameter(
@@ -104,7 +99,6 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Target directory.
-     *
      * @checkstyle MemberNameCheck (10 lines)
      * @checkstyle VisibilityModifierCheck (10 lines)
      */
@@ -126,7 +120,6 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Shall we generate .xml files with SODGs?
-     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
@@ -138,7 +131,6 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Shall we generate .xe files with Xembly instructions graph?
-     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
@@ -150,7 +142,6 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Shall we generate .graph.xml files with XML graph?
-     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
@@ -162,31 +153,26 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Shall we generate .dot files with DOT language graph commands?
-     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
         property = "eo.sodg.generateDotFiles",
         defaultValue = "false"
     )
-    @SuppressWarnings("PMD.LongVariable")
     private boolean generateDotFiles;
 
     /**
      * Shall we fail SODG generation if XMIRs contain errors?
-     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
         property = "eo.failOnXmirErrors",
         defaultValue = "true"
     )
-    @SuppressWarnings("PMD.LongVariable")
     private boolean failOnXmirErrors;
 
     /**
      * List of object names to participate in SODG generation.
-     *
      * @implNote {@code property} attribute is omitted for collection
      *     properties since there is no way of passing it via command line.
      * @checkstyle MemberNameCheck (15 lines)
@@ -196,7 +182,6 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * List of object names which are excluded from SODG generation.
-     *
      * @implNote {@code property} attribute is omitted for collection
      *  properties since there is no way of passing it via command line.
      * @checkstyle MemberNameCheck (15 lines)

@@ -12,14 +12,14 @@ import java.util.logging.Level;
 
 /**
  * Convert to DOT.
- *
  * @since 0.1
  */
 final class TrDot extends TrEnvelope {
 
     /**
      * Ctor.
-     * @param level Logging level.
+     * @param level Logging level
+     * @checkstyle ConstructorsCodeFreeCheck (20 lines)
      */
     TrDot(final Level level) {
         super(

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  *  to make our refactorings safer and faster. Don't forget to remove this puzzle.
  */
 final class SodgFiles {
+
     /**
      * The instructions.
      */
@@ -105,7 +106,6 @@ final class SodgFiles {
 
     /**
      * Exclude this EO program from processing?
-     *
      * @param name The name
      * @param inclusions Patterns for SODGs to be included
      * @param exclusions Patterns for SODGs to be excluded
@@ -130,7 +130,6 @@ final class SodgFiles {
 
     /**
      * Creates a regular expression out of sodgInclude string.
-     *
      * @param pattern String from sodgIncludes
      * @return Created regular expression
      */
