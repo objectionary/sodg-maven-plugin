@@ -72,8 +72,11 @@ jobs:
             tail -300 mvn.log || true
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
-      - if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: mvn-log-${{ matrix.os }}-jdk${{ matrix.java }}
-          path: mvn.log
+          # Emit last 30 lines as annotations so they surface in the
+          # GitHub REST API even when log download is restricted.
+          tail -30 mvn.log | while IFS= read -r line; do
+            line="${line//$'\r'/}"
+            line="${line//$'\n'/}"
+            line="${line//::/ : :}"
+            echo "::error file=mvn.log::${line}"
+          done
