@@ -20,9 +20,6 @@ import org.cactoos.scalar.Unchecked;
 /**
  * The depot that produces trains.
  * @since 0.0.3
- * @todo #9:35min Add unit tests for `Depot`.
- *  We should test the trains inside of it, and method `train()`, that supposed
- *  to return proper train by it's name. Don't forget to remove this puzzle.
  */
 final class Depot {
 
