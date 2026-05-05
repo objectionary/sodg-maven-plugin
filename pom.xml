@@ -153,7 +153,12 @@
     <dependency>
       <groupId>org.cactoos</groupId>
       <artifactId>cactoos</artifactId>
-      <version>0.61.0</version>
+      <!--
+            Pinned at 0.57.0 because that is the last release that targets
+            Java 8 bytecode; 0.58.0+ ship Java 17 class files (major 61),
+            which would break the Java 11 leg of the CI matrix.
+            -->
+      <version>0.57.0</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi.incubator</groupId>
