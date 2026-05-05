@@ -73,11 +73,12 @@ jobs:
             tail -300 mvn.log || true
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
-          # Emit last 30 lines as annotations so they surface in the
+          # Emit interesting lines as annotations so they surface in the
           # GitHub REST API even when log download is restricted.
-          tail -30 mvn.log | while IFS= read -r line; do
-            line="${line//$'\r'/}"
-            line="${line//$'\n'/}"
-            line="${line//::/ : :}"
-            echo "::error file=mvn.log::${line}"
-          done
+          grep -niE '\[ERROR\]|BUILD FAILURE|Caused by|cannot|FAILED|UnsupportedClass|class file' mvn.log \
+            | head -8 | while IFS= read -r line; do
+              line="${line//$'\r'/}"
+              line="${line//$'\n'/}"
+              line="${line//::/ : :}"
+              echo "::error file=mvn.log::${line}"
+            done
