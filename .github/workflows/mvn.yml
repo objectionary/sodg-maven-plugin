@@ -56,4 +56,23 @@ jobs:
       - uses: JesseTG/rm@v1.0.3
         with:
           path: ~/.m2/repository/org/eolang
-      - run: mvn clean install --errors --batch-mode
+      - if: runner.os != 'Windows'
+        shell: bash
+        run: mvn clean install --errors --batch-mode 2>&1 | tee mvn.log
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: mvn clean install --errors --batch-mode 2>&1 | Tee-Object -FilePath mvn.log
+      - if: failure() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          {
+            echo "<details><summary>mvn ${{ matrix.os }} jdk${{ matrix.java }} tail (debug-${{ github.sha }})</summary>"
+            echo
+            echo '```'
+            tail -200 mvn.log || true
+            echo '```'
+            echo "</details>"
+          } > /tmp/comment.md
+          gh pr comment "${{ github.event.pull_request.number }}" --body-file /tmp/comment.md || true
