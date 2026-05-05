@@ -27,15 +27,17 @@ jobs:
           restore-keys: ubuntu-qulice-jdk-21-maven-
       - run: mvn clean verify -PskipTests,qulice --errors --batch-mode 2>&1 | tee mvn.log
       - if: failure()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
         run: |
           {
-            echo "<details><summary>qulice tail (debug-${{ github.sha }})</summary>"
+            echo '## qulice tail'
             echo
             echo '```'
-            tail -200 mvn.log || true
+            tail -300 mvn.log || true
             echo '```'
-            echo "</details>"
-          } > /tmp/comment.md
-          gh pr comment "${{ github.event.pull_request.number }}" --body-file /tmp/comment.md || true
+          } >> "$GITHUB_STEP_SUMMARY"
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qulice-log
+          path: mvn.log

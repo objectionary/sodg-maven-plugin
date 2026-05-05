@@ -62,17 +62,18 @@ jobs:
       - if: runner.os == 'Windows'
         shell: pwsh
         run: mvn clean install --errors --batch-mode 2>&1 | Tee-Object -FilePath mvn.log
-      - if: failure() && github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - if: failure()
         shell: bash
         run: |
           {
-            echo "<details><summary>mvn ${{ matrix.os }} jdk${{ matrix.java }} tail (debug-${{ github.sha }})</summary>"
+            echo '## mvn ${{ matrix.os }} jdk${{ matrix.java }} tail'
             echo
             echo '```'
-            tail -200 mvn.log || true
+            tail -300 mvn.log || true
             echo '```'
-            echo "</details>"
-          } > /tmp/comment.md
-          gh pr comment "${{ github.event.pull_request.number }}" --body-file /tmp/comment.md || true
+          } >> "$GITHUB_STEP_SUMMARY"
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mvn-log-${{ matrix.os }}-jdk${{ matrix.java }}
+          path: mvn.log
