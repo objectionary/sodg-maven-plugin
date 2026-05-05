@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.70.0</version>
+    <version>0.73.1</version>
   </parent>
   <groupId>org.eolang</groupId>
   <artifactId>sodg-maven-plugin</artifactId>
@@ -85,23 +85,50 @@
     <skipITs/>
     <skipUTs/>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <!--
+              Pins JUnit Jupiter back to 5.x. com.jcabi:parent 0.73.1
+              imports junit-bom 6.0.3, but JUnit Jupiter 6 ships Java 17
+              bytecode (class file major 61), which would prevent the
+              Java 11 leg of the CI matrix from compiling the tests.
+              -->
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.14.4</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <!--
+              Aligns slf4j-api across transitives so that
+              maven-enforcer-plugin's RequireUpperBoundDeps is satisfied
+              (jcabi-log brings 2.0.16, eo-parser/xnav brings 2.0.17).
+              -->
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.17</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>3.9.12</version>
+      <version>3.9.15</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-model</artifactId>
-      <version>3.9.12</version>
+      <version>3.9.15</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>3.9.12</version>
+      <version>3.9.15</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -139,6 +166,11 @@
     <dependency>
       <groupId>org.cactoos</groupId>
       <artifactId>cactoos</artifactId>
+      <!--
+            Pinned at 0.57.0 because that is the last release that targets
+            Java 8 bytecode; 0.58.0+ ship Java 17 class files (major 61),
+            which would break the Java 11 leg of the CI matrix.
+            -->
       <version>0.57.0</version>
     </dependency>
     <dependency>
@@ -149,7 +181,7 @@
     <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>tojos</artifactId>
-      <version>0.18.5</version>
+      <version>0.19.1</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>

@@ -13,6 +13,7 @@ name: mvn
 jobs:
   mvn:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-24.04, windows-2022, macos-15]
         java: [11, 23]
@@ -56,4 +57,28 @@ jobs:
       - uses: JesseTG/rm@v1.0.3
         with:
           path: ~/.m2/repository/org/eolang
-      - run: mvn clean install --errors --batch-mode
+      - if: runner.os != 'Windows'
+        shell: bash
+        run: mvn clean install --errors --batch-mode 2>&1 | tee mvn.log
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: mvn clean install --errors --batch-mode 2>&1 | Tee-Object -FilePath mvn.log
+      - if: failure()
+        shell: bash
+        run: |
+          {
+            echo '## mvn ${{ matrix.os }} jdk${{ matrix.java }} tail'
+            echo
+            echo '```'
+            tail -300 mvn.log || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          # Emit interesting lines as annotations so they surface in the
+          # GitHub REST API even when log download is restricted.
+          grep -niE '\[ERROR\]|BUILD FAILURE|Caused by|cannot|FAILED|UnsupportedClass|class file' mvn.log \
+            | head -8 | while IFS= read -r line; do
+              line="${line//$'\r'/}"
+              line="${line//$'\n'/}"
+              line="${line//::/ : :}"
+              echo "::error file=mvn.log::${line}"
+            done
