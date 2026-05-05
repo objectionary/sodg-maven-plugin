@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.70.0</version>
+    <version>0.73.1</version>
   </parent>
   <groupId>org.eolang</groupId>
   <artifactId>sodg-maven-plugin</artifactId>
@@ -85,23 +85,37 @@
     <skipITs/>
     <skipUTs/>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <!--
+              Aligns slf4j-api across transitives so that
+              maven-enforcer-plugin's RequireUpperBoundDeps is satisfied
+              (jcabi-log brings 2.0.16, eo-parser/xnav brings 2.0.17).
+              -->
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.17</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>3.9.12</version>
+      <version>3.9.15</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-model</artifactId>
-      <version>3.9.12</version>
+      <version>3.9.15</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>3.9.12</version>
+      <version>3.9.15</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -139,7 +153,7 @@
     <dependency>
       <groupId>org.cactoos</groupId>
       <artifactId>cactoos</artifactId>
-      <version>0.57.0</version>
+      <version>0.61.0</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi.incubator</groupId>
@@ -149,7 +163,7 @@
     <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>tojos</artifactId>
-      <version>0.18.5</version>
+      <version>0.19.1</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
