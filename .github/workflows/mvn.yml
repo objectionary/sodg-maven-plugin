@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-24.04, windows-2022, macos-15]
-        java: [11, 23]
+        java: [17, 23]
         exclude:
           - os: windows-2022
             java: 11
