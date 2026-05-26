@@ -76,17 +76,20 @@ final class Saved implements Scalar<Path> {
     public Path value() throws IOException {
         final long bytes;
         try {
-            if (this.target.toFile().getParentFile().mkdirs()) {
+            if (
+                this.target.toFile().getParentFile() != null
+                    && this.target.toFile().getParentFile().mkdirs()
+            ) {
                 Logger.debug(
                     this, "Directory created: %[file]s",
-                    this.target.getParent()
+                    this.target.toFile().getParentFile()
                 );
             }
             bytes = new IoChecked<>(
                 new LengthOf(
                     new TeeInput(
                         this.content,
-                        new OutputTo(this.target)
+                        new OutputTo(this.target, false)
                     )
                 )
             ).value();

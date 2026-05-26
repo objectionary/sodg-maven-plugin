@@ -95,22 +95,22 @@ final class Depot {
      * @return Measured train
      */
     private static Train<Shift> measured(final Train<Shift> train, final File measures) {
-        if (measures.getParentFile().mkdirs()) {
-            Logger.debug(Depot.class, "Directory created for %[file]s", measures);
-        }
-        if (!measures.getParentFile().exists()) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "For some reason, the directory %s is absent, can't write measures to %s",
-                    measures.getParentFile(),
-                    measures
-                )
-            );
-        }
         if (measures.isDirectory()) {
             throw new IllegalArgumentException(
                 String.format(
                     "This is not a file but a directory, can't write to it: %s",
+                    measures
+                )
+            );
+        }
+        if (measures.getParentFile() != null && measures.getParentFile().mkdirs()) {
+            Logger.debug(Depot.class, "Directory created for %[file]s", measures);
+        }
+        if (measures.getParentFile() != null && !measures.getParentFile().exists()) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "For some reason, the directory %s is absent, can't write measures to %s",
+                    measures.getParentFile(),
                     measures
                 )
             );
