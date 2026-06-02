@@ -18,6 +18,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
 import org.cactoos.set.SetOf;
+import org.eolang.sodg.TjsForeign;
 
 /**
  * Convert XMIR to SODG.
@@ -110,15 +111,6 @@ public final class MjSodg extends AbstractMojo {
     protected File targetDir;
 
     /**
-     * Cached tojos.
-     * @checkstyle VisibilityModifierCheck (5 lines)
-     */
-    private final TjsForeign tojos = new TjsForeign(
-        () -> Catalogs.INSTANCE.make(this.foreign.toPath(), this.foreignFormat),
-        () -> this.scope
-    );
-
-    /**
      * Shall we generate .xml files with SODGs?
      * @checkstyle MemberNameCheck (7 lines)
      */
@@ -204,7 +196,10 @@ public final class MjSodg extends AbstractMojo {
                 );
             }
         } else {
-            try {
+            try (TjsForeign tojos = new TjsForeign(
+                () -> Catalogs.INSTANCE.make(this.foreign.toPath(), this.foreignFormat),
+                () -> this.scope
+            )) {
                 if (this.generateGraphFiles && !this.generateXemblyFiles) {
                     throw new IllegalStateException(
                         "Setting generateGraphFiles and not setting generateXemblyFiles has no effect because .graph files require .xe files"
@@ -231,7 +226,7 @@ public final class MjSodg extends AbstractMojo {
                     ),
                     this.sodgIncludes,
                     this.sodgExcludes
-                ).generate(this.tojos.withXmir(), this.targetDir.toPath().resolve(MjSodg.DIR));
+                ).generate(tojos.withXmir(), this.targetDir.toPath().resolve(MjSodg.DIR));
             } catch (final IOException exception) {
                 throw new MojoFailureException("Can't convert XMIR to SODG", exception);
             }

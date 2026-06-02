@@ -84,10 +84,18 @@ final class ItsDefault implements Instructions {
             Logger.trace(this, "XML before translating to SODG:%n%s", before);
         }
         final XML after = new Xsline(this.depot.train("sodg")).pass(before);
-        final String instructions = new Xsline(this.depot.train("text"))
+        final List<String> texts = new Xsline(this.depot.train("text"))
             .pass(after)
-            .xpath("/text/text()")
-            .get(0);
+            .xpath("/text/text()");
+        if (texts.isEmpty()) {
+            throw new IllegalStateException(
+                String.format(
+                    "Transformed XMIR produced no SODG instructions for %s",
+                    xmir
+                )
+            );
+        }
+        final String instructions = texts.get(0);
         if (Logger.isTraceEnabled(this)) {
             Logger.trace(this, "SODGs:%n%s", instructions);
         }
@@ -100,8 +108,17 @@ final class ItsDefault implements Instructions {
             ).value();
         }
         if (this.config.get("generateXemblyFiles")) {
-            final String xembly = new Xsline(this.depot.train("xembly")).pass(after)
-                .xpath("/xembly/text()").get(0);
+            final List<String> xemblys = new Xsline(this.depot.train("xembly")).pass(after)
+                .xpath("/xembly/text()");
+            if (xemblys.isEmpty()) {
+                throw new IllegalStateException(
+                    String.format(
+                        "Transformed XMIR produced no Xembly instructions for %s",
+                        xmir
+                    )
+                );
+            }
+            final String xembly = xemblys.get(0);
             new Saved(
                 String.format("# %s%n%n%s%n", new Disclaimer(this.version), xembly),
                 base.resolveSibling(String.format("%s.xe", base.getFileName()))

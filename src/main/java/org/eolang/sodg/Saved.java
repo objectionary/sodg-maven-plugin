@@ -76,7 +76,8 @@ final class Saved implements Scalar<Path> {
     public Path value() throws IOException {
         final long bytes;
         try {
-            if (this.target.toFile().getParentFile().mkdirs()) {
+            final java.io.File parent = this.target.toFile().getParentFile();
+            if (parent != null && parent.mkdirs()) {
                 Logger.debug(
                     this, "Directory created: %[file]s",
                     this.target.getParent()
