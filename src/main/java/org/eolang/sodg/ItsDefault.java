@@ -84,10 +84,18 @@ final class ItsDefault implements Instructions {
             Logger.trace(this, "XML before translating to SODG:%n%s", before);
         }
         final XML after = new Xsline(this.depot.train("sodg")).pass(before);
-        final String instructions = new Xsline(this.depot.train("text"))
+        final List<String> texts = new Xsline(this.depot.train("text"))
             .pass(after)
-            .xpath("/text/text()")
-            .get(0);
+            .xpath("/text/text()");
+        if (texts.isEmpty()) {
+            throw new IOException(
+                String.format(
+                    "No SODG instructions found in %s after XSL transformation",
+                    xmir
+                )
+            );
+        }
+        final String instructions = texts.get(0);
         if (Logger.isTraceEnabled(this)) {
             Logger.trace(this, "SODGs:%n%s", instructions);
         }
@@ -100,8 +108,16 @@ final class ItsDefault implements Instructions {
             ).value();
         }
         if (this.config.get("generateXemblyFiles")) {
-            final String xembly = new Xsline(this.depot.train("xembly")).pass(after)
-                .xpath("/xembly/text()").get(0);
+            final List<String> xbls = new Xsline(this.depot.train("xembly"))
+                .pass(after).xpath("/xembly/text()");
+            if (xbls.isEmpty()) {
+                throw new IOException(
+                    String.format(
+                        "No Xembly instructions found in %s", xmir
+                    )
+                );
+            }
+            final String xembly = xbls.get(0);
             new Saved(
                 String.format("# %s%n%n%s%n", new Disclaimer(this.version), xembly),
                 base.resolveSibling(String.format("%s.xe", base.getFileName()))
@@ -161,8 +177,16 @@ final class ItsDefault implements Instructions {
      */
     private void makeDot(final XML graph, final Path sodg) throws IOException {
         if (this.config.get("generateDotFiles")) {
-            final String dot = new Xsline(this.depot.train("dot"))
-                .pass(graph).xpath("//dot/text()").get(0);
+            final List<String> dots = new Xsline(this.depot.train("dot"))
+                .pass(graph).xpath("//dot/text()");
+            if (dots.isEmpty()) {
+                throw new IOException(
+                    String.format(
+                        "No DOT instructions found for %s", sodg
+                    )
+                );
+            }
+            final String dot = dots.get(0);
             if (Logger.isTraceEnabled(this)) {
                 Logger.trace(this, "Dot:%n%s", dot);
             }
