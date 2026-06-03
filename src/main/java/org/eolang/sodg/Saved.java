@@ -5,6 +5,7 @@
 package org.eolang.sodg;
 
 import com.jcabi.log.Logger;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -76,7 +77,8 @@ final class Saved implements Scalar<Path> {
     public Path value() throws IOException {
         final long bytes;
         try {
-            if (this.target.toFile().getParentFile().mkdirs()) {
+            final File parent = this.target.toFile().getParentFile();
+            if (parent != null && parent.mkdirs()) {
                 Logger.debug(
                     this, "Directory created: %[file]s",
                     this.target.getParent()
