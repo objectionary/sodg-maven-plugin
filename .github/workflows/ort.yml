@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # @todo #157:30min Upgrade ORT once the SPDX crash is fixed upstream.
       #  ORT 85.1.0 introduced a stricter SPDX reporter that throws
       #  NoSuchElementException when the dependency graph is incomplete, triggered by
