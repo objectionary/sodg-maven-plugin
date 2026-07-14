@@ -18,6 +18,7 @@ import org.eolang.xax.XtSticky;
 import org.eolang.xax.XtYaml;
 import org.eolang.xax.XtoryMatcher;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -56,5 +57,18 @@ final class MjSodgTest {
                 )
             );
         }
+    }
+
+    @Test
+    void usesCsvExtensionForDefaultMeasurementsPath() {
+        MatcherAssert.assertThat(
+            "The default measurements file must match StMeasured's CSV output",
+            new UncheckedText(
+                new TextOf(MjSodg.class.getResource("/META-INF/maven/plugin.xml"))
+            ).asString(),
+            Matchers.containsString(
+                "default-value=\"${project.build.directory}/eo/xsl-measures.csv\""
+            )
+        );
     }
 }
