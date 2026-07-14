@@ -67,7 +67,7 @@ public final class MjSodg extends AbstractMojo {
     @Parameter(
         property = "eo.sodg.xslMeasuresFile",
         required = true,
-        defaultValue = "${project.build.directory}/eo/xsl-measures.json"
+        defaultValue = "${project.build.directory}/eo/xsl-measures.csv"
     )
     protected File xslMeasures;
 
