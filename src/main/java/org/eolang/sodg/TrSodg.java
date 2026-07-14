@@ -32,9 +32,19 @@ final class TrSodg extends TrEnvelope {
     /**
      * Ctor.
      * @param level Logging level
-     * @checkstyle ConstructorsCodeFreeCheck (60 lines)
+     * @checkstyle ConstructorsCodeFreeCheck (5 lines)
      */
     TrSodg(final Level level) {
+        this(level, System.getenv("SOURCE_DATE_EPOCH"));
+    }
+
+    /**
+     * Ctor.
+     * @param level Logging level
+     * @param epoch Reproducible build timestamp
+     * @checkstyle ConstructorsCodeFreeCheck (60 lines)
+     */
+    TrSodg(final Level level, final String epoch) {
         super(
             new TrLogged(
                 new TrWith(
@@ -73,7 +83,9 @@ final class TrSodg extends TrEnvelope {
                                     String.format(
                                         "value %s",
                                         new HexedUtf(
-                                            ZonedDateTime.now(ZoneOffset.UTC).format(
+                                            ZonedDateTime.ofInstant(
+                                                Disclaimer.resolved(epoch), ZoneOffset.UTC
+                                            ).format(
                                                 DateTimeFormatter.ISO_INSTANT
                                             )
                                         ).asString()
