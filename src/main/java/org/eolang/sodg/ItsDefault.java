@@ -49,7 +49,6 @@ final class ItsDefault implements Instructions {
             new MapOf<>(
                 new MapEntry<>("generateSodgXmlFiles", false),
                 new MapEntry<>("generateXemblyFiles", false),
-                new MapEntry<>("generateXemblyFiles", false),
                 new MapEntry<>("generateGraphFiles", false),
                 new MapEntry<>("generateDotFiles", false)
             )
