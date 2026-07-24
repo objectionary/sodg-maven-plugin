@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +26,7 @@ import org.cactoos.set.SetOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -79,6 +81,66 @@ final class SodgFilesTest {
                 ),
                 Matchers.equalTo(true)
             )
+        );
+    }
+
+    @Test
+    @ExtendWith(MktmpResolver.class)
+    void regeneratesWhenTimestampsAreEqual(@Mktmp final Path temp) throws IOException {
+        final Path home = temp.resolve("sodg");
+        final Collection<TjForeign> tojos = new SodgFilesTest.TjsXmir(
+            temp,
+            new MapOf<>(
+                new MapEntry<>(
+                    "app",
+                    String.join(
+                        System.lineSeparator(),
+                        "[] > app",
+                        "  QQ.io.stdout > @",
+                        "    \"first\""
+                    )
+                )
+            )
+        ).asTojos();
+        final SodgFiles files = new SodgFiles(
+            new ItsDefault(
+                new Depot(temp.resolve("measures.csv").toFile()),
+                new MapOf<>(
+                    new MapEntry<>("generateSodgXmlFiles", false),
+                    new MapEntry<>("generateXemblyFiles", false),
+                    new MapEntry<>("generateGraphFiles", false),
+                    new MapEntry<>("generateDotFiles", false)
+                )
+            ),
+            new SetOf<>("**"),
+            new SetOf<>()
+        );
+        files.generate(tojos, home);
+        final Path sodg = home.resolve("org")
+            .resolve("eolang")
+            .resolve("sodg")
+            .resolve("examples")
+            .resolve("app.sodg");
+        final Path xmir = temp.resolve("app.xmir");
+        Files.write(
+            xmir,
+            new EoSyntax(
+                String.join(
+                    System.lineSeparator(),
+                    "[] > app",
+                    "  QQ.io.stdout > @",
+                    "    \"second\""
+                )
+            ).parsed().toString().getBytes(StandardCharsets.UTF_8)
+        );
+        Files.setLastModifiedTime(
+            xmir, FileTime.fromMillis(sodg.toFile().lastModified())
+        );
+        files.generate(tojos, home);
+        MatcherAssert.assertThat(
+            "SODG must be regenerated when its mtime equals the source XMIR's mtime",
+            new String(Files.readAllBytes(sodg), StandardCharsets.UTF_8),
+            Matchers.containsString("73-65-63-6F-6E-64")
         );
     }
 
