@@ -25,4 +25,19 @@ jobs:
           path: ~/.m2/repository
           key: ubuntu-qulice-jdk-21-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ubuntu-qulice-jdk-21-maven-
-      - run: mvn clean verify -PskipTests,qulice --errors --batch-mode
+      - run: mvn clean verify -PskipTests,qulice --errors --batch-mode 2>&1 | tee mvn.log
+      - if: failure()
+        shell: bash
+        run: |
+          {
+            echo '## qulice tail'
+            echo
+            echo '```'
+            tail -300 mvn.log || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qulice-log
+          path: mvn.log
