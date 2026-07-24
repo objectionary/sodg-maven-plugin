@@ -19,9 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 /**
  * Tests for {@link ItsDefault}.
  * @since 0.0.3
- * @todo #9:45min Add more tests for `SodgInstructions#textInstructions()` method.
- *  The method not only computes the number, but also performs XMIR-to-SODG transformations,
- *  and leaves footprint on the system. Would be nice to test as much as we can.
  */
 @ExtendWith(MktmpResolver.class)
 final class ItsDefaultTest {
@@ -44,6 +41,73 @@ final class ItsDefaultTest {
                     ).parsed().toString().getBytes(StandardCharsets.UTF_8)
                 ),
                 temp.resolve("foo.sodg")
+            ),
+            Matchers.equalTo(8)
+        );
+    }
+
+    @Test
+    void returnsTextInstructionsForMinimalObject(@Mktmp final Path temp) throws IOException {
+        MatcherAssert.assertThat(
+            "The number of instructions for a minimal EO object does not match with expected",
+            new ItsDefault(
+                new Depot(temp.resolve("measures.csv").toFile())
+            ).textInstructions(
+                Files.write(
+                    temp.resolve("min.xmir"),
+                    new EoSyntax("[] > foo")
+                        .parsed()
+                        .toString()
+                        .getBytes(StandardCharsets.UTF_8)
+                ),
+                temp.resolve("min.sodg")
+            ),
+            Matchers.equalTo(4)
+        );
+    }
+
+    @Test
+    void returnsTextInstructionsForMultipleAttributes(@Mktmp final Path temp) throws IOException {
+        MatcherAssert.assertThat(
+            "The number of instructions for multiple attributes does not match with expected",
+            new ItsDefault(
+                new Depot(temp.resolve("measures.csv").toFile())
+            ).textInstructions(
+                Files.write(
+                    temp.resolve("multi.xmir"),
+                    new EoSyntax(
+                        String.join(
+                            System.lineSeparator(),
+                            "[] > main",
+                            "  QQ.io.stdout \"hello\" > out",
+                            "  QQ.io.stderr \"world\" > err"
+                        )
+                    ).parsed().toString().getBytes(StandardCharsets.UTF_8)
+                ),
+                temp.resolve("multi.sodg")
+            ),
+            Matchers.equalTo(12)
+        );
+    }
+
+    @Test
+    void returnsTextInstructionsForNestedProgram(@Mktmp final Path temp) throws IOException {
+        MatcherAssert.assertThat(
+            "The number of instructions for a nested program does not match with expected",
+            new ItsDefault(
+                new Depot(temp.resolve("measures.csv").toFile())
+            ).textInstructions(
+                Files.write(
+                    temp.resolve("nested.xmir"),
+                    new EoSyntax(
+                        String.join(
+                            System.lineSeparator(),
+                            "[] > main",
+                            "  QQ.io.stdout \"hello\" > out"
+                        )
+                    ).parsed().toString().getBytes(StandardCharsets.UTF_8)
+                ),
+                temp.resolve("nested.sodg")
             ),
             Matchers.equalTo(8)
         );
