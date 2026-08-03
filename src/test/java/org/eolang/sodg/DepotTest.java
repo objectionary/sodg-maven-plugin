@@ -28,7 +28,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 final class DepotTest {
 
     @ParameterizedTest
-    @ValueSource(strings = {"sodg", "dot", "xembly", "text", "finish"})
+    @ValueSource(strings = {"sodg", "dot", "xembly", "text"})
     void returnsTrainByName(final String name, @Mktmp final Path temp) {
         MatcherAssert.assertThat(
             String.format("Train '%s' must be present in the depot", name),

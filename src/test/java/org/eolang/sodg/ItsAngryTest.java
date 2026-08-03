@@ -36,7 +36,7 @@ final class ItsAngryTest {
                     String.join(
                         System.lineSeparator(),
                         "[] > app",
-                        "  QQ.io.stdout \"application started!\" > @"
+                        "  Q.stdout \"application started!\" > @"
                     )
                 ),
                 temp.resolve("sodg")
@@ -47,7 +47,10 @@ final class ItsAngryTest {
 
     @Test
     void failsBrokenXmir(@Mktmp final Path temp) throws IOException {
-        ItsAngryTest.writeXmir(temp.resolve("broken.xmir"), "#");
+        ItsAngryTest.writeXmir(
+            temp.resolve("broken.xmir"),
+            String.format("#%s something > $invalid", System.lineSeparator())
+        );
         MatcherAssert.assertThat(
             "Exception was not thrown, but it should be, since XMIR is broken",
             Assertions.assertThrows(
@@ -82,7 +85,7 @@ final class ItsAngryTest {
                 ),
                 temp.resolve("sodg")
             ),
-            Matchers.equalTo(4)
+            Matchers.equalTo(3)
         );
     }
 

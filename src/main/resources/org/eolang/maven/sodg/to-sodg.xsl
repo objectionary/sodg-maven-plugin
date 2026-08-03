@@ -18,6 +18,12 @@
   2. `dispatch(o, base, attr)`
   3. `delta(o, data)`
   4. `lambda(o, name)`
+  @todo #202:90min Rethink SODG instruction representation.
+  Now, it seems overcomplicated and very brittle to changes. Let's rethink it and
+  simplify, so that SODG format will be easier to understand, thus, graph building
+  can be easily implemented without problems. Also, I suggest replacing of numeric `b$id` in
+  the instructions with UUIDv7, since it can faster show problems with off-by-one errors during
+  XMIR translation, that will be hidden with numerics.
   -->
   <xsl:template match="/object/sodg">
     <xsl:copy>
@@ -46,7 +52,7 @@
           <xsl:with-param name="args" select="('b' || position(), 'b' || ( position() - count(preceding-sibling::o[not(eo:abstract(.))]) - 1), @name)"/>
         </xsl:call-template>
       </xsl:if>
-      <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">
+      <xsl:if test="o[1]/@base='Φ.bytes'">
         <xsl:variable name="oid" select="concat('b', position())"/>
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'delta'"/>
