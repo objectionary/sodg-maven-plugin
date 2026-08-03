@@ -19,11 +19,11 @@
   3. `delta(o, data)`
   4. `lambda(o, name)`
   @todo #202:90min Rethink SODG instruction representation.
-   Now, it seems overcomplicated and very brittle to changes. Let's rethink it and
-   simplify, so that SODG format will be easier to understand, thus, graph building
-   can be easily implemented without problems. Also, I suggest replacing of numeric `b$id` in
-   the instructions with UUIDv7, since it can faster show problems with off-by-one errors during
-   XMIR translation, that will be hidden with numerics.
+  Now, it seems overcomplicated and very brittle to changes. Let's rethink it and
+  simplify, so that SODG format will be easier to understand, thus, graph building
+  can be easily implemented without problems. Also, I suggest replacing of numeric `b$id` in
+  the instructions with UUIDv7, since it can faster show problems with off-by-one errors during
+  XMIR translation, that will be hidden with numerics.
   -->
   <xsl:template match="/object/sodg">
     <xsl:copy>
