@@ -46,7 +46,7 @@
           <xsl:with-param name="args" select="('b' || position(), 'b' || ( position() - count(preceding-sibling::o[not(eo:abstract(.))]) - 1), @name)"/>
         </xsl:call-template>
       </xsl:if>
-      <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">
+      <xsl:if test="o[1]/@base='Φ.bytes'">
         <xsl:variable name="oid" select="concat('b', position())"/>
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'delta'"/>
