@@ -90,7 +90,7 @@ final class ItsDefault implements Instructions {
         if (texts.isEmpty()) {
             throw new IOException(
                 String.format(
-                    "No SODG instructions found in %s after XSL transformation",
+                    "No SODG instructions found in %s",
                     xmir
                 )
             );
@@ -182,7 +182,7 @@ final class ItsDefault implements Instructions {
             if (dots.isEmpty()) {
                 throw new IOException(
                     String.format(
-                        "No DOT instructions found for %s", sodg
+                        "No DOT instructions found in %s", sodg
                     )
                 );
             }
