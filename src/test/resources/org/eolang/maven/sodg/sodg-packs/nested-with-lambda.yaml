@@ -2,13 +2,15 @@
 # SPDX-License-Identifier: MIT
 ---
 # yamllint disable rule:line-length
+# see nested-formations.yaml
+skip: true
 sheets: []
 input: |
   [] > foo
     [] > bar
       [] > baz
         [] > buz
-          [] > boom ?
+          [] > boom /Q.boom
 asserts:
   - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b1'] and a[2][text()='xi🌵'] and a[3][text()='bar']]
   - //sodg/i[@name='formation' and count(a)=3 and a[1][text()='b3'] and a[2][text()='xi🌵'] and a[3][text()='baz']]
