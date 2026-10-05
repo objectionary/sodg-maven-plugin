@@ -60,6 +60,11 @@ public final class MjSodg extends AbstractMojo {
     /**
      * The path of the file where XSL measurements (time of execution
      * in milliseconds) will be stored.
+     *
+     * <p>The file holds one CSV line per shift, {@code name,millis}, which
+     * is what {@code StMeasured} appends to it, so the name it is given
+     * says so.</p>
+     *
      * @since 0.41.0
      * @checkstyle MemberNameCheck (10 lines)
      * @checkstyle VisibilityModifierCheck (10 lines)
@@ -67,7 +72,7 @@ public final class MjSodg extends AbstractMojo {
     @Parameter(
         property = "eo.sodg.xslMeasuresFile",
         required = true,
-        defaultValue = "${project.build.directory}/eo/xsl-measures.json"
+        defaultValue = "${project.build.directory}/eo/xsl-measures.csv"
     )
     protected File xslMeasures;
 
