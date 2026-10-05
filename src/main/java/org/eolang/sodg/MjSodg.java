@@ -8,6 +8,7 @@ import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
+import java.util.function.Function;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
@@ -42,7 +43,11 @@ import org.cactoos.set.SetOf;
     requiresDependencyResolution = ResolutionScope.COMPILE,
     requiresProject = false
 )
-@SuppressWarnings({"PMD.ImmutableField", "PMD.AvoidProtectedFieldInFinalClass"})
+@SuppressWarnings({
+    "PMD.ImmutableField",
+    "PMD.AvoidProtectedFieldInFinalClass",
+    "PMD.ConstructorShouldDoInitialization"
+})
 public final class MjSodg extends AbstractMojo {
 
     /**
@@ -110,13 +115,9 @@ public final class MjSodg extends AbstractMojo {
     protected File targetDir;
 
     /**
-     * Cached tojos.
-     * @checkstyle VisibilityModifierCheck (5 lines)
+     * Foreign tojos.
      */
-    private final TjsForeign tojos = new TjsForeign(
-        () -> Catalogs.INSTANCE.make(this.foreign.toPath(), this.foreignFormat),
-        () -> this.scope
-    );
+    private final Function<MjSodg, TjsForeign> tojos;
 
     /**
      * Shall we generate .xml files with SODGs?
@@ -195,7 +196,28 @@ public final class MjSodg extends AbstractMojo {
     @Parameter(defaultValue = "${plugin}", readonly = true)
     private PluginDescriptor descriptor;
 
+    /**
+     * Ctor.
+     */
+    public MjSodg() {
+        this(
+            mojo -> new TjsForeign(
+                () -> Catalogs.INSTANCE.make(mojo.foreign.toPath(), mojo.foreignFormat),
+                () -> mojo.scope
+            )
+        );
+    }
+
+    /**
+     * Ctor.
+     * @param tjs Foreign tojos
+     */
+    MjSodg(final Function<MjSodg, TjsForeign> tjs) {
+        this.tojos = tjs;
+    }
+
     @Override
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     public void execute() throws MojoFailureException {
         if (this.skip) {
             if (Logger.isInfoEnabled(this)) {
@@ -215,23 +237,38 @@ public final class MjSodg extends AbstractMojo {
                         "Setting generateDotFiles and not setting generateGraphFiles has no effect because .dot files require .graph files"
                     );
                 }
-                new SodgFiles(
-                    new ItsAngry(
-                        new ItsDefault(
-                            new Depot(this.xslMeasures),
-                            new MapOf<>(
-                                new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
-                                new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
-                                new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
-                                new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
-                                new MapEntry<>("generateDotFiles", this.generateDotFiles)
-                            )
+                try (TjsForeign tjs = this.tojos.apply(this)) {
+                    new SodgFiles(
+                        new ItsAngry(
+                            new ItsDefault(
+                                new Depot(this.xslMeasures),
+                                new MapOf<>(
+                                    new MapEntry<>(
+                                        "generateSodgXmlFiles", this.generateSodgXmlFiles
+                                    ),
+                                    new MapEntry<>(
+                                        "generateXemblyFiles", this.generateXemblyFiles
+                                    ),
+                                    new MapEntry<>(
+                                        "generateXemblyFiles", this.generateXemblyFiles
+                                    ),
+                                    new MapEntry<>(
+                                        "generateGraphFiles", this.generateGraphFiles
+                                    ),
+                                    new MapEntry<>(
+                                        "generateDotFiles", this.generateDotFiles
+                                    )
+                                )
+                            ),
+                            this.failOnXmirErrors
                         ),
-                        this.failOnXmirErrors
-                    ),
-                    this.sodgIncludes,
-                    this.sodgExcludes
-                ).generate(this.tojos.withXmir(), this.targetDir.toPath().resolve(MjSodg.DIR));
+                        this.sodgIncludes,
+                        this.sodgExcludes
+                    ).generate(
+                        tjs.withXmir(),
+                        this.targetDir.toPath().resolve(MjSodg.DIR)
+                    );
+                }
             } catch (final IOException exception) {
                 throw new MojoFailureException("Can't convert XMIR to SODG", exception);
             }
