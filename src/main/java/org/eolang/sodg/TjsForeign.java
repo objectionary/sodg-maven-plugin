@@ -76,7 +76,8 @@ final class TjsForeign implements Closeable {
     private Collection<TjForeign> select(final Predicate<? super Tojo> filter) {
         return this.tojos.value().select(
             t -> filter.test(t)
-                && t.get(Attribute.SCOPE.getKey()).equals(this.scope.get())
+                && t.exists(Attribute.SCOPE.getKey())
+                && this.scope.get().equals(t.get(Attribute.SCOPE.getKey()))
         ).stream().map(TjForeign::new).collect(Collectors.toList());
     }
 
