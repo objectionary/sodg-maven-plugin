@@ -222,7 +222,6 @@ public final class MjSodg extends AbstractMojo {
                             new MapOf<>(
                                 new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
                                 new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
-                                new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
                                 new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
                                 new MapEntry<>("generateDotFiles", this.generateDotFiles)
                             )
