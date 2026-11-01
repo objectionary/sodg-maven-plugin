@@ -9,6 +9,7 @@ import com.yegor256.MktmpResolver;
 import com.yegor256.xsline.Shift;
 import com.yegor256.xsline.TrDefault;
 import com.yegor256.xsline.Train;
+import java.io.File;
 import java.nio.file.Path;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
@@ -73,6 +74,14 @@ final class DepotTest {
             IllegalArgumentException.class,
             () -> new Depot(temp.toFile()).train("sodg"),
             "Pointing measures to a directory must be rejected"
+        );
+    }
+
+    @Test
+    void handlesNullParentForBareFilename() {
+        Assertions.assertDoesNotThrow(
+            () -> new Depot(new File("measures.csv")).train("sodg"),
+            "Bare filename with null parent must not throw NPE"
         );
     }
 }
