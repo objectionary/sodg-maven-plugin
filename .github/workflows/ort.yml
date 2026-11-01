@@ -10,6 +10,9 @@ name: ort
   pull_request:
     branches:
       - master
+concurrency:
+  group: ort-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   ort:
     timeout-minutes: 15
@@ -17,3 +20,5 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: oss-review-toolkit/ort-ci-github-action@v1
+        with:
+          image: 'ghcr.io/oss-review-toolkit/ort:90.0.0'

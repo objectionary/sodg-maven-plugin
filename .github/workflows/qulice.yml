@@ -7,20 +7,31 @@ name: qulice
   push:
     branches:
       - master
+    paths:
+      - '**.java'
+      - '**/pom.xml'
+      - '.github/workflows/qulice.yml'
   pull_request:
     branches:
       - master
+    paths:
+      - '**.java'
+      - '**/pom.xml'
+      - '.github/workflows/qulice.yml'
+concurrency:
+  group: qulice-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   qulice:
     timeout-minutes: 15
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@v6
         with:
           distribution: 'temurin'
           java-version: 21
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: ~/.m2/repository
           key: ubuntu-qulice-jdk-21-maven-${{ hashFiles('**/pom.xml') }}

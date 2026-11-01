@@ -5,6 +5,7 @@
 package org.eolang.sodg;
 
 import com.jcabi.manifests.Manifests;
+import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -43,10 +44,28 @@ final class Disclaimer {
             " ",
             Manifests.read("EO-Dob"),
             ") on ",
-            ZonedDateTime.now(ZoneOffset.UTC).format(
-                DateTimeFormatter.ISO_INSTANT
-            ),
+            ZonedDateTime.ofInstant(
+                Disclaimer.resolved(System.getenv("SOURCE_DATE_EPOCH")), ZoneOffset.UTC
+            ).format(DateTimeFormatter.ISO_INSTANT),
             "; your changes will be discarded on the next build"
         );
+    }
+
+    /**
+     * Resolve the timestamp to embed, honouring {@code SOURCE_DATE_EPOCH} for
+     * reproducible builds (https://reproducible-builds.org/specs/source-date-epoch/)
+     * and falling back to the current time when it isn't set.
+     * @param epoch Value of the {@code SOURCE_DATE_EPOCH} environment variable, or
+     *  {@code null} if it isn't set
+     * @return The timestamp
+     */
+    static Instant resolved(final String epoch) {
+        final Instant now;
+        if (epoch == null) {
+            now = Instant.now();
+        } else {
+            now = Instant.ofEpochSecond(Long.parseLong(epoch));
+        }
+        return now;
     }
 }

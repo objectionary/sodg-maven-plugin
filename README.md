@@ -196,7 +196,7 @@ before sending us your pull request please run full Maven build:
 mvn clean install -Pqulice
 ```
 
-You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.
+You will need [Maven 3.3+](https://maven.apache.org) and Java 17+ installed.
 
 [SODG]: https://github.com/objectionary/sodg
 [reo]: https://github.com/objectionary/reo
