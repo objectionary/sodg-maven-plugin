@@ -58,6 +58,7 @@ final class ItsAngryTest {
             ).getMessage(),
             Matchers.allOf(
                 Matchers.containsString("Failing SODG generation"),
+                Matchers.containsString("'eo.failOnXmirErrors=true'"),
                 Matchers.containsString("broken")
             )
         );
