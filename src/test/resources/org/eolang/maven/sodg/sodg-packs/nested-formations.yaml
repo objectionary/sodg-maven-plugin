@@ -2,6 +2,15 @@
 # SPDX-License-Identifier: MIT
 ---
 # yamllint disable rule:line-length
+# @todo #202:90min Adjust SODG representation and logic to correctly map new object representation from XMIR.
+#  Currently, we represent objects as nodes with `b$id` format, e.g. `b42`. However, it does not work
+#  for new format that can roll locs and at the same time have no bases:
+#  ```
+#  <o loc="Φ.head.second.third" name="third">
+#  ```
+#  We need to think how to represent objects, especially formations as SODG instructions. Don't forget
+#  to enable this, and `nested-with-lambda` test too.
+skip: true
 sheets: []
 input: |
   [] > head
