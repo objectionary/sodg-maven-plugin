@@ -154,7 +154,7 @@
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-xml</artifactId>
-      <version>0.35.0</version>
+      <version>0.37.1</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
@@ -192,13 +192,13 @@
     <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>maybeslow</artifactId>
-      <version>0.0.4</version>
+      <version>0.1.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>mktmp</artifactId>
-      <version>0.0.5</version>
+      <version>0.2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
