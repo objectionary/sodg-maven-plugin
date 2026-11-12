@@ -33,7 +33,7 @@ final class Depot {
      * @param measures Measures
      */
     Depot(final File measures) {
-        this((Scalar<Map<String, Train<Shift>>>) () -> new MapOf<>(
+        this(() -> new MapOf<>(
             new MapEntry<>(
                 "sodg", Depot.measured(new TrSodg(Depot.loggingLevel()), measures)
             ),
@@ -41,11 +41,9 @@ final class Depot {
                 "dot", Depot.measured(new TrDot(Depot.loggingLevel()), measures)
             ),
             new MapEntry<>("xembly", Depot.measured(new TrXembly(), measures)),
-            new MapEntry<>("text", Depot.measured(new TrText(), measures)),
-            new MapEntry<>(
-                "finish", Depot.measured(new TrFinish(Depot.loggingLevel()), measures)
+            new MapEntry<>("text", Depot.measured(new TrText(), measures))
             )
-        ));
+        );
     }
 
     /**
@@ -53,7 +51,7 @@ final class Depot {
      * @param trns The trains
      */
     Depot(final Map<String, Train<Shift>> trns) {
-        this((Scalar<Map<String, Train<Shift>>>) () -> trns);
+        this(() -> trns);
     }
 
     /**
