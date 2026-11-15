@@ -19,24 +19,19 @@
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:apply-templates select="i"/>
-      <xsl:variable name="root" select="count(/object/preceding-sibling::o) + 1"/>
-      <xsl:for-each select="//o">
-        <xsl:if test="not(eo:abstract(.)) and @base and not(@base='Φ.org.eolang.bytes') and o[@as]">
-          <xsl:variable name="apos" select="concat('b', position() + 1)"/>
-          <xsl:if test="not(@base='Φ.org.eolang.bytes') and not(o[1]/@base='Φ.org.eolang.bytes')">
-            <xsl:for-each select="o[not(@base='Φ.org.eolang.bytes')]">
-              <xsl:variable name="base" select="tokenize(../@base, '\.')[last()]"/>
-              <xsl:variable name="polished" select="substring-after(@base, 'ξ.')"/>
-              <xsl:call-template name="i">
-                <xsl:with-param name="name" select="'application'"/>
-                <xsl:with-param name="args" select="($apos, /object/sodg/i[@name='dispatch' and a[3]=$base]/a[1], @as, /object/sodg/i[@name='dispatch' and a[3]=$polished]/a[1])"/>
-              </xsl:call-template>
-            </xsl:for-each>
-            <xsl:call-template name="i">
-              <xsl:with-param name="name" select="'put'"/>
-              <xsl:with-param name="args" select="(concat('b', $root), @name, $apos)"/>
-            </xsl:call-template>
-          </xsl:if>
+      <xsl:for-each select="//o[@base][not(@base='Φ.org.eolang.bytes')][exists(eo:arguments(.))]">
+        <xsl:variable name="object" select="."/>
+        <xsl:for-each select="eo:arguments(.)">
+          <xsl:call-template name="i">
+            <xsl:with-param name="name" select="'application'"/>
+            <xsl:with-param name="args" select="(concat(eo:object($object), '-app', position()), if (position()=1) then eo:object($object) else concat(eo:object($object), '-app', position() - 1), if (@as) then string(@as) else concat('α', position() - 1), eo:result(.))"/>
+          </xsl:call-template>
+        </xsl:for-each>
+        <xsl:if test="@name">
+          <xsl:call-template name="i">
+            <xsl:with-param name="name" select="'put'"/>
+            <xsl:with-param name="args" select="(eo:object(ancestor::o[not(@base)][1]), @name, eo:result(.))"/>
+          </xsl:call-template>
         </xsl:if>
       </xsl:for-each>
     </xsl:copy>

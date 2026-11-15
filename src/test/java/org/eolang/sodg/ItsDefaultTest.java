@@ -45,7 +45,7 @@ final class ItsDefaultTest {
                 ),
                 temp.resolve("foo.sodg")
             ),
-            Matchers.equalTo(8)
+            Matchers.equalTo(13)
         );
     }
 }
