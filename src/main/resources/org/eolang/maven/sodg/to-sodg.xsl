@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
- * SPDX-License-Identifier: MIT
+* SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+* SPDX-License-Identifier: MIT
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="to-sodg" version="2.0">
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
@@ -23,42 +23,60 @@
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:apply-templates select="i"/>
-      <xsl:apply-templates select="/object/o" mode="sodg"/>
+      <!-- Reserve b0 for the global scope used by qualified base paths. -->
+      <xsl:if test="//o[starts-with(@base, 'Φ.') and not(o[1]/@base='Φ.org.eolang.bytes') and not(@base='Φ.org.eolang.bytes')]">
+        <xsl:call-template name="i">
+          <xsl:with-param name="name" select="'formation'"/>
+          <xsl:with-param name="args" select="'b0'"/>
+        </xsl:call-template>
+      </xsl:if>
+      <xsl:apply-templates select="//o[not(@base='Φ.org.eolang.bytes') and not(eo:has-data(.))]" mode="sodg"/>
     </xsl:copy>
   </xsl:template>
   <xsl:template match="o" mode="sodg">
-    <xsl:for-each select="//o">
-      <xsl:if test="eo:abstract(.) and not(eo:has-data(.)) and not(@name=$eo:lambda)">
+    <xsl:variable name="oid" select="eo:object(.)"/>
+    <xsl:variable name="owner" select="ancestor::o[not(@base)][1]"/>
+    <xsl:choose>
+      <xsl:when test="eo:abstract(.) and not(@name=$eo:lambda) or o[1]/@base='Φ.org.eolang.bytes' and not(@name)">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'formation'"/>
-          <xsl:with-param name="args" select="(concat('b', position()), o/@name ! string())"/>
+          <xsl:with-param name="args" select="($oid, o/@name ! string())"/>
         </xsl:call-template>
-      </xsl:if>
-      <xsl:if test="eo:atom(.)">
-        <xsl:call-template name="i">
-          <xsl:with-param name="name" select="'lambda'"/>
-          <xsl:with-param name="args" select="(concat('b', position()), @name)"/>
-        </xsl:call-template>
-      </xsl:if>
-      <xsl:if test="not(eo:abstract(.)) and @base and @name and not(starts-with(@base, 'ξ.'))">
+      </xsl:when>
+      <xsl:when test="@base='∅' or @base='ξ' or o[1]/@base='Φ.org.eolang.bytes'">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'dispatch'"/>
-          <xsl:with-param name="args" select="('b' || position(), 'b' || ( position() - count(preceding-sibling::o[not(eo:abstract(.))]) - 1), @name)"/>
+          <xsl:with-param name="args" select="($oid, eo:object($owner), @name)"/>
         </xsl:call-template>
-      </xsl:if>
-      <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">
-        <xsl:variable name="oid" select="concat('b', position())"/>
-        <xsl:call-template name="i">
-          <xsl:with-param name="name" select="'delta'"/>
-          <xsl:with-param name="args" select="($oid, o[1]/o[1]/text())"/>
-        </xsl:call-template>
-      </xsl:if>
-      <xsl:if test="not(eo:abstract(.)) and @base and @name and starts-with(@base, 'ξ.')">
+      </xsl:when>
+      <xsl:when test="starts-with(@base, '.')">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'dispatch'"/>
-          <xsl:with-param name="args" select="(concat('b', position()), concat('b', count(preceding-sibling::*)), tokenize(@base, '\.')[last()])"/>
+          <xsl:with-param name="args" select="($oid, eo:result(o[1]), substring-after(@base, '.'))"/>
         </xsl:call-template>
-      </xsl:if>
-    </xsl:for-each>
+      </xsl:when>
+      <xsl:when test="@base">
+        <xsl:variable name="parts" select="tokenize(@base, '\.')"/>
+        <xsl:variable name="base" select="if ($parts[1]='Φ') then 'b0' else eo:object($owner)"/>
+        <xsl:for-each select="$parts[position() &gt; 1]">
+          <xsl:call-template name="i">
+            <xsl:with-param name="name" select="'dispatch'"/>
+            <xsl:with-param name="args" select="(if (position()=last()) then $oid else concat($oid, '-base', position()), if (position()=1) then $base else concat($oid, '-base', position() - 1), .)"/>
+          </xsl:call-template>
+        </xsl:for-each>
+      </xsl:when>
+    </xsl:choose>
+    <xsl:if test="eo:atom(.)">
+      <xsl:call-template name="i">
+        <xsl:with-param name="name" select="'lambda'"/>
+        <xsl:with-param name="args" select="($oid, @name)"/>
+      </xsl:call-template>
+    </xsl:if>
+    <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">
+      <xsl:call-template name="i">
+        <xsl:with-param name="name" select="'delta'"/>
+        <xsl:with-param name="args" select="($oid, o[1]/o[1]/text())"/>
+      </xsl:call-template>
+    </xsl:if>
   </xsl:template>
 </xsl:stylesheet>

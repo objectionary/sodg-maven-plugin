@@ -74,7 +74,7 @@ final class SodgFiles {
             }
             final Path sodg = new Place(name).make(home, "sodg");
             final Path xmir = tojo.shaken();
-            if (sodg.toFile().lastModified() >= xmir.toFile().lastModified()) {
+            if (sodg.toFile().lastModified() > xmir.toFile().lastModified()) {
                 Logger.debug(
                     this, "Already converted %s to %[file]s (it's newer than the source)",
                     name, sodg

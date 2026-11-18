@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
- * SPDX-License-Identifier: MIT
+* SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+* SPDX-License-Identifier: MIT
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="_macros" version="2.0">
   <xsl:output encoding="UTF-8" method="xml"/>
@@ -18,6 +18,21 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:value-of select="$ret"/>
+  </xsl:function>
+  <!-- A dotted expression's first child is its receiver, not an argument. -->
+  <xsl:function name="eo:arguments" as="element()*">
+    <xsl:param name="o" as="element()"/>
+    <xsl:sequence select="$o/o[not(starts-with($o/@base, '.')) or position() &gt; 1][not(@base='Φ.org.eolang.bytes')]"/>
+  </xsl:function>
+  <xsl:function name="eo:object" as="xs:string">
+    <xsl:param name="o" as="element()"/>
+    <xsl:sequence select="concat('b', eo:index($o))"/>
+  </xsl:function>
+  <!-- Each binding creates a distinct application; callers use the last one. -->
+  <xsl:function name="eo:result" as="xs:string">
+    <xsl:param name="o" as="element()"/>
+    <xsl:variable name="args" select="eo:arguments($o)"/>
+    <xsl:sequence select="concat(eo:object($o), if ($o/@base and exists($args)) then concat('-app', count($args)) else '')"/>
   </xsl:function>
   <xsl:function name="eo:vertex" as="xs:string">
     <xsl:param name="o" as="node()"/>
