@@ -41,13 +41,13 @@ final class ItsDefaultTest {
                         String.join(
                             System.lineSeparator(),
                             "[] > foo",
-                            "  QQ.io.stdout \"编程就是我的生命\" > @"
+                            "  Q.io.stdout \"编程就是我的生命\" > @"
                         )
                     ).parsed().toString().getBytes(StandardCharsets.UTF_8)
                 ),
                 temp.resolve("foo.sodg")
             ),
-            Matchers.equalTo(13)
+            Matchers.equalTo(10)
         );
     }
 

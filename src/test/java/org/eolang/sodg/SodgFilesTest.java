@@ -62,7 +62,7 @@ final class SodgFilesTest {
                         String.join(
                             System.lineSeparator(),
                             "[] > app",
-                            "  QQ.io.stdout > @",
+                            "  Q.io.stdout > @",
                             "    \"我是一名来自莫斯科的计算机科学家!\""
                         )
                     )
@@ -97,7 +97,7 @@ final class SodgFilesTest {
                     String.join(
                         System.lineSeparator(),
                         "[] > app",
-                        "  QQ.io.stdout > @",
+                        "  Q.io.stdout > @",
                         "    \"first\""
                     )
                 )
@@ -129,7 +129,7 @@ final class SodgFilesTest {
                 String.join(
                     System.lineSeparator(),
                     "[] > app",
-                    "  QQ.io.stdout > @",
+                    "  Q.io.stdout > @",
                     "    \"second\""
                 )
             ).parsed().toString().getBytes(StandardCharsets.UTF_8)

@@ -4,6 +4,8 @@
 # yamllint disable rule:line-length
 sheets: []
 input: |
+  # Fibonacci numbers
+
   +architect yegor256@gmail.com
   +home https://github.com/objectionary/sodg-maven-plugin
   +package org.eolang.sodg.examples
@@ -11,7 +13,6 @@ input: |
   +spdx SPDX-FileCopyrightText Copyright (c) 2016-2025 Objectionary.com
   +spdx SPDX-License-Identifier: MIT
 
-  # Fibonacci numbers
   [n] > fibonacci
     if. > @
       lt
@@ -34,10 +35,10 @@ asserts:
   - //sodg[every $ref in i[@name='put']/a[position()=(1,3)] satisfies $ref = i[@name=('formation','dispatch','application')]/a[1]]
   - //sodg[count(i[@name='application'])=9 and count(i[@name='delta'])=3 and count(i[@name='put'])=1]
   - //sodg[count(i[@name=('formation','dispatch','application')])=count(distinct-values(i[@name=('formation','dispatch','application')]/a[1]))]
-  - //sodg/i[@name='dispatch' and a[1]='b4' and a[2]='b5-app2' and a[3]='if']
-  - //sodg/i[@name='application' and a[1]='b5-app2' and a[2]='b5-app1' and a[3]='α1' and a[4]='b7']
-  - //sodg/i[@name='application' and a[1]='b4-app2' and a[2]='b4-app1' and a[3]='α1' and a[4]='b11-app1']
-  - //sodg/i[@name='dispatch' and a[1]='b11' and a[2]='b12-app1' and a[3]='plus']
-  - //sodg/i[@name='application' and a[1]='b12-app1' and a[2]='b12' and a[3]='α0' and a[4]='b13-app1']
-  - //sodg/i[@name='application' and a[1]='b18-app1' and a[2]='b18' and a[3]='α0' and a[4]='b19']
-  - //sodg/i[@name='put' and a[1]='b1' and a[2]='φ' and a[3]='b4-app2']
+  - //sodg/i[@name='dispatch' and a[1]='b3' and a[2]='b4-app2' and a[3]='if']
+  - //sodg/i[@name='application' and a[1]='b4-app2' and a[2]='b4-app1' and a[3]='α1' and a[4]='b6']
+  - //sodg/i[@name='application' and a[1]='b3-app2' and a[2]='b3-app1' and a[3]='α1' and a[4]='b10-app1']
+  - //sodg/i[@name='dispatch' and a[1]='b10' and a[2]='b11-app1' and a[3]='plus']
+  - //sodg/i[@name='application' and a[1]='b11-app1' and a[2]='b11' and a[3]='α0' and a[4]='b12-app1']
+  - //sodg/i[@name='application' and a[1]='b17-app1' and a[2]='b17' and a[3]='α0' and a[4]='b18']
+  - //sodg/i[@name='put' and a[1]='b1' and a[2]='φ' and a[3]='b3-app2']

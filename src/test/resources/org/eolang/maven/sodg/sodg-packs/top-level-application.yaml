@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets: []
+input: |
+  3.141592653589793 > pi
+  Q.io.stdout "y" > top
+asserts:
+  - //sodg/i[@name='formation' and count(a)=1 and a[1][text()='b1']]
+  - //sodg/i[@name='delta' and a[1][text()='b1'] and a[2][text()='40-09-21-FB-54-44-2D-18']]
+  - //sodg/i[@name='application' and a[1][text()='b4-app1'] and a[2][text()='b4'] and a[3][text()='α0'] and a[4][text()='b5']]
+  - //sodg[not(i[@name='put'])]
+  - //sodg[every $ref in i[@name=('delta','lambda')]/a[1] satisfies $ref = i[@name=('formation','dispatch','application')]/a[1]]
+  - //sodg[every $ref in i[@name='dispatch']/a[2] satisfies $ref = i[@name=('formation','dispatch','application')]/a[1]]

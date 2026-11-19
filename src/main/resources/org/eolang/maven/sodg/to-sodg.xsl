@@ -24,26 +24,26 @@
       <xsl:apply-templates select="@*"/>
       <xsl:apply-templates select="i"/>
       <!-- Reserve b0 for the global scope used by qualified base paths. -->
-      <xsl:if test="//o[starts-with(@base, 'Φ.') and not(o[1]/@base='Φ.org.eolang.bytes') and not(@base='Φ.org.eolang.bytes')]">
+      <xsl:if test="//o[starts-with(@base, 'Φ.') and not(o[1]/@base='Φ.bytes') and not(@base='Φ.bytes')]">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'formation'"/>
           <xsl:with-param name="args" select="'b0'"/>
         </xsl:call-template>
       </xsl:if>
-      <xsl:apply-templates select="//o[not(@base='Φ.org.eolang.bytes') and not(eo:has-data(.))]" mode="sodg"/>
+      <xsl:apply-templates select="//o[not(@base='Φ.bytes') and not(eo:has-data(.))]" mode="sodg"/>
     </xsl:copy>
   </xsl:template>
   <xsl:template match="o" mode="sodg">
     <xsl:variable name="oid" select="eo:object(.)"/>
     <xsl:variable name="owner" select="ancestor::o[not(@base)][1]"/>
     <xsl:choose>
-      <xsl:when test="eo:abstract(.) and not(@name=$eo:lambda) or o[1]/@base='Φ.org.eolang.bytes' and not(@name)">
+      <xsl:when test="eo:abstract(.) and not(@name=$eo:lambda) or o[1]/@base='Φ.bytes' and (not(@name) or not($owner))">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'formation'"/>
           <xsl:with-param name="args" select="($oid, o/@name ! string())"/>
         </xsl:call-template>
       </xsl:when>
-      <xsl:when test="@base='∅' or @base='ξ' or o[1]/@base='Φ.org.eolang.bytes'">
+      <xsl:when test="@base='∅' or @base='ξ' or o[1]/@base='Φ.bytes'">
         <xsl:call-template name="i">
           <xsl:with-param name="name" select="'dispatch'"/>
           <xsl:with-param name="args" select="($oid, eo:object($owner), @name)"/>
@@ -72,7 +72,7 @@
         <xsl:with-param name="args" select="($oid, @name)"/>
       </xsl:call-template>
     </xsl:if>
-    <xsl:if test="o[1]/@base='Φ.org.eolang.bytes'">
+    <xsl:if test="o[1]/@base='Φ.bytes'">
       <xsl:call-template name="i">
         <xsl:with-param name="name" select="'delta'"/>
         <xsl:with-param name="args" select="($oid, o[1]/o[1]/text())"/>

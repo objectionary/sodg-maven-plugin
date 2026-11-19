@@ -1,3 +1,5 @@
+# Application
+
 +architect yegor256@gmail.com
 +home https://github.com/objectionary/sodg-maven-plugin
 +package org.eolang.sodg.examples
@@ -5,7 +7,6 @@
 +spdx SPDX-FileCopyrightText Copyright (c) 2016-2025 Objectionary.com
 +spdx SPDX-License-Identifier: MIT
 
-# Application
 [args] > app
   foo > @
     args.size

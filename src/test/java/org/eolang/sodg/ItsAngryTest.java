@@ -37,7 +37,7 @@ final class ItsAngryTest {
                     String.join(
                         System.lineSeparator(),
                         "[] > app",
-                        "  QQ.io.stdout \"application started!\" > @"
+                        "  Q.io.stdout \"application started!\" > @"
                     )
                 ),
                 temp.resolve("sodg")
@@ -84,7 +84,7 @@ final class ItsAngryTest {
                 ),
                 temp.resolve("sodg")
             ),
-            Matchers.equalTo(4)
+            Matchers.equalTo(3)
         );
     }
 
