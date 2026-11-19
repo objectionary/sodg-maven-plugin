@@ -83,10 +83,10 @@ final class ItsDefault implements Instructions {
             Logger.trace(this, "XML before translating to SODG:%n%s", before);
         }
         final XML after = new Xsline(this.depot.train("sodg")).pass(before);
-        final String instructions = new Xsline(this.depot.train("text"))
-            .pass(after)
-            .xpath("/text/text()")
-            .get(0);
+        final String instructions = ItsDefault.first(
+            new Xsline(this.depot.train("text")).pass(after).xpath("/text/text()"),
+            xmir
+        );
         if (Logger.isTraceEnabled(this)) {
             Logger.trace(this, "SODGs:%n%s", instructions);
         }
@@ -99,8 +99,10 @@ final class ItsDefault implements Instructions {
             ).value();
         }
         if (this.config.get("generateXemblyFiles")) {
-            final String xembly = new Xsline(this.depot.train("xembly")).pass(after)
-                .xpath("/xembly/text()").get(0);
+            final String xembly = ItsDefault.first(
+                new Xsline(this.depot.train("xembly")).pass(after).xpath("/xembly/text()"),
+                xmir
+            );
             new Saved(
                 String.format("# %s%n%n%s%n", new Disclaimer(this.version), xembly),
                 base.resolveSibling(String.format("%s.xe", base.getFileName()))
@@ -112,6 +114,21 @@ final class ItsDefault implements Instructions {
         ).stream().filter(
             i -> !(!i.isEmpty() && i.charAt(0) == '#') && !i.isEmpty()
         ).count();
+    }
+
+    /**
+     * Take the first text, or fail with a message that names the source.
+     * @param texts Texts found by XPath
+     * @param xmir The XMIR file being processed
+     * @return The first text
+     */
+    private static String first(final List<String> texts, final Path xmir) {
+        if (texts.isEmpty()) {
+            throw new IllegalStateException(
+                String.format("Transformed XMIR produced no SODG instructions for %s", xmir)
+            );
+        }
+        return texts.get(0);
     }
 
     /**

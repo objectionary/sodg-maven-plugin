@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -46,6 +47,30 @@ final class ItsDefaultTest {
                 temp.resolve("foo.sodg")
             ),
             Matchers.equalTo(13)
+        );
+    }
+
+    @Test
+    void failsWithDescriptiveMessageOnEmptyInstructions(@Mktmp final Path temp)
+        throws IOException {
+        MatcherAssert.assertThat(
+            "The error message must name the XMIR file",
+            Assertions.assertThrows(
+                IllegalStateException.class,
+                () -> new ItsDefault(
+                    new Depot(temp.resolve("measures.csv").toFile())
+                ).textInstructions(
+                    Files.write(
+                        temp.resolve("empty.xmir"),
+                        "<program><objects/></program>".getBytes(
+                            StandardCharsets.UTF_8
+                        )
+                    ),
+                    temp.resolve("empty.sodg")
+                ),
+                "Empty instructions must be reported with a descriptive error"
+            ).getMessage(),
+            Matchers.containsString("empty.xmir")
         );
     }
 }
