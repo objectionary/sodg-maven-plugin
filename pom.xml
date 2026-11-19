@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.70.0</version>
+    <version>0.73.5</version>
   </parent>
   <groupId>org.eolang</groupId>
   <artifactId>sodg-maven-plugin</artifactId>
@@ -85,6 +85,15 @@
     <skipITs/>
     <skipUTs/>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.17</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
