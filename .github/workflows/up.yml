@@ -9,6 +9,8 @@ name: up
       - master
     tags:
       - '*'
+permissions:
+  contents: read
 concurrency:
   group: up-${{ github.ref }}
   cancel-in-progress: true
@@ -16,6 +18,9 @@ jobs:
   up:
     timeout-minutes: 15
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v6
       - run: |-

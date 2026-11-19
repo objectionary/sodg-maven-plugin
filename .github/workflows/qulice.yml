@@ -18,6 +18,8 @@ name: qulice
       - '**.java'
       - '**/pom.xml'
       - '.github/workflows/qulice.yml'
+permissions:
+  contents: read
 concurrency:
   group: qulice-${{ github.ref }}
   cancel-in-progress: true
