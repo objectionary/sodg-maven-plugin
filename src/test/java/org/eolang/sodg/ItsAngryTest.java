@@ -84,7 +84,7 @@ final class ItsAngryTest {
                 ),
                 temp.resolve("sodg")
             ),
-            Matchers.equalTo(3)
+            Matchers.equalTo(2)
         );
     }
 

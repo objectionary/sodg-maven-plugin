@@ -17,9 +17,6 @@ import com.yegor256.xsline.TrJoined;
 import com.yegor256.xsline.TrLogged;
 import com.yegor256.xsline.TrMapped;
 import com.yegor256.xsline.TrWith;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.function.Function;
 import java.util.logging.Level;
 
@@ -65,18 +62,6 @@ final class TrSodg extends TrEnvelope {
                                         "value %s",
                                         new HexedUtf(
                                             Manifests.read("EO-Version")
-                                        ).asString()
-                                    )
-                                ),
-                                new StClasspath(
-                                    "/org/eolang/maven/sodg/add-meta.xsl",
-                                    "name time",
-                                    String.format(
-                                        "value %s",
-                                        new HexedUtf(
-                                            ZonedDateTime.now(ZoneOffset.UTC).format(
-                                                DateTimeFormatter.ISO_INSTANT
-                                            )
                                         ).asString()
                                     )
                                 )

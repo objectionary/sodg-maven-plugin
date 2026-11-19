@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -47,7 +48,38 @@ final class ItsDefaultTest {
                 ),
                 temp.resolve("foo.sodg")
             ),
-            Matchers.equalTo(10)
+            Matchers.equalTo(9)
+        );
+    }
+
+    @Test
+    void rendersSameInstructionsForSameInput(@Mktmp final Path temp) throws IOException {
+        final Path xmir = Files.write(
+            temp.resolve("bar.xmir"),
+            new EoSyntax(
+                String.join(
+                    System.lineSeparator(),
+                    "[] > bar",
+                    "  Q.io.stdout \"hello\" > @"
+                )
+            ).parsed().toString().getBytes(StandardCharsets.UTF_8)
+        );
+        final ItsDefault instructions = new ItsDefault(
+            new Depot(temp.resolve("measures.csv").toFile())
+        );
+        final Path first = temp.resolve("first.sodg");
+        final Path second = temp.resolve("second.sodg");
+        instructions.textInstructions(xmir, first);
+        Thread.yield();
+        instructions.textInstructions(xmir, second);
+        MatcherAssert.assertThat(
+            "Instructions must not depend on the build time",
+            Files.readAllLines(second).stream()
+                .filter(line -> !line.startsWith("#")).collect(Collectors.toList()),
+            Matchers.equalTo(
+                Files.readAllLines(first).stream()
+                    .filter(line -> !line.startsWith("#")).collect(Collectors.toList())
+            )
         );
     }
 
