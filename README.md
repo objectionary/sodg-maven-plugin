@@ -30,7 +30,6 @@ That can be translated to the following [XMIR][XMIR guide]:
 ```xml
 <object>
    <o name="order">
-      <o base="ξ" name="xi🌵"/>
       <o base="∅" name="qty"/>
       <o base="∅" name="price"/>
       <o base="ξ.qty.mul" name="cost">
@@ -67,13 +66,12 @@ You should see `order.sodg` file being created under `target/eo/sodg` folder,
 with the following content:
 
 ```sodg
-formation(b1, "xi🌵", "qty", "price", "cost")
-dispatch(b2, b1, "xi🌵")
-dispatch(b3, b1, "qty")
-dispatch(b4, b1, "price")
-dispatch(b5, b3, "mul")
-application(b6, b5, α0, b4)
-put(b1, "cost", b6)
+formation(b1, "qty", "price", "cost")
+dispatch(b2, b1, "qty")
+dispatch(b3, b1, "price")
+dispatch(b4, b2, "mul")
+application(b5, b4, α0, b3)
+put(b1, "cost", b5)
 ```
 
 ## SODG Format
@@ -84,7 +82,6 @@ To generate these text files, we first use an intermediate XML format:
 <sodg>
    <i name="formation">
       <a>b1</a>
-      <a>xi🌵</a>
       <a>qty</a>
       <a>price</a>
       <a>cost</a>
@@ -92,33 +89,28 @@ To generate these text files, we first use an intermediate XML format:
    <i name="dispatch">
       <a>b2</a>
       <a>b1</a>
-      <a>xi🌵</a>
-   </i>
-   <i name="dispatch">
-      <a>b3</a>
-      <a>b1</a>
       <a>qty</a>
    </i>
    <i name="dispatch">
-      <a>b4</a>
+      <a>b3</a>
       <a>b1</a>
       <a>price</a>
    </i>
    <i name="dispatch">
-      <a>b5</a>
-      <a>b3</a>
+      <a>b4</a>
+      <a>b2</a>
       <a>mul</a>
    </i>
    <i name="application">
-      <a>b6</a>
       <a>b5</a>
-      <a>α0</a>
       <a>b4</a>
+      <a>α0</a>
+      <a>b3</a>
    </i>
    <i name="put">
       <a>b1</a>
       <a>cost</a>
-      <a>b6</a>
+      <a>b5</a>
    </i>
 </sodg>
 ```
