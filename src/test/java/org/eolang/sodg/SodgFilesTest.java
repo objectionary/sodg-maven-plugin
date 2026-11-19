@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
@@ -142,6 +143,54 @@ final class SodgFilesTest {
             "SODG must be regenerated when its mtime equals the source XMIR's mtime",
             new String(Files.readAllBytes(sodg), StandardCharsets.UTF_8),
             Matchers.containsString("73-65-63-6F-6E-64")
+        );
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "**, as-bytes_x, true",
+        "org.eolang.sodg.examples.f.o, f.o, true",
+        "org.eolang.sodg.examples.f.o, fxo, false",
+        "org.eolang.sodg.examples.*, a-b, true"
+    })
+    @ExtendWith(MktmpResolver.class)
+    void matchesGlobLiterally(
+        final String glob, final String target, final boolean expected, @Mktmp final Path temp
+    ) throws IOException {
+        final Path sodg = temp.resolve("sodg");
+        new SodgFiles(
+            new ItsDefault(
+                new Depot(temp.resolve("measures.csv").toFile()),
+                new MapOf<>(
+                    new MapEntry<>("generateSodgXmlFiles", false),
+                    new MapEntry<>("generateXemblyFiles", false),
+                    new MapEntry<>("generateGraphFiles", false),
+                    new MapEntry<>("generateDotFiles", false)
+                )
+            ),
+            new SetOf<>(glob),
+            new SetOf<>()
+        ).generate(
+            new SodgFilesTest.TjsXmir(
+                temp,
+                new MapOf<>(
+                    new MapEntry<>(
+                        target,
+                        String.join(
+                            System.lineSeparator(),
+                            "[] > app",
+                            "  Q.io.stdout > @",
+                            "    \"x\""
+                        )
+                    )
+                )
+            ).asTojos(),
+            sodg
+        );
+        MatcherAssert.assertThat(
+            "Glob must match names literally and accept dashes and underscores",
+            Files.exists(sodg),
+            Matchers.equalTo(expected)
         );
     }
 

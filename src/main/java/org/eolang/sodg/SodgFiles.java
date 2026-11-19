@@ -125,6 +125,32 @@ final class SodgFiles {
     }
 
     private static String createMatcher(final String pattern) {
-        return pattern.replace("**", "[A-Za-z0-9.]+?").replace("*", "[A-Za-z0-9]+");
+        final StringBuilder regex = new StringBuilder(pattern.length() * 2);
+        final StringBuilder literal = new StringBuilder(0);
+        int idx = 0;
+        while (idx < pattern.length()) {
+            final char chr = pattern.charAt(idx);
+            if (chr == '*') {
+                SodgFiles.flush(regex, literal);
+                if (idx + 1 < pattern.length() && pattern.charAt(idx + 1) == '*') {
+                    regex.append(".+?");
+                    ++idx;
+                } else {
+                    regex.append("[^.]+");
+                }
+            } else {
+                literal.append(chr);
+            }
+            ++idx;
+        }
+        SodgFiles.flush(regex, literal);
+        return regex.toString();
+    }
+
+    private static void flush(final StringBuilder regex, final StringBuilder literal) {
+        if (literal.length() > 0) {
+            regex.append(Pattern.quote(literal.toString()));
+            literal.setLength(0);
+        }
     }
 }
