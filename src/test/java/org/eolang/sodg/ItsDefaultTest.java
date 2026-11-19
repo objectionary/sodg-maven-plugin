@@ -53,20 +53,23 @@ final class ItsDefaultTest {
     @Test
     void failsWithDescriptiveMessageOnEmptyInstructions(@Mktmp final Path temp)
         throws IOException {
-        final Path xmir = Files.write(
-            temp.resolve("empty.xmir"),
-            "<program><objects/></program>".getBytes(StandardCharsets.UTF_8)
-        );
-        final IllegalStateException error = Assertions.assertThrows(
-            IllegalStateException.class,
-            () -> new ItsDefault(
-                new Depot(temp.resolve("measures.csv").toFile())
-            ).textInstructions(xmir, temp.resolve("empty.sodg")),
-            "Empty instructions must be reported with a descriptive error"
-        );
         MatcherAssert.assertThat(
             "The error message must name the XMIR file",
-            error.getMessage(),
+            Assertions.assertThrows(
+                IllegalStateException.class,
+                () -> new ItsDefault(
+                    new Depot(temp.resolve("measures.csv").toFile())
+                ).textInstructions(
+                    Files.write(
+                        temp.resolve("empty.xmir"),
+                        "<program><objects/></program>".getBytes(
+                            StandardCharsets.UTF_8
+                        )
+                    ),
+                    temp.resolve("empty.sodg")
+                ),
+                "Empty instructions must be reported with a descriptive error"
+            ).getMessage(),
             Matchers.containsString("empty.xmir")
         );
     }
