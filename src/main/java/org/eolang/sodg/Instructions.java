@@ -9,6 +9,7 @@ import java.nio.file.Path;
 
 /**
  * Instructions.
+ *
  * @since 0.0.4
  */
 @FunctionalInterface
@@ -16,6 +17,7 @@ interface Instructions {
 
     /**
      * Total instructions rendered, from XMIR to SODG.
+     *
      * @param xmir Path to XMIR
      * @param base Base path
      * @return The number of total instructions rendered

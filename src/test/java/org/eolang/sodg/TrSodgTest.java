@@ -15,6 +15,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Tests for {@link TrSodg}.
+ *
  * @since 0.0.2
  */
 final class TrSodgTest {

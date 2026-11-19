@@ -20,14 +20,15 @@ import java.util.logging.Level;
 
 /**
  * Graph modification right after it's generated from Xembly.
+ *
  * @since 0.1
  */
 final class TrFinish extends TrEnvelope {
 
     /**
      * Ctor.
+     *
      * @param level Logging level
-     * @checkstyle ConstructorsCodeFreeCheck (50 lines)
      */
     TrFinish(final Level level) {
         super(new TrLogged(
@@ -52,11 +53,6 @@ final class TrFinish extends TrEnvelope {
         ));
     }
 
-    /**
-     * Check that the input graph is a tree.
-     * @param input The XML graph
-     * @return The same input graph
-     */
     private static XML checkTree(final XML input) {
         final Set<String> seen = new HashSet<>();
         TrFinish.traverse(input, "ν0", seen);
@@ -80,12 +76,6 @@ final class TrFinish extends TrEnvelope {
         return input;
     }
 
-    /**
-     * Go through the graph recursively and visit all vertices.
-     * @param graph The XML graph
-     * @param root The vertex to start from
-     * @param seen List of <code>@id</code> attributes already seen
-     */
     private static void traverse(
         final XML graph, final String root,
         final Set<String> seen

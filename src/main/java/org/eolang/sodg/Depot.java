@@ -19,6 +19,7 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * The depot that produces trains.
+ *
  * @since 0.0.3
  */
 final class Depot {
@@ -30,6 +31,7 @@ final class Depot {
 
     /**
      * Ctor.
+     *
      * @param measures Measures
      */
     Depot(final File measures) {
@@ -50,6 +52,7 @@ final class Depot {
 
     /**
      * Ctor.
+     *
      * @param trns The trains
      */
     Depot(final Map<String, Train<Shift>> trns) {
@@ -58,6 +61,7 @@ final class Depot {
 
     /**
      * Primary ctor.
+     *
      * @param scalar The trains scalar
      */
     private Depot(final Scalar<Map<String, Train<Shift>>> scalar) {
@@ -66,6 +70,7 @@ final class Depot {
 
     /**
      * Train.
+     *
      * @param name Name
      * @return Train
      */
@@ -73,13 +78,6 @@ final class Depot {
         return this.trains.value().get(name);
     }
 
-    /**
-     * We are in IntelliJ IDEA at the moment?
-     * <p>
-     * This is for testing purposes, to enable higher visibility of logs inside
-     * tests being executed interactively in the IDE.
-     * @return TRUE if inside IDE
-     */
     private static Level loggingLevel() {
         Level lvl = Level.FINEST;
         if (System.getProperty("java.class.path").contains("idea_rt.jar")) {
@@ -88,12 +86,6 @@ final class Depot {
         return lvl;
     }
 
-    /**
-     * Measured train.
-     * @param train Train to measure
-     * @param measures Measures
-     * @return Measured train
-     */
     private static Train<Shift> measured(final Train<Shift> train, final File measures) {
         if (measures.getParentFile().mkdirs()) {
             Logger.debug(Depot.class, "Directory created for %[file]s", measures);

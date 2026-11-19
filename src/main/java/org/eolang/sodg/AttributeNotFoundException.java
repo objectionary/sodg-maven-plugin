@@ -7,6 +7,7 @@ package org.eolang.sodg;
 /**
  * If the attributes were not found in the Tojo.
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
+ *
  * @since 0.35.0
  */
 final class AttributeNotFoundException extends RuntimeException {
@@ -18,8 +19,8 @@ final class AttributeNotFoundException extends RuntimeException {
 
     /**
      * Ctor.
+     *
      * @param attribute The attribute of Tojo
-     * @checkstyle ConstructorsCodeFreeCheck (5 lines)
      */
     AttributeNotFoundException(final TjsForeign.Attribute attribute) {
         super(String.format("There is no '%s' attribute in the tojo", attribute));

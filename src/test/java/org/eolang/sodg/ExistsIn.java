@@ -13,6 +13,7 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for a single locator against the graph.
+ *
  * @since 0.27
  */
 final class ExistsIn extends TypeSafeMatcher<String> {
@@ -29,6 +30,7 @@ final class ExistsIn extends TypeSafeMatcher<String> {
 
     /**
      * Ctor.
+     *
      * @param xml The graph
      */
     ExistsIn(final XML xml) {
@@ -54,16 +56,12 @@ final class ExistsIn extends TypeSafeMatcher<String> {
         return matches;
     }
 
-    /**
-     * Check and throw if fails.
-     * @param item The path to check
-     * @checkstyle CyclomaticComplexityCheck (10 lines)
-     * @checkstyle NPathComplexityCheck (10 lines)
-     */
+    // @checkstyle CyclomaticComplexityCheck (10 lines)
+    // @checkstyle NPathComplexityCheck (10 lines)
     @SuppressWarnings("PMD.CognitiveComplexity")
     private void matches(final String item) {
         String vertex = "ν0";
-        final String[] parts = item.split(" ");
+        final String[] parts = item.split(" ", 0);
         for (int pos = 0; pos < parts.length; ++pos) {
             String sub = parts[pos];
             boolean inverse = false;
@@ -192,11 +190,6 @@ final class ExistsIn extends TypeSafeMatcher<String> {
         }
     }
 
-    /**
-     * Bytes to HEX.
-     * @param bytes Bytes
-     * @return Hexadecimal value as string
-     */
     private static String bytesToHex(final byte... bytes) {
         final StringJoiner out = new StringJoiner("-");
         for (final byte bty : bytes) {

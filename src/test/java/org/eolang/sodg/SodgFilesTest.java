@@ -34,6 +34,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Tests for {@link SodgFiles}.
+ *
  * @since 0.0.4
  */
 final class SodgFilesTest {
@@ -144,10 +145,6 @@ final class SodgFilesTest {
         );
     }
 
-    /**
-     * Configuration-files matrix.
-     * @return Matrix as stream of arguments
-     */
     private static Stream<Arguments> fileMatrix() {
         return Stream.of(
             Arguments.of(
@@ -173,6 +170,7 @@ final class SodgFilesTest {
 
     /**
      * XMIR tojos.
+     *
      * @since 0.0.3
      */
     private static final class TjsXmir {
@@ -189,6 +187,7 @@ final class SodgFilesTest {
 
         /**
          * Ctor.
+         *
          * @param hme Home
          * @param prgrms Programs
          */
@@ -199,6 +198,7 @@ final class SodgFilesTest {
 
         /**
          * As tojos.
+         *
          * @return Collection of tojos
          * @throws IOException if I/O operation fails
          */
@@ -211,12 +211,6 @@ final class SodgFilesTest {
             }
         }
 
-        /**
-         * Append a single program tojo into the collection.
-         * @param foreigns The foreigns
-         * @param name The name
-         * @param sources The sources
-         */
         private void append(
             final Collection<Map<String, String>> foreigns,
             final String name,

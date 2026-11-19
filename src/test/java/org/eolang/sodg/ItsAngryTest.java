@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests for {@link ItsAngry}.
+ *
  * @since 0.0.4
  */
 @ExtendWith(MktmpResolver.class)
@@ -87,13 +88,6 @@ final class ItsAngryTest {
         );
     }
 
-    /**
-     * Write the EO source as parsed XMIR bytes to the given target path.
-     * @param target Path to write to
-     * @param source The EO source text
-     * @return The target path
-     * @throws IOException if write fails
-     */
     private static Path writeXmir(final Path target, final String source) throws IOException {
         return Files.write(
             target,

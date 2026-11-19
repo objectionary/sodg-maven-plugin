@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Set;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -23,8 +22,8 @@ import org.cactoos.set.SetOf;
 
 /**
  * Convert XMIR to SODG.
- * <p>
- * SODG (Surging Object DiGraph) is our own format of graph representation.
+ *
+ * <p>SODG (Surging Object DiGraph) is our own format of graph representation.
  * It essentially is a text file that consists of instructions for a virtual
  * machine that is capable of parsing them and building a graph. An example
  * of such a machine can be found in
@@ -32,9 +31,10 @@ import org.cactoos.set.SetOf;
  * graph is built by the virtual machine, it must be possible to execute
  * a program using graph traversing algorithm. An example of such an executor
  * of a graph can be found in
- * <a href="https://github.com/objectionary/reo">this repository</a>.
- * <p>
- * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
+ * <a href="https://github.com/objectionary/reo">this repository</a>.</p>
+ *
+ * <p>This class was copy-pasted from objectionary/eo/eo-maven-plugin.</p>
+ *
  * @since 0.0.1
  */
 @Mojo(
@@ -44,20 +44,14 @@ import org.cactoos.set.SetOf;
     requiresDependencyResolution = ResolutionScope.COMPILE,
     requiresProject = false
 )
-@SuppressWarnings({"PMD.ImmutableField", "PMD.AvoidProtectedFieldInFinalClass"})
+@SuppressWarnings({"PMD.ImmutableField", "PMD.ConstructorShouldDoInitialization"})
 public final class MjSodg extends AbstractMojo {
 
     /**
-     * The directory where to save SODG to.
-     */
-    private static final String DIR = "sodg";
-
-    /**
      * Whether we should skip goal execution.
-     * @checkstyle VisibilityModifierCheck (10 lines)
      */
     @Parameter(property = "eo.sodg.skip", defaultValue = "false")
-    protected boolean skip;
+    boolean skip;
 
     /**
      * The path of the file where XSL measurements (time of execution
@@ -69,55 +63,53 @@ public final class MjSodg extends AbstractMojo {
      *
      * @since 0.41.0
      * @checkstyle MemberNameCheck (10 lines)
-     * @checkstyle VisibilityModifierCheck (10 lines)
      */
     @Parameter(
         property = "eo.sodg.xslMeasuresFile",
         required = true,
         defaultValue = "${project.build.directory}/eo/xsl-measures.csv"
     )
-    protected File xslMeasures;
+    File xslMeasures;
 
     /**
      * Current scope (either "compile" or "test").
-     * @checkstyle VisibilityModifierCheck (5 lines)
      */
     @Parameter(property = "eo.sodg.scope")
-    protected String scope = "compile";
+    String scope = "compile";
 
     /**
      * Format of "foreign" file ("json" or "csv").
+     *
      * @checkstyle MemberNameCheck (7 lines)
-     * @checkstyle VisibilityModifierCheck (5 lines)
      */
     @Parameter(property = "eo.sodg.foreignFormat", required = true, defaultValue = "csv")
-    protected String foreignFormat;
+    String foreignFormat;
 
     /**
      * File with foreign "tojos".
-     * @checkstyle VisibilityModifierCheck (10 lines)
      */
     @Parameter(
         property = "eo.sodg.foreign",
         required = true,
         defaultValue = "${project.build.directory}/eo-foreign.csv"
     )
-    protected File foreign;
+    File foreign;
 
     /**
      * Target directory.
+     *
      * @checkstyle MemberNameCheck (10 lines)
-     * @checkstyle VisibilityModifierCheck (10 lines)
      */
     @Parameter(
         property = "eo.sodg.targetDir",
         required = true,
         defaultValue = "${project.build.directory}/eo"
     )
-    protected File targetDir;
+    File targetDir;
 
     /**
      * Source of the foreign tojos.
+     *
      * @checkstyle VisibilityModifierCheck (5 lines)
      */
     Scalar<Tojos> catalog = () -> Catalogs.INSTANCE.make(
@@ -126,6 +118,7 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Shall we generate .xml files with SODGs?
+     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
@@ -137,6 +130,7 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Shall we generate .xe files with Xembly instructions graph?
+     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
@@ -148,6 +142,7 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Shall we generate .graph.xml files with XML graph?
+     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
@@ -159,6 +154,7 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Shall we generate .dot files with DOT language graph commands?
+     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
@@ -169,6 +165,7 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * Shall we fail SODG generation if XMIRs contain errors?
+     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
@@ -179,6 +176,7 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * List of object names to participate in SODG generation.
+     *
      * @implNote {@code property} attribute is omitted for collection
      *     properties since there is no way of passing it via command line.
      * @checkstyle MemberNameCheck (15 lines)
@@ -188,6 +186,7 @@ public final class MjSodg extends AbstractMojo {
 
     /**
      * List of object names which are excluded from SODG generation.
+     *
      * @implNote {@code property} attribute is omitted for collection
      *  properties since there is no way of passing it via command line.
      * @checkstyle MemberNameCheck (15 lines)
@@ -196,10 +195,11 @@ public final class MjSodg extends AbstractMojo {
     private Set<String> sodgExcludes = new SetOf<>();
 
     /**
-     * Plugin metadata.
+     * Ctor.
      */
-    @Parameter(defaultValue = "${plugin}", readonly = true)
-    private PluginDescriptor descriptor;
+    public MjSodg() {
+        super();
+    }
 
     @Override
     public void execute() throws MojoFailureException {
@@ -218,11 +218,6 @@ public final class MjSodg extends AbstractMojo {
         }
     }
 
-    /**
-     * Generate SODG and close the tojos afterwards.
-     * @param tojos Foreign tojos
-     * @throws IOException If fails
-     */
     private void generate(final TjsForeign tojos) throws IOException {
         try {
             if (this.generateGraphFiles && !this.generateXemblyFiles) {
@@ -250,7 +245,7 @@ public final class MjSodg extends AbstractMojo {
                 ),
                 this.sodgIncludes,
                 this.sodgExcludes
-            ).generate(tojos.withXmir(), this.targetDir.toPath().resolve(MjSodg.DIR));
+            ).generate(tojos.withXmir(), this.targetDir.toPath().resolve("sodg"));
         } finally {
             tojos.close();
         }

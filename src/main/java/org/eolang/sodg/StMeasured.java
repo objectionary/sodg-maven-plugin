@@ -15,6 +15,7 @@ import java.nio.file.StandardOpenOption;
 /**
  * Shift that measures and saves stats into a file.
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
+ *
  * @since 0.30
  */
 final class StMeasured implements Shift {
@@ -31,6 +32,7 @@ final class StMeasured implements Shift {
 
     /**
      * Ctor.
+     *
      * @param shift Origin shift
      * @param log Log file
      */
@@ -55,10 +57,6 @@ final class StMeasured implements Shift {
         }
     }
 
-    /**
-     * Record the duration of the last shift.
-     * @param duration The duration in milliseconds
-     */
     private void recordDuration(final long duration) {
         try {
             Files.write(

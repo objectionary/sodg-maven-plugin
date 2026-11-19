@@ -25,6 +25,7 @@ import org.cactoos.scalar.Unchecked;
 /**
  * All catalogs in one place, to avoid making multiple objects.
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
+ *
  * @since 0.29
  */
 final class Catalogs {
@@ -76,6 +77,7 @@ final class Catalogs {
 
     /**
      * Make it.
+     *
      * @param file The file
      * @param fmt The format
      * @return The Tojos
@@ -86,12 +88,6 @@ final class Catalogs {
         );
     }
 
-    /**
-     * Make it.
-     * @param path Path of the file
-     * @param format Format, like "csv" or "json"
-     * @return The tojos
-     */
     private static Tojos build(final Path path, final String format) {
         final String fmt = format.trim().toLowerCase(Locale.ENGLISH);
         Mono mono;

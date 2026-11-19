@@ -24,6 +24,7 @@ import org.xembly.Xembler;
 
 /**
  * Default SODG instruction rendering.
+ *
  * @since 0.0.3
  */
 final class ItsDefault implements Instructions {
@@ -57,6 +58,7 @@ final class ItsDefault implements Instructions {
 
     /**
      * Ctor.
+     *
      * @param dpt Depot
      * @param cfg Configuration
      */
@@ -66,6 +68,7 @@ final class ItsDefault implements Instructions {
 
     /**
      * Ctor.
+     *
      * @param dpt Depot
      * @param cfg Configuration
      * @param vrsn Version
@@ -116,12 +119,6 @@ final class ItsDefault implements Instructions {
         ).count();
     }
 
-    /**
-     * Take the first text, or fail with a message that names the source.
-     * @param texts Texts found by XPath
-     * @param xmir The XMIR file being processed
-     * @return The first text
-     */
     private static String first(final List<String> texts, final Path xmir) {
         if (texts.isEmpty()) {
             throw new IllegalStateException(
@@ -131,12 +128,6 @@ final class ItsDefault implements Instructions {
         return texts.get(0);
     }
 
-    /**
-     * Make graph.
-     * @param xembly The Xembly script
-     * @param sodg The path of SODG file
-     * @throws IOException If fails
-     */
     private void makeGraph(final String xembly, final Path sodg) throws IOException {
         if (this.config.get("generateGraphFiles")) {
             final Directives all = new Directives(xembly);
@@ -169,12 +160,6 @@ final class ItsDefault implements Instructions {
         }
     }
 
-    /**
-     * Make dot.
-     * @param graph The graph in XML
-     * @param sodg The path of SODG file
-     * @throws IOException If fails
-     */
     private void makeDot(final XML graph, final Path sodg) throws IOException {
         if (this.config.get("generateDotFiles")) {
             final String dot = new Xsline(this.depot.train("dot"))

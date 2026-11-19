@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * Sodg generated files.
+ *
  * @since 0.0.3
  * @todo #9:30min Create unit tests for SodgFiles.
  *  For now there are no test for SODG file generation logic. Let's introduce them,
@@ -38,6 +39,7 @@ final class SodgFiles {
 
     /**
      * Ctor.
+     *
      * @param instrctns Instructions
      * @param inclds Programs to include
      * @param exclds Programs to exclude
@@ -54,6 +56,7 @@ final class SodgFiles {
 
     /**
      * Generate.
+     *
      * @param tojos Tojos
      * @param home Home path
      * @throws IOException if I/O operation fails
@@ -104,13 +107,6 @@ final class SodgFiles {
         }
     }
 
-    /**
-     * Exclude this EO program from processing?
-     * @param name The name
-     * @param inclusions Patterns for SODGs to be included
-     * @param exclusions Patterns for SODGs to be excluded
-     * @return TRUE if to exclude
-     */
     private boolean excluded(
         final String name,
         final Set<Pattern> inclusions,
@@ -128,11 +124,6 @@ final class SodgFiles {
         return exclude;
     }
 
-    /**
-     * Creates a regular expression out of sodgInclude string.
-     * @param pattern String from sodgIncludes
-     * @return Created regular expression
-     */
     private static String createMatcher(final String pattern) {
         return pattern.replace("**", "[A-Za-z0-9.]+?").replace("*", "[A-Za-z0-9]+");
     }

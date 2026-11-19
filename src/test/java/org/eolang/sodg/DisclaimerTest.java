@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link Disclaimer}.
+ *
  * @since 0.27
  */
 final class DisclaimerTest {

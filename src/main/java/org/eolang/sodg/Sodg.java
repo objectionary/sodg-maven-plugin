@@ -12,6 +12,7 @@ import java.util.logging.Level;
 
 /**
  * SODG.
+ *
  * @since 0.1
  */
 final class Sodg {
@@ -28,6 +29,7 @@ final class Sodg {
 
     /**
      * Ctor.
+     *
      * @param xmir Xmir XML
      */
     Sodg(final XML xmir) {
@@ -36,6 +38,7 @@ final class Sodg {
 
     /**
      * Ctor.
+     *
      * @param before Xmir before transformation
      * @param level Logging level
      */
@@ -45,6 +48,7 @@ final class Sodg {
 
     /**
      * Ctor.
+     *
      * @param before Before transformation
      * @param train Transformation steps
      */
@@ -55,6 +59,7 @@ final class Sodg {
 
     /**
      * Transform to SODG XML.
+     *
      * @return SODG XML
      */
     XML value() {

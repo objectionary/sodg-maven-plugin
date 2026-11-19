@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.jucs.ClasspathSource;
@@ -33,6 +34,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Test case for {@link MjSodg}.
+ *
  * @since 0.1
  */
 @ExtendWith(MktmpResolver.class)
@@ -50,10 +52,18 @@ final class MjSodgTest {
 
     @Test
     void checksIdsInXslStylesheets() throws IOException {
-        for (final Path path : Files.walk(Paths.get("src/main/resources/org/eolang/maven/sodg"))
-            .filter(Files::isRegularFile)
-            .filter(file -> file.getFileName().toString().endsWith(".xsl"))
-            .collect(Collectors.toList())) {
+        final List<Path> sheets;
+        try (
+            Stream<Path> paths = Files.walk(
+                Paths.get("src/main/resources/org/eolang/maven/sodg")
+            )
+        ) {
+            sheets = paths
+                .filter(Files::isRegularFile)
+                .filter(file -> file.getFileName().toString().endsWith(".xsl"))
+                .collect(Collectors.toList());
+        }
+        for (final Path path : sheets) {
             MatcherAssert.assertThat(
                 String.format("@id is wrong in: %s", path),
                 XhtmlMatchers.xhtml(new UncheckedText(new TextOf(path)).asString()),

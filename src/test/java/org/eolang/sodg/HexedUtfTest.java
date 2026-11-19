@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link HexedUtf}.
+ *
  * @since 0.0.2
  */
 final class HexedUtfTest {

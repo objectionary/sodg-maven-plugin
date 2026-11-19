@@ -22,6 +22,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Tests for {@link Depot}.
+ *
  * @since 0.0.3
  */
 @ExtendWith(MktmpResolver.class)

@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * A piece of text generated in runtime, to be injected into the files
  * that we generate as output, for `.sodg` files.
+ *
  * @since 0.27
  */
 final class Disclaimer {
@@ -24,6 +25,7 @@ final class Disclaimer {
 
     /**
      * Ctor.
+     *
      * @param vrsn Version
      */
     Disclaimer(final String vrsn) {
@@ -55,6 +57,7 @@ final class Disclaimer {
      * Resolve the timestamp to embed, honouring {@code SOURCE_DATE_EPOCH} for
      * reproducible builds (https://reproducible-builds.org/specs/source-date-epoch/)
      * and falling back to the current time when it isn't set.
+     *
      * @param epoch Value of the {@code SOURCE_DATE_EPOCH} environment variable, or
      *  {@code null} if it isn't set
      * @return The timestamp

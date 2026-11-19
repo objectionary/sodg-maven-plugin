@@ -10,6 +10,7 @@ import org.cactoos.Text;
 
 /**
  * Hex representation of the UTF string.
+ *
  * @since 0.0.2
  */
 final class HexedUtf implements Text {
@@ -21,6 +22,7 @@ final class HexedUtf implements Text {
 
     /**
      * Ctor.
+     *
      * @param txt The text to transform
      */
     HexedUtf(final String txt) {

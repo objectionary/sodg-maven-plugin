@@ -6,8 +6,8 @@ package org.eolang.sodg;
 
 import com.jcabi.xml.XML;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import org.eolang.jucs.ClasspathSource;
 import org.eolang.parser.EoSyntax;
 import org.eolang.xax.XtSticky;
@@ -23,6 +23,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Test cases for {@link Sodg}.
+ *
  * @since 0.1
  * @todo #5:90min Enable all the {@link Sodg} tests.
  *  Currently they are disabled because the SODG generation is outdated.
@@ -59,7 +60,7 @@ final class SodgTest {
         final XML graph = new Sodg(
             new EoSyntax(xtory.map().get("input").toString()).parsed()
         ).value();
-        final Collection<Executable> assertions = new LinkedList<>();
+        final Collection<Executable> assertions = new ArrayList<>(0);
         for (final String loc : (Iterable<String>) xtory.map().get("locators")) {
             assertions.add(
                 () -> MatcherAssert.assertThat(
@@ -72,12 +73,7 @@ final class SodgTest {
         Assertions.assertAll(assertions);
     }
 
-    /**
-     * Get the inclusion string from the Xtory object.
-     * @param xtory The Xtory object
-     * @return The inclusion string
-     */
-    @SuppressWarnings("PMD.UnusedPrivateMethod")
+    @SuppressWarnings("unused")
     private static String inclusion(final Xtory xtory) {
         Object inclusion = xtory.map().get("inclusion");
         if (inclusion == null) {

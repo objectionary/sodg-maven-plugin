@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests for {@link TjsForeign}.
+ *
  * @since 0.0.4
  */
 @ExtendWith(MktmpResolver.class)

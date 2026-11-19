@@ -12,6 +12,7 @@ import java.util.Objects;
 /**
  * Foreign tojo.
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
+ *
  * @since 0.30
  */
 final class TjForeign {
@@ -23,6 +24,7 @@ final class TjForeign {
 
     /**
      * Ctor.
+     *
      * @param original The delegate
      */
     TjForeign(final Tojo original) {
@@ -54,6 +56,7 @@ final class TjForeign {
 
     /**
      * The id of the tojo.
+     *
      * @return The id of the tojo
      */
     String identifier() {
@@ -62,6 +65,7 @@ final class TjForeign {
 
     /**
      * The tojo shaken xmir.
+     *
      * @return The shaken xmir
      */
     Path shaken() {
@@ -70,6 +74,7 @@ final class TjForeign {
 
     /**
      * Set sodg.
+     *
      * @param sodg Sodg
      * @return The tojo itself
      */
@@ -78,11 +83,6 @@ final class TjForeign {
         return this;
     }
 
-    /**
-     * Return the attribute from the tojo.
-     * @param attribute The attribute from ForeignTojos.Attribute
-     * @return The attribute
-     */
     private String attribute(final TjsForeign.Attribute attribute) {
         final String attr = this.delegate.get(attribute.getKey());
         if (attr == null) {

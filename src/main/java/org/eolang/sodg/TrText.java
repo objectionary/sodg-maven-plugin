@@ -10,13 +10,13 @@ import com.yegor256.xsline.TrFast;
 
 /**
  * Convert to text.
+ *
  * @since 0.1
  */
 final class TrText extends TrEnvelope {
 
     /**
      * Ctor.
-     * @checkstyle ConstructorsCodeFreeCheck (15 lines)
      */
     TrText() {
         super(

@@ -21,6 +21,7 @@ import org.cactoos.scalar.LengthOf;
  * Content saved to the file.
  * Returns path to the file
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
+ *
  * @since 0.41.0
  */
 final class Saved implements Scalar<Path> {
@@ -37,6 +38,7 @@ final class Saved implements Scalar<Path> {
 
     /**
      * Ctor.
+     *
      * @param content Content as string
      * @param target Path to save content to
      */
@@ -46,6 +48,7 @@ final class Saved implements Scalar<Path> {
 
     /**
      * Ctor.
+     *
      * @param content Content as bytes
      * @param target Path to save content to
      */
@@ -55,6 +58,7 @@ final class Saved implements Scalar<Path> {
 
     /**
      * Ctor.
+     *
      * @param content Content as text
      * @param target Path to save content to
      */
@@ -64,6 +68,7 @@ final class Saved implements Scalar<Path> {
 
     /**
      * Ctor.
+     *
      * @param content Content as lambda
      * @param target Absolute path to save content to
      */

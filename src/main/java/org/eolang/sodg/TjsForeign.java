@@ -19,6 +19,7 @@ import org.cactoos.scalar.Unchecked;
 /**
  * Foreign tojos.
  * This class was copy-pasted from objectionary/eo/eo-maven-plugin.
+ *
  * @since 0.30
  */
 final class TjsForeign implements Closeable {
@@ -35,6 +36,7 @@ final class TjsForeign implements Closeable {
 
     /**
      * Ctor.
+     *
      * @param scalar Scalar
      * @param scope Scope
      */
@@ -44,6 +46,7 @@ final class TjsForeign implements Closeable {
 
     /**
      * Main constructor.
+     *
      * @param tojos The tojos
      * @param scope The scope
      */
@@ -62,17 +65,13 @@ final class TjsForeign implements Closeable {
 
     /**
      * Get the tojos that have corresponding shaken XMIR.
+     *
      * @return The tojos
      */
     Collection<TjForeign> withXmir() {
         return this.select(row -> row.exists(Attribute.XMIR.getKey()));
     }
 
-    /**
-     * Select tojos.
-     * @param filter Filter
-     * @return Selected tojos
-     */
     private Collection<TjForeign> select(final Predicate<? super Tojo> filter) {
         return this.tojos.value().select(
             t -> filter.test(t)
@@ -113,6 +112,7 @@ final class TjsForeign implements Closeable {
 
         /**
          * Ctor.
+         *
          * @param attribute The attribute name
          */
         Attribute(final String attribute) {
@@ -121,6 +121,7 @@ final class TjsForeign implements Closeable {
 
         /**
          * Get the attribute name.
+         *
          * @return The attribute name
          */
         String getKey() {

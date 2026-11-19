@@ -25,14 +25,15 @@ import java.util.logging.Level;
 
 /**
  * Main transformer for SODG.
+ *
  * @since 0.1
  */
 final class TrSodg extends TrEnvelope {
 
     /**
      * Ctor.
+     *
      * @param level Logging level
-     * @checkstyle ConstructorsCodeFreeCheck (60 lines)
      */
     TrSodg(final Level level) {
         super(

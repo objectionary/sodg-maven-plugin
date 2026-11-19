@@ -12,6 +12,7 @@ import java.nio.file.Path;
 
 /**
  * Angry instructions.
+ *
  * @since 0.0.4
  */
 final class ItsAngry implements Instructions {
@@ -28,6 +29,7 @@ final class ItsAngry implements Instructions {
 
     /**
      * Ctor.
+     *
      * @param instructions Instructions
      * @param ext Fail or not
      */

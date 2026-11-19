@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests for {@link ItsDefault}.
+ *
  * @since 0.0.3
  * @todo #9:45min Add more tests for `SodgInstructions#textInstructions()` method.
  *  The method not only computes the number, but also performs XMIR-to-SODG transformations,
