@@ -148,14 +148,33 @@ final class SodgFilesTest {
 
     @ParameterizedTest
     @CsvSource({
-        "**, as-bytes_x, true",
-        "org.eolang.sodg.examples.f.o, f.o, true",
-        "org.eolang.sodg.examples.f.o, fxo, false",
-        "org.eolang.sodg.examples.*, a-b, true"
+        "**, as-bytes_x",
+        "org.eolang.sodg.examples.f.o, f.o",
+        "org.eolang.sodg.examples.*, a-b"
     })
     @ExtendWith(MktmpResolver.class)
     void matchesGlobLiterally(
-        final String glob, final String target, final boolean expected, @Mktmp final Path temp
+        final String glob, final String target, @Mktmp final Path temp
+    ) throws IOException {
+        MatcherAssert.assertThat(
+            "Glob must match names literally and accept dashes and underscores",
+            SodgFilesTest.generated(glob, target, temp),
+            Matchers.equalTo(true)
+        );
+    }
+
+    @Test
+    @ExtendWith(MktmpResolver.class)
+    void doesNotMatchGlobWithEscapedDot(@Mktmp final Path temp) throws IOException {
+        MatcherAssert.assertThat(
+            "Dot in a glob must not match any other character",
+            SodgFilesTest.generated("org.eolang.sodg.examples.f.o", "fxo", temp),
+            Matchers.equalTo(false)
+        );
+    }
+
+    private static boolean generated(
+        final String glob, final String target, final Path temp
     ) throws IOException {
         final Path sodg = temp.resolve("sodg");
         new SodgFiles(
@@ -187,11 +206,7 @@ final class SodgFilesTest {
             ).asTojos(),
             sodg
         );
-        MatcherAssert.assertThat(
-            "Glob must match names literally and accept dashes and underscores",
-            Files.exists(sodg),
-            Matchers.equalTo(expected)
-        );
+        return Files.exists(sodg);
     }
 
     private static Stream<Arguments> fileMatrix() {
