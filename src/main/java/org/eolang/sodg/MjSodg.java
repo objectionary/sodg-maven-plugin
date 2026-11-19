@@ -5,6 +5,7 @@
 package org.eolang.sodg;
 
 import com.jcabi.log.Logger;
+import com.yegor256.tojos.Tojos;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -15,6 +16,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.cactoos.Scalar;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
 import org.cactoos.set.SetOf;
@@ -115,12 +117,11 @@ public final class MjSodg extends AbstractMojo {
     protected File targetDir;
 
     /**
-     * Cached tojos.
+     * Source of the foreign tojos.
      * @checkstyle VisibilityModifierCheck (5 lines)
      */
-    private final TjsForeign tojos = new TjsForeign(
-        () -> Catalogs.INSTANCE.make(this.foreign.toPath(), this.foreignFormat),
-        () -> this.scope
+    Scalar<Tojos> catalog = () -> Catalogs.INSTANCE.make(
+        this.foreign.toPath(), this.foreignFormat
     );
 
     /**
@@ -210,35 +211,48 @@ public final class MjSodg extends AbstractMojo {
             }
         } else {
             try {
-                if (this.generateGraphFiles && !this.generateXemblyFiles) {
-                    throw new IllegalStateException(
-                        "Setting generateGraphFiles and not setting generateXemblyFiles has no effect because .graph files require .xe files"
-                    );
-                }
-                if (this.generateDotFiles && !this.generateGraphFiles) {
-                    throw new IllegalStateException(
-                        "Setting generateDotFiles and not setting generateGraphFiles has no effect because .dot files require .graph files"
-                    );
-                }
-                new SodgFiles(
-                    new ItsAngry(
-                        new ItsDefault(
-                            new Depot(this.xslMeasures),
-                            new MapOf<>(
-                                new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
-                                new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
-                                new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
-                                new MapEntry<>("generateDotFiles", this.generateDotFiles)
-                            )
-                        ),
-                        this.failOnXmirErrors
-                    ),
-                    this.sodgIncludes,
-                    this.sodgExcludes
-                ).generate(this.tojos.withXmir(), this.targetDir.toPath().resolve(MjSodg.DIR));
+                this.generate(new TjsForeign(this.catalog, () -> this.scope));
             } catch (final IOException exception) {
                 throw new MojoFailureException("Can't convert XMIR to SODG", exception);
             }
+        }
+    }
+
+    /**
+     * Generate SODG and close the tojos afterwards.
+     * @param tojos Foreign tojos
+     * @throws IOException If fails
+     */
+    private void generate(final TjsForeign tojos) throws IOException {
+        try {
+            if (this.generateGraphFiles && !this.generateXemblyFiles) {
+                throw new IllegalStateException(
+                    "Setting generateGraphFiles and not setting generateXemblyFiles has no effect because .graph files require .xe files"
+                );
+            }
+            if (this.generateDotFiles && !this.generateGraphFiles) {
+                throw new IllegalStateException(
+                    "Setting generateDotFiles and not setting generateGraphFiles has no effect because .dot files require .graph files"
+                );
+            }
+            new SodgFiles(
+                new ItsAngry(
+                    new ItsDefault(
+                        new Depot(this.xslMeasures),
+                        new MapOf<>(
+                            new MapEntry<>("generateSodgXmlFiles", this.generateSodgXmlFiles),
+                            new MapEntry<>("generateXemblyFiles", this.generateXemblyFiles),
+                            new MapEntry<>("generateGraphFiles", this.generateGraphFiles),
+                            new MapEntry<>("generateDotFiles", this.generateDotFiles)
+                        )
+                    ),
+                    this.failOnXmirErrors
+                ),
+                this.sodgIncludes,
+                this.sodgExcludes
+            ).generate(tojos.withXmir(), this.targetDir.toPath().resolve(MjSodg.DIR));
+        } finally {
+            tojos.close();
         }
     }
 }
