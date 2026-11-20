@@ -6,7 +6,7 @@ sheets: []
 input: |
   [] > foo /number
 asserts:
-  - //sodg[count(i[not(@name='comment')])=4]
+  - //sodg[count(i[not(@name='comment')])=3]
   - //sodg/i[@name='formation' and count(a)=1 and a[1][text()='b1']]
   - //sodg/i[@name='lambda' and count(a)=2 and a[1][text()='b1'] and a[2][text()='foo']]
   - //sodg[not(i[@name='dispatch'])]

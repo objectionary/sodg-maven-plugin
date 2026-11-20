@@ -6,7 +6,7 @@ input: |
   [] > foo
     42 > x
 asserts:
-  - //sodg[count(i[not(@name='comment')])=5]
+  - //sodg[count(i[not(@name='comment')])=4]
   - //sodg/i[@name='formation']/a[1][text()='b1']
   - //sodg/i[@name='formation']/a[2][text()='x']
   - //sodg/i[@name='dispatch']/a[1][text()='b2']
