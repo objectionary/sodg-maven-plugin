@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
@@ -143,6 +144,69 @@ final class SodgFilesTest {
             new String(Files.readAllBytes(sodg), StandardCharsets.UTF_8),
             Matchers.containsString("73-65-63-6F-6E-64")
         );
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "**, as-bytes_x",
+        "org.eolang.sodg.examples.f.o, f.o",
+        "org.eolang.sodg.examples.*, a-b"
+    })
+    @ExtendWith(MktmpResolver.class)
+    void matchesGlobLiterally(
+        final String glob, final String target, @Mktmp final Path temp
+    ) throws IOException {
+        MatcherAssert.assertThat(
+            "Glob must match names literally and accept dashes and underscores",
+            SodgFilesTest.generated(glob, target, temp),
+            Matchers.equalTo(true)
+        );
+    }
+
+    @Test
+    @ExtendWith(MktmpResolver.class)
+    void doesNotMatchGlobWithEscapedDot(@Mktmp final Path temp) throws IOException {
+        MatcherAssert.assertThat(
+            "Dot in a glob must not match any other character",
+            SodgFilesTest.generated("org.eolang.sodg.examples.f.o", "fxo", temp),
+            Matchers.equalTo(false)
+        );
+    }
+
+    private static boolean generated(
+        final String glob, final String target, final Path temp
+    ) throws IOException {
+        final Path sodg = temp.resolve("sodg");
+        new SodgFiles(
+            new ItsDefault(
+                new Depot(temp.resolve("measures.csv").toFile()),
+                new MapOf<>(
+                    new MapEntry<>("generateSodgXmlFiles", false),
+                    new MapEntry<>("generateXemblyFiles", false),
+                    new MapEntry<>("generateGraphFiles", false),
+                    new MapEntry<>("generateDotFiles", false)
+                )
+            ),
+            new SetOf<>(glob),
+            new SetOf<>()
+        ).generate(
+            new SodgFilesTest.TjsXmir(
+                temp,
+                new MapOf<>(
+                    new MapEntry<>(
+                        target,
+                        String.join(
+                            System.lineSeparator(),
+                            "[] > app",
+                            "  Q.io.stdout > @",
+                            "    \"x\""
+                        )
+                    )
+                )
+            ).asTojos(),
+            sodg
+        );
+        return Files.exists(sodg);
     }
 
     private static Stream<Arguments> fileMatrix() {
