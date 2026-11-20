@@ -70,7 +70,6 @@ final class ItsDefaultTest {
         final Path first = temp.resolve("first.sodg");
         final Path second = temp.resolve("second.sodg");
         instructions.textInstructions(xmir, first);
-        Thread.yield();
         instructions.textInstructions(xmir, second);
         MatcherAssert.assertThat(
             "Instructions must not depend on the build time",
