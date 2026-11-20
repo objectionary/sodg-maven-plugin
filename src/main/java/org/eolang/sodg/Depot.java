@@ -86,7 +86,8 @@ final class Depot {
         return lvl;
     }
 
-    private static Train<Shift> measured(final Train<Shift> train, final File measures) {
+    private static Train<Shift> measured(final Train<Shift> train, final File file) {
+        final File measures = file.getAbsoluteFile();
         if (measures.getParentFile().mkdirs()) {
             Logger.debug(Depot.class, "Directory created for %[file]s", measures);
         }

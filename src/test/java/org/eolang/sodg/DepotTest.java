@@ -9,6 +9,7 @@ import com.yegor256.MktmpResolver;
 import com.yegor256.xsline.Shift;
 import com.yegor256.xsline.TrDefault;
 import com.yegor256.xsline.Train;
+import java.io.File;
 import java.nio.file.Path;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
@@ -34,6 +35,15 @@ final class DepotTest {
         MatcherAssert.assertThat(
             String.format("Train '%s' must be present in the depot", name),
             new Depot(temp.resolve("measures.csv").toFile()).train(name),
+            Matchers.notNullValue()
+        );
+    }
+
+    @Test
+    void acceptsMeasuresFileWithoutParentDirectory() {
+        MatcherAssert.assertThat(
+            "Single-segment relative path must not cause NullPointerException",
+            new Depot(new File("measures-161.csv")).train("sodg"),
             Matchers.notNullValue()
         );
     }
