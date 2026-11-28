@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: zauguin/install-texlive@v4.5.0
+      - uses: zauguin/install-texlive@v4.5.1
         with:
           packages: scheme-basic geometry xcolor naive-ebnf microtype etoolbox
           texlive_version: 2025
